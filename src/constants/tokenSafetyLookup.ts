@@ -1,4 +1,5 @@
 import { ListsState } from 'state/lists/reducer'
+
 import store from '../state'
 import { UNI_EXTENDED_LIST, UNI_LIST } from './lists'
 import { COMMON_BASES } from './routing'
@@ -35,7 +36,6 @@ class TokenSafetyLookupTable {
     brokenTokenList.tokens.forEach((token) => {
       this.dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.BROKEN
     })
-
   }
 
   checkToken(address: string, chainId?: number | null) {
