@@ -82,7 +82,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 1 1`] = `
       class="c3"
     >
       <svg
-        color="#FC72FF"
+        color="#75ff72"
         fill="none"
         height="20"
         width="20"

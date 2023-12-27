@@ -143,10 +143,10 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #FFEFFF;
+  background-color: #EFEFEF;
   border-radius: 16px;
   border: 0;
-  color: #FC72FF;
+  color: #75ff72;
   cursor: pointer;
   display: -webkit-box;
   display: -webkit-flex;
