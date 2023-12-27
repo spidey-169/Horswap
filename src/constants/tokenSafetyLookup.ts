@@ -1,4 +1,3 @@
-import { TokenInfo } from '@uniswap/token-lists'
 import { ListsState } from 'state/lists/reducer'
 
 import store from '../state'
