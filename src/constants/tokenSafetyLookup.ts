@@ -1,5 +1,4 @@
 import { ListsState } from 'state/lists/reducer'
-
 import store from '../state'
 import { UNI_EXTENDED_LIST, UNI_LIST } from './lists'
 import { COMMON_BASES } from './routing'
