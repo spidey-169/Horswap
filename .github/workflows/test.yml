@@ -157,11 +157,6 @@ jobs:
           name: Cypress tests
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST_REPORTER_WEBHOOK }}
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: hardhat-cache
-          path: cache
-
   hardhat-cache:
     needs: [cypress-test-matrix]
     runs-on: ubuntu-latest
