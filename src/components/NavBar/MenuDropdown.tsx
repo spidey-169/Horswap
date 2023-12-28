@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { InterfaceElementName } from '@uniswap/analytics-events'
 import FeatureFlagModal from 'components/FeatureFlagModal/FeatureFlagModal'
-import { PrivacyPolicyModal } from 'components/PrivacyPolicy'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
@@ -200,14 +199,6 @@ export const MenuDropdown = () => {
                 <SecondaryLinkedText href="https://uniswap.canny.io/feature-requests">
                   <Trans>Feedback</Trans> ↗
                 </SecondaryLinkedText>
-                <SecondaryLinkedText
-                  onClick={() => {
-                    toggleOpen()
-                    togglePrivacyPolicy()
-                  }}
-                >
-                  <Trans>Legal & Privacy</Trans> ↗
-                </SecondaryLinkedText>
                 {(isDevelopmentEnv() || isStagingEnv()) && (
                   <SecondaryLinkedText
                     onClick={() => {
@@ -234,7 +225,6 @@ export const MenuDropdown = () => {
           </NavDropdown>
         )}
       </Box>
-      <PrivacyPolicyModal />
       <FeatureFlagModal />
     </>
   )
