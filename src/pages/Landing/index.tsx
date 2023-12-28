@@ -80,7 +80,7 @@ const Glow = styled.div`
   position: absolute;
   top: 68px;
   bottom: 0;
-  background: radial-gradient(72.04% 72.04% at 50% 3.99%, #33FF99 0%, rgba(166, 151, 255, 0) 100%);
+  background: radial-gradient(72.04% 72.04% at 50% 3.99%, #33ff99 0%, rgba(166, 151, 255, 0) 100%);
   filter: blur(72px);
   border-radius: 24px;
   max-width: 480px;
@@ -136,7 +136,7 @@ const TitleText = styled.h1<{ isDarkMode: boolean; $visible: boolean }>`
           background: linear-gradient(20deg, rgba(255, 244, 207, 1) 10%, rgba(51, 255, 102, 1) 100%);
         `
       : css`
-          background: linear-gradient(10deg, rgba(79, 255, 150, 1) 0%, rgba(159,255,163, 1) 100%);
+          background: linear-gradient(10deg, rgba(79, 255, 150, 1) 0%, rgba(159, 255, 163, 1) 100%);
         `};
   background-clip: text;
   -webkit-background-clip: text;
