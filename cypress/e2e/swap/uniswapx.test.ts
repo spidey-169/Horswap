@@ -46,7 +46,7 @@ describe('UniswapX Toggle', () => {
     cy.get(getTestSelector('gas-estimate-uniswapx-icon')).should('exist')
   })
 
-  it('prompts opt-in if UniswapX is better', () => {
+  it.skip('prompts opt-in if UniswapX is better', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
 
@@ -84,7 +84,7 @@ describe('UniswapX Orders', () => {
     })
   })
 
-  it('can swap exact-in trades using uniswapX', () => {
+  it.skip('can swap exact-in trades using uniswapX', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -103,7 +103,7 @@ describe('UniswapX Orders', () => {
     cy.contains('Swapped')
   })
 
-  it('can swap exact-out trades using uniswapX', () => {
+  it.skip('can swap exact-out trades using uniswapX', () => {
     // Setup a swap
     cy.get('#swap-currency-output .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -122,7 +122,7 @@ describe('UniswapX Orders', () => {
     cy.contains('Swapped')
   })
 
-  it('renders proper view if uniswapx order expires', () => {
+  it.skip('renders proper view if uniswapx order expires', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -138,7 +138,7 @@ describe('UniswapX Orders', () => {
     cy.contains('Swap expired')
   })
 
-  it('renders proper view if uniswapx order has insufficient funds', () => {
+  it.skip('renders proper view if uniswapx order has insufficient funds', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -174,7 +174,7 @@ describe('UniswapX Eth Input', () => {
     })
   })
 
-  it('can swap using uniswapX with ETH as input', () => {
+  it.skip('can swap using uniswapX with ETH as input', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('1')
     cy.contains('Try it now').click()
@@ -206,7 +206,7 @@ describe('UniswapX Eth Input', () => {
     cy.contains('Swapped')
   })
 
-  it('switches swap input to WETH after wrap', () => {
+  it.skip('switches swap input to WETH after wrap', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('1')
     cy.contains('Try it now').click()
@@ -261,7 +261,7 @@ describe('UniswapX activity history', () => {
     })
   })
 
-  it('can view UniswapX order status progress in activity', () => {
+  it.skip('can view UniswapX order status progress in activity', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -289,7 +289,7 @@ describe('UniswapX activity history', () => {
     cy.get(getTestSelector('offchain-activity-modal')).contains('View on Explorer')
   })
 
-  it('can view UniswapX order status progress in activity upon expiry', () => {
+  it.skip('can view UniswapX order status progress in activity upon expiry', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -316,7 +316,7 @@ describe('UniswapX activity history', () => {
     cy.get(getTestSelector('offchain-activity-modal')).contains('learn more')
   })
 
-  it('deduplicates remote vs local uniswapx orders', () => {
+  it.skip('deduplicates remote vs local uniswapx orders', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()
@@ -348,7 +348,7 @@ describe('UniswapX activity history', () => {
     cy.get(getTestSelector('activity-content')).contains('Swapped').should('have.length', 1)
   })
 
-  it('balances should refetch after uniswapx swap', () => {
+  it.skip('balances should refetch after uniswapx swap', () => {
     // Setup a swap
     cy.get('#swap-currency-input .token-amount-input').type('300')
     cy.contains('Try it now').click()

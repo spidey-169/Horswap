@@ -154,8 +154,8 @@ jobs:
       - uses: cypress-io/github-action@v4
         with:
           install: false
-          record: true
-          parallel: true
+          record: false
+          parallel: false
           start: yarn serve
           wait-on: 'http://localhost:3000'
           browser: electron
