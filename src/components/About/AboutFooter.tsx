@@ -102,13 +102,6 @@ const TextLink = styled(StyledRouterLink)`
   color: ${({ theme }) => theme.neutral2};
 `
 
-const Copyright = styled.span`
-  font-size: 16px;
-  line-height: 20px;
-  margin: 1rem 0 0 0;
-  color: ${({ theme }) => theme.neutral3};
-`
-
 const LogoSectionContent = () => {
   const isDarkMode = useIsDarkMode()
   return (
