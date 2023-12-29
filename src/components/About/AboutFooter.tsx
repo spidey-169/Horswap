@@ -118,10 +118,10 @@ const LogoSectionContent = () => {
         <SocialLink href="https://discord.gg/FCfyBSbCU5" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />
         </SocialLink>
-        <SocialLink href="https://twitter.com/uniswap" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://twitter.com/DarkFlorist" target="_blank" rel="noopener noreferrer">
           <TwitterIcon size={32} />
         </SocialLink>
-        <SocialLink href="https://github.com/Uniswap" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://github.com/DarkFlorist/Horswap" target="_blank" rel="noopener noreferrer">
           <GithubIcon size={32} />
         </SocialLink>
       </SocialLinks>
