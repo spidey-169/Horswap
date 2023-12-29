@@ -115,7 +115,7 @@ const LogoSectionContent = () => {
     <>
       <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Uniswap Logo" />
       <SocialLinks>
-        <SocialLink href="https://discord.gg/FCfyBSbCU5" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />
         </SocialLink>
         <SocialLink href="https://twitter.com/DarkFlorist" target="_blank" rel="noopener noreferrer">
@@ -154,11 +154,11 @@ export const AboutFooter = () => {
         <LinkGroup>
           <LinkGroupTitle>Get Help</LinkGroupTitle>
           <ExternalTextLink
-            href="https://support.uniswap.org/hc/en-us/requests/new"
+            href="https://discord.com/invite/aCSKcvf5VW"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Contact Us
+            Contact Us On Discord
           </ExternalTextLink>
           <ExternalTextLink href="https://support.uniswap.org/hc/en-us">Help Center</ExternalTextLink>
         </LinkGroup>
