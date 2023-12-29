@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { InterfaceEventName } from '@uniswap/analytics-events'
 import { ParentSize } from '@visx/responsive'
-import { sendAnalyticsEvent } from 'analytics'
 import SparklineChart from 'components/Charts/SparklineChart'
 import { ArrowChangeDown } from 'components/Icons/ArrowChangeDown'
 import { ArrowChangeUp } from 'components/Icons/ArrowChangeUp'
@@ -9,11 +7,11 @@ import { Info } from 'components/Icons/Info'
 import QueryTokenLogo from 'components/Logo/QueryTokenLogo'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { SparklineMap, TopToken } from 'graphql/data/TopTokens'
-import { getTokenDetailsURL, supportedChainIdFromGQLChain, validateUrlChainParam } from 'graphql/data/util'
+import { getTokenDetailsURL } from 'graphql/data/util'
 import { useAtomValue } from 'jotai/utils'
 import { ForwardedRef, forwardRef } from 'react'
 import { CSSProperties, ReactNode } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled, { css, useTheme } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { ClickableStyle } from 'theme/components'
@@ -26,14 +24,7 @@ import {
   SMALL_MEDIA_BREAKPOINT,
 } from '../constants'
 import { LoadingBubble } from '../loading'
-import {
-  filterStringAtom,
-  filterTimeAtom,
-  sortAscendingAtom,
-  sortMethodAtom,
-  TokenSortMethod,
-  useSetSortMethod,
-} from '../state'
+import { sortAscendingAtom, sortMethodAtom, TokenSortMethod, useSetSortMethod } from '../state'
 import { DeltaArrow, DeltaText } from '../TokenDetails/Delta'
 
 const Cell = styled.div`
@@ -444,24 +435,8 @@ export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HT
   const { formatFiatPrice, formatNumber, formatPercent } = useFormatter()
 
   const { tokenListIndex, tokenListLength, token, sortRank } = props
-  const filterString = useAtomValue(filterStringAtom)
-
-  const filterNetwork = validateUrlChainParam(useParams<{ chainName?: string }>().chainName?.toUpperCase())
-  const chainId = supportedChainIdFromGQLChain(filterNetwork)
-  const timePeriod = useAtomValue(filterTimeAtom)
   const delta = token.market?.pricePercentChange?.value
   const formattedDelta = formatPercent(delta)
-
-  const exploreTokenSelectedEventProperties = {
-    chain_id: chainId,
-    token_address: token.address,
-    token_symbol: token.symbol,
-    token_list_index: tokenListIndex,
-    token_list_rank: sortRank,
-    token_list_length: tokenListLength,
-    time_frame: timePeriod,
-    search_token_address_input: filterString,
-  }
 
   // A simple 0 price indicates the price is not currently available from the api
   const price = token.market?.price?.value === 0 ? '-' : formatFiatPrice({ price: token.market?.price?.value })
@@ -469,12 +444,7 @@ export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HT
   // TODO: currency logo sizing mobile (32px) vs. desktop (24px)
   return (
     <div ref={ref} data-testid={`token-table-row-${token.address}`}>
-      <StyledLink
-        to={getTokenDetailsURL(token)}
-        onClick={() =>
-          sendAnalyticsEvent(InterfaceEventName.EXPLORE_TOKEN_ROW_CLICKED, exploreTokenSelectedEventProperties)
-        }
-      >
+      <StyledLink to={getTokenDetailsURL(token)}>
         <TokenRow
           header={false}
           listNumber={sortRank}

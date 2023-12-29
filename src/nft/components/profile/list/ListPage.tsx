@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { InterfaceModalName, NFTEventName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
-import { sendAnalyticsEvent, useTrace } from 'analytics'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { useStablecoinValue } from 'hooks/useStablecoinPrice'
@@ -186,7 +184,6 @@ export const ListPage = () => {
   const { setProfilePageState: setSellPageState } = useProfilePageState()
   const { provider, chainId } = useWeb3React()
   const isMobile = useIsMobile()
-  const trace = useTrace({ modal: InterfaceModalName.NFT_LISTING })
   const { formatCurrencyAmount } = useFormatter()
   const { setGlobalMarketplaces, sellAssets, issues } = useSellAsset(
     ({ setGlobalMarketplaces, sellAssets, issues }) => ({
@@ -195,9 +192,8 @@ export const ListPage = () => {
       issues,
     })
   )
-  const { listings, collectionsRequiringApproval, setLooksRareNonce, setCollectionStatusAndCallback } = useNFTList(
-    ({ listings, collectionsRequiringApproval, setLooksRareNonce, setCollectionStatusAndCallback }) => ({
-      listings,
+  const { collectionsRequiringApproval, setLooksRareNonce, setCollectionStatusAndCallback } = useNFTList(
+    ({ collectionsRequiringApproval, setLooksRareNonce, setCollectionStatusAndCallback }) => ({
       collectionsRequiringApproval,
       setLooksRareNonce,
       setCollectionStatusAndCallback,
@@ -223,18 +219,8 @@ export const ListPage = () => {
     setGlobalMarketplaces(selectedMarkets)
   }, [selectedMarkets, setGlobalMarketplaces])
 
-  const startListingEventProperties = {
-    collection_addresses: sellAssets.map((asset) => asset.asset_contract.address),
-    token_ids: sellAssets.map((asset) => asset.tokenId),
-    marketplaces: Array.from(new Set(listings.map((asset) => asset.marketplace.name))),
-    list_quantity: listings.length,
-    usd_value: usdcAmount,
-    ...trace,
-  }
-
   const startListingFlow = async () => {
     if (!signer) return
-    sendAnalyticsEvent(NFTEventName.NFT_SELL_START_LISTING, { ...startListingEventProperties })
     const signerAddress = await signer.getAddress()
     const nonce = await looksRareNonceFetcher(signerAddress)
     setLooksRareNonce(nonce ?? 0)

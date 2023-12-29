@@ -1,5 +1,3 @@
-import { MoonpayEventName } from '@uniswap/analytics-events'
-import { sendAnalyticsEvent } from 'analytics'
 import { DEFAULT_TXN_DISMISS_MS } from 'constants/misc'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
@@ -53,7 +51,6 @@ export function useFiatOnrampAvailability(shouldCheck: boolean, callback?: () =>
       setLoading(true)
       try {
         const result = await getMoonpayAvailability()
-        sendAnalyticsEvent(MoonpayEventName.MOONPAY_GEOCHECK_COMPLETED, { success: result })
         if (stale) return
         dispatch(setFiatOnrampAvailability(result))
         if (result && callback) {
@@ -140,10 +137,6 @@ export function useToggleQueueModal(): () => void {
 
 export function useToggleExecuteModal(): () => void {
   return useToggleModal(ApplicationModal.EXECUTE)
-}
-
-export function useTogglePrivacyPolicy(): () => void {
-  return useToggleModal(ApplicationModal.PRIVACY_POLICY)
 }
 
 export function useToggleFeatureFlags(): () => void {

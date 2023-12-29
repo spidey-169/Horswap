@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { InterfacePageName, NFTEventName } from '@uniswap/analytics-events'
 import { ChainId } from '@uniswap/sdk-core'
-import { sendAnalyticsEvent, useTrace } from 'analytics'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { NftActivityType, NftMarketplace, OrderStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { Box } from 'nft/components/Box'
@@ -118,13 +116,6 @@ export const BuyCell = ({
   }, [asset, itemsInBag])
 
   const orderIsPurchasable = isPurchasableOrder(event.orderStatus, event.marketplace)
-  const trace = useTrace({ page: InterfacePageName.NFT_COLLECTION_PAGE })
-  const eventProperties = {
-    collection_address: asset.address,
-    token_id: asset.tokenId,
-    token_type: asset.tokenType,
-    ...trace,
-  }
 
   return (
     <Column display={{ sm: 'none', lg: 'flex' }} height="full" justifyContent="center" marginX="auto">
@@ -136,7 +127,6 @@ export const BuyCell = ({
             e.preventDefault()
             isSelected ? removeAsset([asset]) : selectAsset([asset])
             !isSelected && !cartExpanded && !isMobile && toggleCart()
-            !isSelected && sendAnalyticsEvent(NFTEventName.NFT_BUY_ADDED, { eventProperties })
           }}
           disabled={!orderIsPurchasable}
         >

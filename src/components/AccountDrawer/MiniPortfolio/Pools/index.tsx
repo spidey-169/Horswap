@@ -1,8 +1,6 @@
 import { t } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, SharedEventName } from '@uniswap/analytics-events'
 import { Position } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { TraceEvent } from 'analytics'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import Row from 'components/Row'
 import { MouseoverTooltip } from 'components/Tooltip'
@@ -134,68 +132,51 @@ function PositionListItem({ positionInfo }: { positionInfo: PositionInfo }) {
     toggleWalletDrawer()
     navigate('/pool/' + details.tokenId)
   }, [walletChainId, chainId, switchChain, connector, toggleWalletDrawer, navigate, details.tokenId])
-  const analyticsEventProperties = useMemo(
-    () => ({
-      chain_id: chainId,
-      pool_token_0_symbol: pool.token0.symbol,
-      pool_token_1_symbol: pool.token1.symbol,
-      pool_token_0_address: pool.token0.address,
-      pool_token_1_address: pool.token1.address,
-    }),
-    [chainId, pool.token0.address, pool.token0.symbol, pool.token1.address, pool.token1.symbol]
-  )
 
   return (
-    <TraceEvent
-      events={[BrowserEvent.onClick]}
-      name={SharedEventName.ELEMENT_CLICKED}
-      element={InterfaceElementName.MINI_PORTFOLIO_POOLS_ROW}
-      properties={analyticsEventProperties}
-    >
-      <PortfolioRow
-        onClick={onClick}
-        left={<PortfolioLogo chainId={chainId} currencies={[pool.token0, pool.token1]} />}
-        title={
-          <Row>
-            <ThemedText.SubHeader>
-              {pool.token0.symbol} / {pool.token1?.symbol}
-            </ThemedText.SubHeader>
-          </Row>
-        }
-        descriptor={<ThemedText.BodySmall>{`${pool.fee / 10000}%`}</ThemedText.BodySmall>}
-        right={
-          <>
-            <MouseoverTooltip
-              placement="left"
-              text={
-                <div style={{ padding: '4px 0px' }}>
-                  <ThemedText.BodySmall>{`${formatNumber({
-                    input: liquidityValue,
-                    type: NumberType.PortfolioBalance,
-                  })} (liquidity) + ${formatNumber({
-                    input: feeValue,
-                    type: NumberType.PortfolioBalance,
-                  })} (fees)`}</ThemedText.BodySmall>
-                </div>
-              }
-            >
-              <ThemedText.SubHeader>
-                {formatNumber({
-                  input: (liquidityValue ?? 0) + (feeValue ?? 0),
+    <PortfolioRow
+      onClick={onClick}
+      left={<PortfolioLogo chainId={chainId} currencies={[pool.token0, pool.token1]} />}
+      title={
+        <Row>
+          <ThemedText.SubHeader>
+            {pool.token0.symbol} / {pool.token1?.symbol}
+          </ThemedText.SubHeader>
+        </Row>
+      }
+      descriptor={<ThemedText.BodySmall>{`${pool.fee / 10000}%`}</ThemedText.BodySmall>}
+      right={
+        <>
+          <MouseoverTooltip
+            placement="left"
+            text={
+              <div style={{ padding: '4px 0px' }}>
+                <ThemedText.BodySmall>{`${formatNumber({
+                  input: liquidityValue,
                   type: NumberType.PortfolioBalance,
-                })}
-              </ThemedText.SubHeader>
-            </MouseoverTooltip>
+                })} (liquidity) + ${formatNumber({
+                  input: feeValue,
+                  type: NumberType.PortfolioBalance,
+                })} (fees)`}</ThemedText.BodySmall>
+              </div>
+            }
+          >
+            <ThemedText.SubHeader>
+              {formatNumber({
+                input: (liquidityValue ?? 0) + (feeValue ?? 0),
+                type: NumberType.PortfolioBalance,
+              })}
+            </ThemedText.SubHeader>
+          </MouseoverTooltip>
 
-            <Row justify="flex-end">
-              <ThemedText.BodySmall color="neutral2">
-                {closed ? t`Closed` : inRange ? t`In range` : t`Out of range`}
-              </ThemedText.BodySmall>
-              <ActiveDot closed={closed} outOfRange={!inRange} />
-            </Row>
-          </>
-        }
-      />
-    </TraceEvent>
+          <Row justify="flex-end">
+            <ThemedText.BodySmall color="neutral2">
+              {closed ? t`Closed` : inRange ? t`In range` : t`Out of range`}
+            </ThemedText.BodySmall>
+            <ActiveDot closed={closed} outOfRange={!inRange} />
+          </Row>
+        </>
+      }
+    />
   )
 }

@@ -1,24 +1,22 @@
-import { InterfacePageName } from '@uniswap/analytics-events'
-
-export function getCurrentPageFromLocation(locationPathname: string): InterfacePageName | undefined {
+export function getCurrentPageFromLocation(locationPathname: string) {
   switch (true) {
     case locationPathname.startsWith('/swap'):
-      return InterfacePageName.SWAP_PAGE
+      return 'SWAP_PAGE'
     case locationPathname.startsWith('/vote'):
-      return InterfacePageName.VOTE_PAGE
+      return 'VOTE_PAGE'
     case locationPathname.startsWith('/pools'):
     case locationPathname.startsWith('/pool'):
-      return InterfacePageName.POOL_PAGE
+      return 'POOL_PAGE'
     case locationPathname.startsWith('/tokens'):
-      return InterfacePageName.TOKENS_PAGE
+      return 'TOKENS_PAGE'
     case locationPathname.startsWith('/nfts/profile'):
-      return InterfacePageName.NFT_PROFILE_PAGE
+      return 'NFT_PROFILE_PAGE'
     case locationPathname.startsWith('/nfts/asset'):
-      return InterfacePageName.NFT_DETAILS_PAGE
+      return 'NFT_DETAILS_PAGE'
     case locationPathname.startsWith('/nfts/collection'):
-      return InterfacePageName.NFT_COLLECTION_PAGE
+      return 'NFT_COLLECTION_PAGE'
     case locationPathname.startsWith('/nfts'):
-      return InterfacePageName.NFT_EXPLORE_PAGE
+      return 'NFT_EXPLORE_PAGE'
     default:
       return undefined
   }

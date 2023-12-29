@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
-import { Trace, TraceEvent } from 'analytics'
 import { AboutFooter } from 'components/About/AboutFooter'
 import Card, { CardType } from 'components/About/Card'
 import { MAIN_CARDS, MORE_CARDS } from 'components/About/constants'
@@ -412,82 +410,68 @@ export default function Landing() {
   }
 
   return (
-    <Trace page={InterfacePageName.LANDING_PAGE} shouldLogImpression>
-      <PageContainer data-testid="landing-page">
-        <LandingSwapContainer>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.LANDING_PAGE_SWAP_ELEMENT}
-          >
-            <Link to="/swap">
-              <LandingSwap />
-            </Link>
-          </TraceEvent>
-        </LandingSwapContainer>
-        <Gradient isDarkMode={isDarkMode} />
-        <GlowContainer>
-          <Glow />
-        </GlowContainer>
-        <ContentContainer isDarkMode={isDarkMode}>
-          <TitleText isDarkMode={isDarkMode} $visible={!!originCountry}>
-            {titles.header}
-          </TitleText>
-          <SubTextContainer $visible={!!originCountry}>
-            <SubText>{titles.subHeader}</SubText>
-          </SubTextContainer>
-          <ActionsContainer>
-            <TraceEvent
-              events={[BrowserEvent.onClick]}
-              name={SharedEventName.ELEMENT_CLICKED}
-              element={InterfaceElementName.CONTINUE_BUTTON}
-            >
-              <ButtonCTA as={Link} to="/swap">
-                <ButtonCTAText>
-                  <Trans>Get started</Trans>
-                </ButtonCTAText>
-              </ButtonCTA>
-            </TraceEvent>
-          </ActionsContainer>
-          <LearnMoreContainer
-            onClick={() => {
-              cardsRef?.current?.scrollIntoView({ behavior: 'smooth' })
-            }}
-          >
-            <Trans>Learn more</Trans>
-            <LearnMoreArrow />
-          </LearnMoreContainer>
+    <PageContainer data-testid="landing-page">
+      <LandingSwapContainer>
+        <Link to="/swap">
+          <LandingSwap />
+        </Link>
+      </LandingSwapContainer>
+      <Gradient isDarkMode={isDarkMode} />
+      <GlowContainer>
+        <Glow />
+      </GlowContainer>
+      <ContentContainer isDarkMode={isDarkMode}>
+        <TitleText isDarkMode={isDarkMode} $visible={!!originCountry}>
+          {titles.header}
+        </TitleText>
+        <SubTextContainer $visible={!!originCountry}>
+          <SubText>{titles.subHeader}</SubText>
+        </SubTextContainer>
+        <ActionsContainer>
+          <ButtonCTA as={Link} to="/swap">
+            <ButtonCTAText>
+              <Trans>Get started</Trans>
+            </ButtonCTAText>
+          </ButtonCTA>
+        </ActionsContainer>
+        <LearnMoreContainer
+          onClick={() => {
+            cardsRef?.current?.scrollIntoView({ behavior: 'smooth' })
+          }}
+        >
+          <Trans>Learn more</Trans>
+          <LearnMoreArrow />
+        </LearnMoreContainer>
 
-          <DownloadWalletLink
-            {...getDownloadAppLinkProps({
-              // landing page specific tracking params
-              microSiteParams: `utm_source=home_page&utm_medium=webapp&utm_campaign=wallet_microsite&utm_id=1`,
-              appStoreParams: `ct=Uniswap-Home-Page&mt=8`,
-            })}
-          >
-            <AppleLogo width="20" height="20" />
-            Download the Uniswap Wallet for iOS
-          </DownloadWalletLink>
-        </ContentContainer>
-        <AboutContentContainer isDarkMode={isDarkMode}>
-          <CardGrid cols={cards.length} ref={cardsRef}>
-            {cards.map(({ darkBackgroundImgSrc, lightBackgroundImgSrc, ...card }) => (
-              <Card
-                {...card}
-                backgroundImgSrc={isDarkMode ? darkBackgroundImgSrc : lightBackgroundImgSrc}
-                key={card.title}
-              />
-            ))}
-          </CardGrid>
-          <CardGrid cols={extraCards.length}>
-            {extraCards.map(({ darkIcon, lightIcon, ...card }) => (
-              <Card {...card} icon={isDarkMode ? darkIcon : lightIcon} key={card.title} type={CardType.Secondary} />
-            ))}
-          </CardGrid>
-          <ProtocolBanner />
-          <AboutFooter />
-        </AboutContentContainer>
-      </PageContainer>
-    </Trace>
+        <DownloadWalletLink
+          {...getDownloadAppLinkProps({
+            // landing page specific tracking params
+            microSiteParams: `utm_source=home_page&utm_medium=webapp&utm_campaign=wallet_microsite&utm_id=1`,
+            appStoreParams: `ct=Uniswap-Home-Page&mt=8`,
+          })}
+        >
+          <AppleLogo width="20" height="20" />
+          Download the Uniswap Wallet for iOS
+        </DownloadWalletLink>
+      </ContentContainer>
+      <AboutContentContainer isDarkMode={isDarkMode}>
+        <CardGrid cols={cards.length} ref={cardsRef}>
+          {cards.map(({ darkBackgroundImgSrc, lightBackgroundImgSrc, ...card }) => (
+            <Card
+              {...card}
+              backgroundImgSrc={isDarkMode ? darkBackgroundImgSrc : lightBackgroundImgSrc}
+              key={card.title}
+            />
+          ))}
+        </CardGrid>
+        <CardGrid cols={extraCards.length}>
+          {extraCards.map(({ darkIcon, lightIcon, ...card }) => (
+            <Card {...card} icon={isDarkMode ? darkIcon : lightIcon} key={card.title} type={CardType.Secondary} />
+          ))}
+        </CardGrid>
+        <ProtocolBanner />
+        <AboutFooter />
+      </AboutContentContainer>
+    </PageContainer>
   )
 }

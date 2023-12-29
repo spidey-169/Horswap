@@ -52,7 +52,6 @@ export const NftCard = ({
   isDisabled,
   onButtonClick,
   onCardClick,
-  sendAnalyticsEvent,
   mediaShouldBePlaying,
   uniformAspectRatio = UniformAspectRatios.square,
   setUniformAspectRatio,
@@ -90,7 +89,6 @@ export const NftCard = ({
       onClick={() => {
         if (bagExpanded) setBagExpanded({ bagExpanded: false })
         onCardClick?.()
-        sendAnalyticsEvent?.()
       }}
     >
       <MediaContainer isDisabled={isDisabled}>

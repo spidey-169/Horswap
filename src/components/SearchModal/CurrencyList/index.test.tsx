@@ -42,8 +42,6 @@ it('renders loading rows when isLoading is true', () => {
       selectedCurrency={null}
       onCurrencySelect={noOp}
       isLoading={true}
-      searchQuery=""
-      isAddressSearch=""
       balances={{}}
     />
   )
@@ -62,8 +60,6 @@ it('renders currency rows correctly when currencies list is non-empty', () => {
       selectedCurrency={null}
       onCurrencySelect={noOp}
       isLoading={false}
-      searchQuery=""
-      isAddressSearch=""
       balances={{}}
     />
   )
@@ -85,8 +81,6 @@ it('renders currency rows correctly with balances', () => {
       selectedCurrency={null}
       onCurrencySelect={noOp}
       isLoading={false}
-      searchQuery=""
-      isAddressSearch=""
       showCurrencyAmount
       balances={{
         [DAI.address.toLowerCase()]: { usdValue: 2, balance: 2 },

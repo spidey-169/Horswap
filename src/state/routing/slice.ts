@@ -1,10 +1,8 @@
 import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { Protocol } from '@uniswap/router-sdk'
 import { TradeType } from '@uniswap/sdk-core'
-import { sendAnalyticsEvent } from 'analytics'
 import { isUniswapXSupportedChain } from 'constants/chains'
 import ms from 'ms'
-import { logSwapQuoteRequest } from 'tracing/swapFlowLoggers'
 import { trace } from 'tracing/trace'
 
 import {
@@ -122,7 +120,6 @@ export const routingApi = createApi({
       },
       async queryFn(args, _api, _extraOptions, fetch) {
         let fellBack = false
-        logSwapQuoteRequest(args.tokenInChainId, args.routerPreference, false)
         const quoteStartMark = performance.mark(`quote-fetch-start-${Date.now()}`)
         if (shouldUseAPIRouter(args)) {
           fellBack = true
@@ -156,11 +153,6 @@ export const routingApi = createApi({
                   typeof errorData === 'object' &&
                   (errorData?.errorCode === 'NO_ROUTE' || errorData?.detail === 'No quotes available')
                 ) {
-                  sendAnalyticsEvent('No quote received from routing API', {
-                    requestBody,
-                    response,
-                    routerPreference: args.routerPreference,
-                  })
                   return {
                     data: { state: QuoteState.NOT_FOUND, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration },
                   }

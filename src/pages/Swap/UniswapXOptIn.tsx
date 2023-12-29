@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { sendAnalyticsEvent, Trace } from 'analytics'
 import Column from 'components/Column'
 import UniswapXBrandMark from 'components/Logo/UniswapXBrandMark'
 import { Arrow } from 'components/Popover'
@@ -14,7 +13,6 @@ import {
   UniswapXOptInLargeContainerPositioner,
   UniswapXShine,
 } from 'components/swap/styled'
-import { formatCommonPropertiesForTrade } from 'lib/utils/analytics'
 import { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { X } from 'react-feather'
 import { Text } from 'rebass'
@@ -30,7 +28,6 @@ import { ThemedText } from 'theme/components'
 export const UniswapXOptIn = (props: { swapInfo: SwapInfo; isSmall: boolean }) => {
   const {
     trade: { trade },
-    allowedSlippage,
   } = props.swapInfo
   const userDisabledUniswapX = useUserDisabledUniswapX()
   const isOnClassic = Boolean(trade && isClassicTrade(trade) && trade.isUniswapXBetter && !userDisabledUniswapX)
@@ -45,15 +42,7 @@ export const UniswapXOptIn = (props: { swapInfo: SwapInfo; isSmall: boolean }) =
     return null
   }
 
-  return (
-    <Trace
-      shouldLogImpression
-      name="UniswapX Opt In Impression"
-      properties={trade ? formatCommonPropertiesForTrade(trade, allowedSlippage) : undefined}
-    >
-      <OptInContents isOnClassic={isOnClassic} {...props} />
-    </Trace>
-  )
+  return <OptInContents isOnClassic={isOnClassic} {...props} />
 }
 
 const OptInContents = ({
@@ -67,7 +56,6 @@ const OptInContents = ({
 }) => {
   const {
     trade: { trade },
-    allowedSlippage,
   } = swapInfo
   const [, setRouterPreference] = useRouterPreference()
   const dispatch = useAppDispatch()
@@ -99,10 +87,6 @@ const OptInContents = ({
         }, 200)
 
         if (!trade) return
-        sendAnalyticsEvent('UniswapX Opt In Toggled', {
-          ...formatCommonPropertiesForTrade(trade, allowedSlippage),
-          new_preference: RouterPreference.X,
-        })
         setRouterPreference(RouterPreference.X)
       }}
       style={{
@@ -143,10 +127,6 @@ const OptInContents = ({
           size={18}
           onClick={() => {
             if (!trade) return
-            sendAnalyticsEvent('UniswapX Opt In Toggled', {
-              ...formatCommonPropertiesForTrade(trade, allowedSlippage),
-              new_preference: RouterPreference.API,
-            })
             setRouterPreference(RouterPreference.API)
             dispatch(updateDisabledUniswapX({ disabledUniswapX: true }))
           }}

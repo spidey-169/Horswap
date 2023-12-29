@@ -1,6 +1,4 @@
-import { InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
-import { Trace } from 'analytics'
 import Column from 'components/Column'
 import { OpacityHoverState } from 'components/Common'
 import Row from 'components/Row'
@@ -181,87 +179,79 @@ const Collection = () => {
 
   return (
     <>
-      <Trace
-        page={InterfacePageName.NFT_COLLECTION_PAGE}
-        properties={{ collection_address: contractAddress, chain_id: chainId, is_activity_view: isActivityToggled }}
-        shouldLogImpression
+      <AnimatedCollectionContainer
+        style={{
+          width: CollectionContainerWidthChange.to((x) => `calc(100% - ${x as number}px)`),
+        }}
       >
-        <AnimatedCollectionContainer
-          style={{
-            width: CollectionContainerWidthChange.to((x) => `calc(100% - ${x as number}px)`),
-          }}
-        >
-          {contractAddress && !blocklistedCollections.includes(contractAddress) ? (
-            <>
-              <BannerWrapper>
-                <Banner
-                  src={
-                    collectionStats?.bannerImageUrl ? `${collectionStats.bannerImageUrl}?w=${window.innerWidth}` : ''
-                  }
-                />
-              </BannerWrapper>
-              <CollectionDescriptionSection>
-                {collectionStats && <CollectionStats stats={collectionStats} isMobile={isMobile} />}
-                <div id="nft-anchor" />
-                <ActivitySwitcher
-                  showActivity={isActivityToggled}
-                  toggleActivity={() => {
-                    isFiltersExpanded && setFiltersExpanded(false)
-                    toggleActivity()
-                  }}
-                />
-              </CollectionDescriptionSection>
-              <CollectionDisplaySection>
-                <FiltersContainer isMobile={isMobile} isFiltersExpanded={isFiltersExpanded}>
-                  {isFiltersExpanded && (
-                    <>
-                      {isMobile && (
-                        <MobileFilterHeader>
-                          <ThemedText.HeadlineSmall>Filter</ThemedText.HeadlineSmall>
-                          <IconWrapper onClick={() => setFiltersExpanded(false)}>
-                            <BagCloseIcon />
-                          </IconWrapper>
-                        </MobileFilterHeader>
-                      )}
-                      <Filters traitsByGroup={collectionStats?.traits ?? EMPTY_TRAIT_OBJ} />
-                    </>
-                  )}
-                </FiltersContainer>
+        {contractAddress && !blocklistedCollections.includes(contractAddress) ? (
+          <>
+            <BannerWrapper>
+              <Banner
+                src={collectionStats?.bannerImageUrl ? `${collectionStats.bannerImageUrl}?w=${window.innerWidth}` : ''}
+              />
+            </BannerWrapper>
+            <CollectionDescriptionSection>
+              {collectionStats && <CollectionStats stats={collectionStats} isMobile={isMobile} />}
+              <div id="nft-anchor" />
+              <ActivitySwitcher
+                showActivity={isActivityToggled}
+                toggleActivity={() => {
+                  isFiltersExpanded && setFiltersExpanded(false)
+                  toggleActivity()
+                }}
+              />
+            </CollectionDescriptionSection>
+            <CollectionDisplaySection>
+              <FiltersContainer isMobile={isMobile} isFiltersExpanded={isFiltersExpanded}>
+                {isFiltersExpanded && (
+                  <>
+                    {isMobile && (
+                      <MobileFilterHeader>
+                        <ThemedText.HeadlineSmall>Filter</ThemedText.HeadlineSmall>
+                        <IconWrapper onClick={() => setFiltersExpanded(false)}>
+                          <BagCloseIcon />
+                        </IconWrapper>
+                      </MobileFilterHeader>
+                    )}
+                    <Filters traitsByGroup={collectionStats?.traits ?? EMPTY_TRAIT_OBJ} />
+                  </>
+                )}
+              </FiltersContainer>
 
-                <AnimatedCollectionAssetsContainer
-                  hideUnderneath={isMobile && (isFiltersExpanded || isBagExpanded)}
-                  style={{
-                    transform: gridWidthOffset.to((x) => `translate(${x as number}px)`),
-                    width: gridWidthOffset.to((x) => `calc(100% - ${x as number}px)`),
-                  }}
-                >
-                  {isActivityToggled
-                    ? contractAddress && (
-                        <Activity
+              <AnimatedCollectionAssetsContainer
+                hideUnderneath={isMobile && (isFiltersExpanded || isBagExpanded)}
+                style={{
+                  transform: gridWidthOffset.to((x) => `translate(${x as number}px)`),
+                  width: gridWidthOffset.to((x) => `calc(100% - ${x as number}px)`),
+                }}
+              >
+                {isActivityToggled
+                  ? contractAddress && (
+                      <Activity
+                        contractAddress={contractAddress}
+                        rarityVerified={collectionStats?.rarityVerified ?? false}
+                        collectionName={collectionStats?.name ?? ''}
+                        chainId={chainId}
+                      />
+                    )
+                  : contractAddress &&
+                    collectionStats && (
+                      <Suspense fallback={<CollectionNftsAndMenuLoading />}>
+                        <CollectionNfts
+                          collectionStats={collectionStats}
                           contractAddress={contractAddress}
-                          rarityVerified={collectionStats?.rarityVerified ?? false}
-                          collectionName={collectionStats?.name ?? ''}
-                          chainId={chainId}
+                          rarityVerified={collectionStats?.rarityVerified}
                         />
-                      )
-                    : contractAddress &&
-                      collectionStats && (
-                        <Suspense fallback={<CollectionNftsAndMenuLoading />}>
-                          <CollectionNfts
-                            collectionStats={collectionStats}
-                            contractAddress={contractAddress}
-                            rarityVerified={collectionStats?.rarityVerified}
-                          />
-                        </Suspense>
-                      )}
-                </AnimatedCollectionAssetsContainer>
-              </CollectionDisplaySection>
-            </>
-          ) : (
-            <UnavailableCollectionPage isBlocked />
-          )}
-        </AnimatedCollectionContainer>
-      </Trace>
+                      </Suspense>
+                    )}
+              </AnimatedCollectionAssetsContainer>
+            </CollectionDisplaySection>
+          </>
+        ) : (
+          <UnavailableCollectionPage isBlocked />
+        )}
+      </AnimatedCollectionContainer>
       <MobileHoverBag />
     </>
   )

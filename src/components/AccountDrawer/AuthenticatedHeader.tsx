@@ -1,8 +1,6 @@
 import { Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, InterfaceEventName, SharedEventName } from '@uniswap/analytics-events'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { sendAnalyticsEvent, TraceEvent } from 'analytics'
 import { ButtonEmphasis, ButtonSize, LoadingButtonSpinner, ThemeButton } from 'components/Button'
 import Column from 'components/Column'
 import { Power } from 'components/Icons/Power'
@@ -192,7 +190,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const openFiatOnrampModal = useOpenModal(ApplicationModal.FIAT_ONRAMP)
   const openFoRModalWithAnalytics = useCallback(() => {
     toggleWalletDrawer()
-    sendAnalyticsEvent(InterfaceEventName.FIAT_ONRAMP_WIDGET_OPENED)
     openFiatOnrampModal()
   }, [openFiatOnrampModal, toggleWalletDrawer])
 
@@ -251,20 +248,14 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
             onClick={openSettings}
             Icon={Settings}
           />
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.DISCONNECT_WALLET_BUTTON}
-          >
-            <IconWithConfirmTextButton
-              data-testid="wallet-disconnect"
-              onConfirm={disconnect}
-              onShowConfirm={setShowDisconnectConfirm}
-              Icon={Power}
-              text="Disconnect"
-              dismissOnHoverOut
-            />
-          </TraceEvent>
+          <IconWithConfirmTextButton
+            data-testid="wallet-disconnect"
+            onConfirm={disconnect}
+            onShowConfirm={setShowDisconnectConfirm}
+            Icon={Power}
+            text="Disconnect"
+            dismissOnHoverOut
+          />
         </IconContainer>
       </HeaderWrapper>
       <PortfolioDrawerContainer>

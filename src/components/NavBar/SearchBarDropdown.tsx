@@ -1,8 +1,6 @@
 import { Trans } from '@lingui/macro'
-import { InterfaceSectionName, NavBarSearchTypes } from '@uniswap/analytics-events'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { useTrace } from 'analytics'
 import clsx from 'clsx'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
@@ -42,7 +40,6 @@ interface SearchBarDropdownSectionProps {
   startingIndex: number
   setHoveredIndex: (index: number | undefined) => void
   isLoading?: boolean
-  eventProperties: Record<string, unknown>
 }
 
 const SearchBarDropdownSection = ({
@@ -54,7 +51,6 @@ const SearchBarDropdownSection = ({
   startingIndex,
   setHoveredIndex,
   isLoading,
-  eventProperties,
 }: SearchBarDropdownSectionProps) => {
   return (
     <Column gap="4" data-testid="searchbar-dropdown">
@@ -74,12 +70,6 @@ const SearchBarDropdownSection = ({
               setHoveredIndex={setHoveredIndex}
               toggleOpen={toggleOpen}
               index={index + startingIndex}
-              eventProperties={{
-                position: index + startingIndex,
-                selected_search_result_name: suggestion.name,
-                selected_search_result_address: suggestion.address,
-                ...eventProperties,
-              }}
             />
           ) : (
             <TokenRow
@@ -89,12 +79,6 @@ const SearchBarDropdownSection = ({
               setHoveredIndex={setHoveredIndex}
               toggleOpen={toggleOpen}
               index={index + startingIndex}
-              eventProperties={{
-                position: index + startingIndex,
-                selected_search_result_name: suggestion.name,
-                selected_search_result_address: suggestion.address,
-                ...eventProperties,
-              }}
             />
           )
         )}
@@ -129,7 +113,6 @@ interface SearchBarDropdownProps {
   toggleOpen: () => void
   tokens: SearchToken[]
   collections: GenieCollection[]
-  queryText: string
   hasInput: boolean
   isLoading: boolean
 }
@@ -161,13 +144,7 @@ export const SearchBarDropdown = (props: SearchBarDropdownProps) => {
   )
 }
 
-function SearchBarDropdownContents({
-  toggleOpen,
-  tokens,
-  collections,
-  queryText,
-  hasInput,
-}: SearchBarDropdownProps): JSX.Element {
+function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }: SearchBarDropdownProps): JSX.Element {
   const [hoveredIndex, setHoveredIndex] = useState<number | undefined>(0)
   const { data: searchHistory } = useRecentlySearchedAssets()
   const shortenedHistory = useMemo(() => searchHistory?.slice(0, 2) ?? [...Array<SearchToken>(2)], [searchHistory])
@@ -244,14 +221,6 @@ function SearchBarDropdownContents({
   const showCollectionsFirst =
     (isNFTPage && (hasVerifiedCollection || !hasKnownToken)) || (!isNFTPage && !hasKnownToken && hasVerifiedCollection)
 
-  const trace = JSON.stringify(useTrace({ section: InterfaceSectionName.NAVBAR_SEARCH }))
-
-  const eventProperties = {
-    total_suggestions: totalSuggestions,
-    query_text: queryText,
-    ...JSON.parse(trace),
-  }
-
   const tokenSearchResults =
     tokens.length > 0 ? (
       <SearchBarDropdownSection
@@ -260,10 +229,6 @@ function SearchBarDropdownContents({
         setHoveredIndex={setHoveredIndex}
         toggleOpen={toggleOpen}
         suggestions={tokens}
-        eventProperties={{
-          suggestion_type: NavBarSearchTypes.TOKEN_SUGGESTION,
-          ...eventProperties,
-        }}
         header={<Trans>Tokens</Trans>}
       />
     ) : (
@@ -280,10 +245,6 @@ function SearchBarDropdownContents({
         setHoveredIndex={setHoveredIndex}
         toggleOpen={toggleOpen}
         suggestions={collections}
-        eventProperties={{
-          suggestion_type: NavBarSearchTypes.COLLECTION_SUGGESTION,
-          ...eventProperties,
-        }}
         header={<Trans>NFT collections</Trans>}
       />
     ) : (
@@ -315,10 +276,6 @@ function SearchBarDropdownContents({
           setHoveredIndex={setHoveredIndex}
           toggleOpen={toggleOpen}
           suggestions={shortenedHistory}
-          eventProperties={{
-            suggestion_type: NavBarSearchTypes.RECENT_SEARCH,
-            ...eventProperties,
-          }}
           header={<Trans>Recent searches</Trans>}
           headerIcon={<ClockIcon />}
           isLoading={!searchHistory}
@@ -331,10 +288,6 @@ function SearchBarDropdownContents({
           setHoveredIndex={setHoveredIndex}
           toggleOpen={toggleOpen}
           suggestions={trendingTokens}
-          eventProperties={{
-            suggestion_type: NavBarSearchTypes.TOKEN_TRENDING,
-            ...eventProperties,
-          }}
           header={<Trans>Popular tokens</Trans>}
           headerIcon={<TrendingArrow />}
           isLoading={!trendingTokenData}
@@ -347,10 +300,6 @@ function SearchBarDropdownContents({
           setHoveredIndex={setHoveredIndex}
           toggleOpen={toggleOpen}
           suggestions={formattedTrendingCollections as unknown as GenieCollection[]}
-          eventProperties={{
-            suggestion_type: NavBarSearchTypes.COLLECTION_TRENDING,
-            ...eventProperties,
-          }}
           header={<Trans>Popular NFT collections</Trans>}
           headerIcon={<TrendingArrow />}
           isLoading={trendingCollectionsAreLoading}

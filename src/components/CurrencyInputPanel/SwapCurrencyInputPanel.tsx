@@ -1,9 +1,7 @@
 import { Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { TraceEvent } from 'analytics'
 import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -229,7 +227,6 @@ interface SwapCurrencyInputPanelProps {
   otherCurrency?: Currency | null
   fiatValue?: { data?: number; isLoading: boolean }
   priceImpact?: Percent
-  id: string
   showCommonBases?: boolean
   showCurrencyAmount?: boolean
   disableNonToken?: boolean
@@ -254,7 +251,6 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
       onCurrencySelect,
       currency,
       otherCurrency,
-      id,
       showCommonBases,
       showCurrencyAmount,
       disableNonToken,
@@ -298,7 +294,7 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
     useEffect(() => setTooltipVisible(false), [currency])
 
     return (
-      <InputPanel id={id} hideInput={hideInput} {...rest}>
+      <InputPanel hideInput={hideInput} {...rest}>
         {locked && (
           <FixedContainer>
             <AutoColumn gap="sm" justify="center">
@@ -321,7 +317,6 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
                   onUserInput={onUserInput}
                   disabled={!chainAllowed || disabled || numericalInputSettings?.disabled}
                   $loading={loading}
-                  id={id}
                   ref={ref}
                 />
               </div>
@@ -408,15 +403,9 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
                       ) : null}
                     </ThemedText.DeprecatedBody>
                     {showMaxButton && selectedCurrencyBalance ? (
-                      <TraceEvent
-                        events={[BrowserEvent.onClick]}
-                        name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
-                        element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
-                      >
-                        <StyledBalanceMax onClick={onMax}>
-                          <Trans>Max</Trans>
-                        </StyledBalanceMax>
-                      </TraceEvent>
+                      <StyledBalanceMax onClick={onMax}>
+                        <Trans>Max</Trans>
+                      </StyledBalanceMax>
                     ) : null}
                   </RowFixed>
                 ) : (

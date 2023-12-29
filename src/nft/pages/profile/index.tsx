@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
-import { Trace } from 'analytics'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import { ButtonPrimary } from 'components/Button'
 import { XXXL_BAG_WIDTH } from 'nft/components/bag/Bag'
@@ -81,25 +79,23 @@ export default function Profile() {
   const isListingNfts = sellPageState === ProfilePageStateType.LISTING
 
   return (
-    <Trace page={InterfacePageName.NFT_PROFILE_PAGE} shouldLogImpression>
-      <ProfilePageWrapper>
-        {account ? (
-          <LoadedAccountPage cartExpanded={cartExpanded} isListingNfts={isListingNfts}>
-            {!isListingNfts ? <ProfilePage /> : <ListPage />}
-          </LoadedAccountPage>
-        ) : (
-          <Center>
-            <ThemedText.HeadlineMedium lineHeight="36px" color="neutral2" fontWeight="535" marginBottom="24px">
-              <Trans>No items to display</Trans>
-            </ThemedText.HeadlineMedium>
-            <ConnectWalletButton onClick={toggleWalletDrawer}>
-              <ThemedText.SubHeader color="white" lineHeight="20px">
-                <Trans>Connect wallet</Trans>
-              </ThemedText.SubHeader>
-            </ConnectWalletButton>
-          </Center>
-        )}
-      </ProfilePageWrapper>
-    </Trace>
+    <ProfilePageWrapper>
+      {account ? (
+        <LoadedAccountPage cartExpanded={cartExpanded} isListingNfts={isListingNfts}>
+          {!isListingNfts ? <ProfilePage /> : <ListPage />}
+        </LoadedAccountPage>
+      ) : (
+        <Center>
+          <ThemedText.HeadlineMedium lineHeight="36px" color="neutral2" fontWeight="535" marginBottom="24px">
+            <Trans>No items to display</Trans>
+          </ThemedText.HeadlineMedium>
+          <ConnectWalletButton onClick={toggleWalletDrawer}>
+            <ThemedText.SubHeader color="white" lineHeight="20px">
+              <Trans>Connect wallet</Trans>
+            </ThemedText.SubHeader>
+          </ConnectWalletButton>
+        </Center>
+      )}
+    </ProfilePageWrapper>
   )
 }

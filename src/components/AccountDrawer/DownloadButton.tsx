@@ -1,4 +1,3 @@
-import { InterfaceElementName } from '@uniswap/analytics-events'
 import { PropsWithChildren, useCallback } from 'react'
 import styled from 'styled-components'
 import { ClickableStyle } from 'theme/components'
@@ -32,20 +31,12 @@ function BaseButton({ onClick, branded, children }: PropsWithChildren<{ onClick?
 }
 
 // Launches App Store if on an iOS device, else navigates to Uniswap Wallet microsite
-export function DownloadButton({
-  onClick,
-  text = 'Download',
-  element,
-}: {
-  onClick?: () => void
-  text?: string
-  element: InterfaceElementName
-}) {
+export function DownloadButton({ onClick, text = 'Download' }: { onClick?: () => void; text?: string }) {
   const onButtonClick = useCallback(() => {
     // handles any actions required by the parent, i.e. cancelling wallet connection attempt or dismissing an ad
     onClick?.()
-    openDownloadApp({ element })
-  }, [element, onClick])
+    openDownloadApp()
+  }, [onClick])
 
   return (
     <BaseButton branded onClick={onButtonClick}>

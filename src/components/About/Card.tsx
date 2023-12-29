@@ -1,5 +1,3 @@
-import { BrowserEvent, SharedEventName } from '@uniswap/analytics-events'
-import { TraceEvent } from 'analytics'
 import { Link } from 'react-router-dom'
 import styled, { DefaultTheme } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
@@ -106,7 +104,6 @@ const Card = ({
   external,
   backgroundImgSrc,
   icon,
-  elementName,
 }: {
   type?: CardType
   title: string
@@ -116,31 +113,28 @@ const Card = ({
   external?: boolean
   backgroundImgSrc?: string
   icon?: React.ReactNode
-  elementName?: string
 }) => {
   const isDarkMode = useIsDarkMode()
   return (
-    <TraceEvent events={[BrowserEvent.onClick]} name={SharedEventName.ELEMENT_CLICKED} element={elementName}>
-      <StyledCard
-        as={external ? 'a' : Link}
-        to={external ? undefined : to}
-        href={external ? to : undefined}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopenener noreferrer' : undefined}
-        $backgroundImgSrc={backgroundImgSrc}
-        $isDarkMode={isDarkMode}
-        $type={type}
-      >
-        <TitleRow>
-          <CardTitle>{title}</CardTitle>
-          {icon}
-        </TitleRow>
-        <CardDescription type={type}>
-          {description}
-          <CardCTA type={type}>{cta}</CardCTA>
-        </CardDescription>
-      </StyledCard>
-    </TraceEvent>
+    <StyledCard
+      as={external ? 'a' : Link}
+      to={external ? undefined : to}
+      href={external ? to : undefined}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopenener noreferrer' : undefined}
+      $backgroundImgSrc={backgroundImgSrc}
+      $isDarkMode={isDarkMode}
+      $type={type}
+    >
+      <TitleRow>
+        <CardTitle>{title}</CardTitle>
+        {icon}
+      </TitleRow>
+      <CardDescription type={type}>
+        {description}
+        <CardCTA type={type}>{cta}</CardCTA>
+      </CardDescription>
+    </StyledCard>
   )
 }
 

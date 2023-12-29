@@ -40,15 +40,11 @@ export function useSwapCallback(
     fiatValues,
   })
 
-  const universalRouterSwapCallback = useUniversalRouterSwapCallback(
-    isClassicTrade(trade) ? trade : undefined,
-    fiatValues,
-    {
-      slippageTolerance: allowedSlippage,
-      deadline,
-      permit: permitSignature,
-    }
-  )
+  const universalRouterSwapCallback = useUniversalRouterSwapCallback(isClassicTrade(trade) ? trade : undefined, {
+    slippageTolerance: allowedSlippage,
+    deadline,
+    permit: permitSignature,
+  })
 
   const swapCallback = isUniswapXTrade(trade) ? uniswapXSwapCallback : universalRouterSwapCallback
 
