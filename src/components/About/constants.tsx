@@ -1,10 +1,9 @@
-import { DollarSign, Terminal } from 'react-feather'
+import { Terminal } from 'react-feather'
 import styled from 'styled-components'
 import { lightTheme } from 'theme/colors'
 
 import darkArrowImgSrc from './images/aboutArrowDark.png'
 import lightArrowImgSrc from './images/aboutArrowLight.png'
-import darkDollarImgSrc from './images/aboutDollarDark.png'
 import darkTerminalImgSrc from './images/aboutTerminalDark.png'
 import nftCardImgSrc from './images/nftCard.png'
 import swapCardImgSrc from './images/swapCard.png'
@@ -36,15 +35,6 @@ const StyledCardLogo = styled.img`
 `
 
 export const MORE_CARDS = [
-  {
-    to: 'https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-',
-    external: true,
-    title: 'Buy crypto',
-    description: 'Buy crypto with your credit card or bank account at the best rates.',
-    lightIcon: <DollarSign color={lightTheme.neutral3} size={48} />,
-    darkIcon: <StyledCardLogo src={darkDollarImgSrc} alt="Earn" />,
-    cta: 'Buy now',
-  },
   {
     to: '/pools',
     title: 'Earn',

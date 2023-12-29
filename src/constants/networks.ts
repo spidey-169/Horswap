@@ -112,26 +112,15 @@ export const FALLBACK_URLS = {
  * These are the URLs used by the interface when there is not another available source of chain data.
  */
 export const RPC_URLS = {
-  [ChainId.MAINNET]: [
-    `https://ethereum.keydonix.com/v1/mainnet`,
-    ...FALLBACK_URLS[ChainId.MAINNET],
-  ],
+  [ChainId.MAINNET]: [`https://ethereum.keydonix.com/v1/mainnet`, ...FALLBACK_URLS[ChainId.MAINNET]],
   [ChainId.GOERLI]: [`https://ethereum.keydonix.com/v1/goerli`, ...FALLBACK_URLS[ChainId.GOERLI]],
   [ChainId.SEPOLIA]: [...FALLBACK_URLS[ChainId.SEPOLIA]],
   [ChainId.OPTIMISM]: [...FALLBACK_URLS[ChainId.OPTIMISM]],
-  [ChainId.OPTIMISM_GOERLI]: [
-    ...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI],
-  ],
-  [ChainId.ARBITRUM_ONE]: [
-    ...FALLBACK_URLS[ChainId.ARBITRUM_ONE],
-  ],
-  [ChainId.ARBITRUM_GOERLI]: [
-    ...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI],
-  ],
+  [ChainId.OPTIMISM_GOERLI]: [...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI]],
+  [ChainId.ARBITRUM_ONE]: [...FALLBACK_URLS[ChainId.ARBITRUM_ONE]],
+  [ChainId.ARBITRUM_GOERLI]: [...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI]],
   [ChainId.POLYGON]: [...FALLBACK_URLS[ChainId.POLYGON]],
-  [ChainId.POLYGON_MUMBAI]: [
-    ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI],
-  ],
+  [ChainId.POLYGON_MUMBAI]: [...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]],
   [ChainId.CELO]: FALLBACK_URLS[ChainId.CELO],
   [ChainId.CELO_ALFAJORES]: FALLBACK_URLS[ChainId.CELO_ALFAJORES],
   [ChainId.BNB]: [...FALLBACK_URLS[ChainId.BNB]],
