@@ -146,11 +146,7 @@ export const AboutFooter = () => {
         </LinkGroup>
         <LinkGroup>
           <LinkGroupTitle>Get Help</LinkGroupTitle>
-          <ExternalTextLink
-            href="https://discord.com/invite/aCSKcvf5VW"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <ExternalTextLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
             Contact Us On Discord
           </ExternalTextLink>
           <ExternalTextLink href="https://support.uniswap.org/hc/en-us">Help Center</ExternalTextLink>
