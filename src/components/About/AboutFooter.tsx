@@ -125,7 +125,6 @@ const LogoSectionContent = () => {
           <GithubIcon size={32} />
         </SocialLink>
       </SocialLinks>
-      <Copyright>© {new Date().getFullYear()} Uniswap Labs</Copyright>
     </>
   )
 }
@@ -151,11 +150,6 @@ export const AboutFooter = () => {
           <ExternalTextLink href="https://uniswap.org/community">Community</ExternalTextLink>
           <ExternalTextLink href="https://uniswap.org/governance">Governance</ExternalTextLink>
           <ExternalTextLink href="https://uniswap.org/developers">Developers</ExternalTextLink>
-        </LinkGroup>
-        <LinkGroup>
-          <LinkGroupTitle>Company</LinkGroupTitle>
-          <ExternalTextLink href="https://boards.greenhouse.io/uniswaplabs">Careers</ExternalTextLink>
-          <ExternalTextLink href="https://uniswap.org/blog">Blog</ExternalTextLink>
         </LinkGroup>
         <LinkGroup>
           <LinkGroupTitle>Get Help</LinkGroupTitle>
