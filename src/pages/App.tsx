@@ -6,7 +6,7 @@ import { UK_BANNER_HEIGHT, UK_BANNER_HEIGHT_MD, UK_BANNER_HEIGHT_SM, UkBanner } 
 import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import { useAtom } from 'jotai'
 import { useBag } from 'nft/hooks/useBag'
-import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import { useAppSelector } from 'state/hooks'
@@ -18,7 +18,6 @@ import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { STATSIG_DUMMY_KEY } from 'tracing'
 import { getEnvName } from 'utils/env'
-import { getDownloadAppLink } from 'utils/openDownloadApp'
 
 import { RouteDefinition, routes, useRouterConfig } from './RouteDefinitions'
 
@@ -127,18 +126,6 @@ export default function App() {
     }),
     [account]
   )
-
-  // redirect address to landing pages until implemented
-  const shouldRedirectToAppInstall = pathname?.startsWith('/address/')
-  useLayoutEffect(() => {
-    if (shouldRedirectToAppInstall) {
-      window.location.href = getDownloadAppLink()
-    }
-  }, [shouldRedirectToAppInstall])
-
-  if (shouldRedirectToAppInstall) {
-    return null
-  }
 
   const blockedPaths = document.querySelector('meta[property="x:blocked-paths"]')?.getAttribute('content')?.split(',')
   const shouldBlockPath = blockedPaths?.includes(pathname) ?? false

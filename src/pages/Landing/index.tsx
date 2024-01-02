@@ -5,7 +5,6 @@ import { MAIN_CARDS, MORE_CARDS } from 'components/About/constants'
 import ProtocolBanner from 'components/About/ProtocolBanner'
 import { useAccountDrawer } from 'components/AccountDrawer'
 import { BaseButton } from 'components/Button'
-import { AppleLogo } from 'components/Logo/AppleLogo'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import Swap from 'pages/Swap'
 import { parse } from 'qs'
@@ -20,7 +19,6 @@ import { BREAKPOINTS } from 'theme'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
 import { textFadeIn, TRANSITION_DURATIONS } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
-import { getDownloadAppLinkProps } from 'utils/openDownloadApp'
 
 const PageContainer = styled.div`
   position: absolute;
@@ -102,22 +100,6 @@ const ContentContainer = styled.div<{ isDarkMode: boolean }>`
   pointer-events: none;
   * {
     pointer-events: auto;
-  }
-`
-
-const DownloadWalletLink = styled.a`
-  display: inline-flex;
-  gap: 8px;
-  margin-top: 24px;
-  color: ${({ theme }) => theme.neutral2};
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 535;
-  text-align: center;
-
-  :hover {
-    color: ${({ theme }) => theme.neutral3};
   }
 `
 
@@ -442,17 +424,6 @@ export default function Landing() {
           <Trans>Learn more</Trans>
           <LearnMoreArrow />
         </LearnMoreContainer>
-
-        <DownloadWalletLink
-          {...getDownloadAppLinkProps({
-            // landing page specific tracking params
-            microSiteParams: `utm_source=home_page&utm_medium=webapp&utm_campaign=wallet_microsite&utm_id=1`,
-            appStoreParams: `ct=Uniswap-Home-Page&mt=8`,
-          })}
-        >
-          <AppleLogo width="20" height="20" />
-          Download the Uniswap Wallet for iOS
-        </DownloadWalletLink>
       </ContentContainer>
       <AboutContentContainer isDarkMode={isDarkMode}>
         <CardGrid cols={cards.length} ref={cardsRef}>
