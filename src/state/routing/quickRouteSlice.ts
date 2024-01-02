@@ -75,10 +75,6 @@ export const quickRouteApi = createApi({
             typeof errorData === 'object' &&
             (errorData?.errorCode === 'NO_ROUTE' || errorData?.detail === 'No quotes available')
           ) {
-            sendAnalyticsEvent('No quote received from quickroute API', {
-              requestBody,
-              response,
-            })
             return {
               data: { state: QuoteState.NOT_FOUND, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration },
             }
