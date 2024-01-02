@@ -25,7 +25,7 @@ export const lightTheme: Theme = {
     deprecated_stateOverlayHover: `rgba(153,161,189,0.08)`,
     deprecated_gold: vars.color.gold400,
     deprecated_violet: vars.color.violet400,
-    dropShadow: `0px 4px 16px rgba(251, 17, 142, 0.4)`,
+    dropShadow: `0px 4px 16px rgba(17, 251, 126, 0.4)`,
   },
   shadows: {
     menu: '0px 10px 30px rgba(0, 0, 0, 0.1)',
