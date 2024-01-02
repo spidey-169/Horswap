@@ -7,11 +7,6 @@ import store from 'state'
 
 import Web3Provider from '.'
 
-jest.mock('analytics', () => ({
-  useTrace: jest.fn(),
-  sendAnalyticsEvent: jest.fn(),
-  user: { set: jest.fn(), postInsert: jest.fn() },
-}))
 jest.mock('connection', () => {
   const { EIP1193 } = jest.requireActual('@web3-react/eip1193')
   const { initializeConnector, MockEIP1193Provider } = jest.requireActual('@web3-react/core')
