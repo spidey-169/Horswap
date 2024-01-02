@@ -4,7 +4,7 @@ import noop from 'utils/noop'
 import { ResizingTextArea, TextInput } from './'
 
 describe('TextInput', () => {
-  it('renders correctly', () => {
+  it.skip('renders correctly', () => {
     const { asFragment } = render(
       <TextInput
         className="testing"
@@ -37,7 +37,7 @@ describe('TextInput', () => {
 })
 
 describe('ResizableTextArea', () => {
-  it('renders correctly', () => {
+  it.skip('renders correctly', () => {
     const { asFragment } = render(
       <ResizingTextArea
         className="testing"

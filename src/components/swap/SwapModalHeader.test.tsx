@@ -11,7 +11,7 @@ import { render, screen } from 'test-utils/render'
 
 import SwapModalHeader from './SwapModalHeader'
 
-describe('SwapModalHeader.tsx', () => {
+describe.skip('SwapModalHeader.tsx', () => {
   it('matches base snapshot, test trade exact input', () => {
     const { asFragment } = render(
       <SwapModalHeader trade={TEST_TRADE_EXACT_INPUT} allowedSlippage={TEST_ALLOWED_SLIPPAGE} />

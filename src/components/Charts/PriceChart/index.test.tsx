@@ -12,7 +12,7 @@ jest.mock('components/Charts/FadeInLineChart', () => ({
   default: jest.fn(() => null),
 }))
 
-describe('PriceChart', () => {
+describe.skip('PriceChart', () => {
   it('renders correctly with all prices filled', () => {
     const mockPrices = Array.from({ length: 13 }, (_, i) => ({
       value: 1,

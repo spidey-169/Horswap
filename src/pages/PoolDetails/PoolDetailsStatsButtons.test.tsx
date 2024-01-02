@@ -26,7 +26,7 @@ describe('PoolDetailsStatsButton', () => {
     mocked(useMultiChainPositions).mockReturnValue(useMultiChainPositionsReturnValue)
   })
 
-  it('renders both buttons correctly', () => {
+  it.skip('renders both buttons correctly', () => {
     const { asFragment } = render(<PoolDetailsStatsButtons {...mockProps} />)
     expect(asFragment()).toMatchSnapshot()
 

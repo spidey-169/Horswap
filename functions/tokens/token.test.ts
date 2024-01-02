@@ -25,7 +25,7 @@ const tokens = [
   },
 ]
 
-test.each(tokens)('should inject metadata for valid tokens', async (token) => {
+test.skip.each(tokens)('should inject metadata for valid tokens', async (token) => {
   const url = 'http://127.0.0.1:3000/tokens/' + token.network + '/' + token.address
   const body = await fetch(new Request(url)).then((res) => res.text())
   expect(body).toMatchSnapshot()

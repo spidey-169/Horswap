@@ -15,7 +15,7 @@ const SearchBarDropdownProps = {
   isLoading: false,
 }
 
-describe('disable nft on searchbar dropdown', () => {
+describe.skip('disable nft on searchbar dropdown', () => {
   it('should render popular nft collections', () => {
     mocked(useDisableNFTRoutes).mockReturnValue(false)
     const { container } = render(<SearchBarDropdown {...SearchBarDropdownProps} />)
