@@ -4,7 +4,6 @@ import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
 import {
-  BarChartIcon,
   DiscordIconMenu,
   EllipsisIcon,
   GithubIconMenu,
@@ -153,14 +152,6 @@ export const MenuDropdown = () => {
                     <Trans>Vote in governance</Trans>
                   </PrimaryMenuRow.Text>
                 </PrimaryMenuRow>
-                <PrimaryMenuRow href="https://info.uniswap.org/#/">
-                  <Icon>
-                    <BarChartIcon width={24} height={24} color={theme.neutral1} />
-                  </Icon>
-                  <PrimaryMenuRow.Text>
-                    <Trans>View more analytics</Trans>
-                  </PrimaryMenuRow.Text>
-                </PrimaryMenuRow>
               </Column>
               <Separator />
               <Box
@@ -176,9 +167,6 @@ export const MenuDropdown = () => {
                 <SecondaryLinkedText href="https://docs.uniswap.org/">
                   <Trans>Documentation</Trans> ↗
                 </SecondaryLinkedText>
-                <SecondaryLinkedText href="https://uniswap.canny.io/feature-requests">
-                  <Trans>Feedback</Trans> ↗
-                </SecondaryLinkedText>
                 {(isDevelopmentEnv() || isStagingEnv()) && (
                   <SecondaryLinkedText
                     onClick={() => {
@@ -191,13 +179,13 @@ export const MenuDropdown = () => {
                 )}
               </Box>
               <IconRow>
-                <Icon href="https://discord.com/invite/FCfyBSbCU5">
+                <Icon href="https://discord.com/invite/aCSKcvf5VW">
                   <DiscordIconMenu className={styles.hover} width={24} height={24} color={themeVars.colors.neutral2} />
                 </Icon>
-                <Icon href="https://twitter.com/Uniswap">
+                <Icon href="https://twitter.com/DarkFlorist">
                   <TwitterIconMenu className={styles.hover} width={24} height={24} color={themeVars.colors.neutral2} />
                 </Icon>
-                <Icon href="https://github.com/Uniswap">
+                <Icon href="https://github.com/DarkFlorist/Horswap">
                   <GithubIconMenu className={styles.hover} width={24} height={24} color={themeVars.colors.neutral2} />
                 </Icon>
               </IconRow>
