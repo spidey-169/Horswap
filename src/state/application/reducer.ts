@@ -67,9 +67,6 @@ const applicationSlice = createSlice({
   name: 'application',
   initialState,
   reducers: {
-    setFiatOnrampAvailability(state, { payload: available }) {
-      state.fiatOnramp = { available, availabilityChecked: true }
-    },
     updateChainId(state, action) {
       const { chainId } = action.payload
       state.chainId = chainId
@@ -100,6 +97,5 @@ const applicationSlice = createSlice({
   },
 })
 
-export const { updateChainId, setFiatOnrampAvailability, setOpenModal, addPopup, removePopup } =
-  applicationSlice.actions
+export const { updateChainId, setOpenModal, addPopup, removePopup } = applicationSlice.actions
 export default applicationSlice.reducer

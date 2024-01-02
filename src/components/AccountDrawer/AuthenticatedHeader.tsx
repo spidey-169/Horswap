@@ -1,32 +1,29 @@
 import { Trans } from '@lingui/macro'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonEmphasis, ButtonSize, LoadingButtonSpinner, ThemeButton } from 'components/Button'
+import { ButtonEmphasis, ButtonSize, ThemeButton } from 'components/Button'
 import Column from 'components/Column'
 import { Power } from 'components/Icons/Power'
 import { Settings } from 'components/Icons/Settings'
 import { AutoRow } from 'components/Row'
 import { LoadingBubble } from 'components/Tokens/loading'
 import { DeltaArrow } from 'components/Tokens/TokenDetails/Delta'
-import Tooltip from 'components/Tooltip'
 import { getConnection } from 'connection'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import useENSName from 'hooks/useENSName'
-import { useIsNotOriginCountry } from 'hooks/useIsNotOriginCountry'
 import { useProfilePageState, useSellAsset, useWalletCollections } from 'nft/hooks'
 import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { ProfilePageStateType } from 'nft/types'
 import { useCallback, useState } from 'react'
-import { CreditCard, Info } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import styled from 'styled-components'
-import { CopyHelper, ExternalLink, ThemedText } from 'theme/components'
+import { CopyHelper, ThemedText } from 'theme/components'
 import { shortenAddress } from 'utils'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 
-import { useCloseModal, useFiatOnrampAvailability, useOpenModal, useToggleModal } from '../../state/application/hooks'
+import { useCloseModal, useToggleModal } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/reducer'
 import { useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/claim/hooks'
 import StatusIcon from '../Identicon/StatusIcon'
@@ -86,20 +83,6 @@ const IconContainer = styled.div`
     }
   }
 `
-const FiatOnrampNotAvailableText = styled(ThemedText.BodySmall)`
-  align-items: center;
-  color: ${({ theme }) => theme.neutral2};
-  display: flex;
-  justify-content: center;
-`
-const FiatOnrampAvailabilityExternalLink = styled(ExternalLink)`
-  align-items: center;
-  display: flex;
-  height: 14px;
-  justify-content: center;
-  margin-left: 6px;
-  width: 14px;
-`
 
 const StatusWrapper = styled.div`
   display: inline-block;
@@ -117,15 +100,6 @@ const AccountNamesWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-left: 8px;
-`
-
-const StyledInfoIcon = styled(Info)`
-  height: 12px;
-  width: 12px;
-  flex: 1 1 auto;
-`
-const StyledLoadingButtonSpinner = styled(LoadingButtonSpinner)`
-  fill: ${({ theme }) => theme.accent1};
 `
 
 const HeaderWrapper = styled.div`
@@ -158,7 +132,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const resetSellAssets = useSellAsset((state) => state.reset)
   const clearCollectionFilters = useWalletCollections((state) => state.clearCollectionFilters)
   const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
-  const shouldShowBuyFiatButton = useIsNotOriginCountry('GB')
   const { formatNumber, formatPercent } = useFormatter()
 
   const shouldDisableNFTRoutes = useDisableNFTRoutes()
@@ -186,34 +159,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
     navigate('/nfts/profile')
     closeModal()
   }, [clearCollectionFilters, closeModal, navigate, resetSellAssets, setSellPageState, toggleWalletDrawer])
-
-  const openFiatOnrampModal = useOpenModal(ApplicationModal.FIAT_ONRAMP)
-  const openFoRModalWithAnalytics = useCallback(() => {
-    toggleWalletDrawer()
-    openFiatOnrampModal()
-  }, [openFiatOnrampModal, toggleWalletDrawer])
-
-  const [shouldCheck, setShouldCheck] = useState(false)
-  const {
-    available: fiatOnrampAvailable,
-    availabilityChecked: fiatOnrampAvailabilityChecked,
-    error,
-    loading: fiatOnrampAvailabilityLoading,
-  } = useFiatOnrampAvailability(shouldCheck, openFoRModalWithAnalytics)
-
-  const handleBuyCryptoClick = useCallback(() => {
-    if (!fiatOnrampAvailabilityChecked) {
-      setShouldCheck(true)
-    } else if (fiatOnrampAvailable) {
-      openFoRModalWithAnalytics()
-    }
-  }, [fiatOnrampAvailabilityChecked, fiatOnrampAvailable, openFoRModalWithAnalytics])
-  const disableBuyCryptoButton = Boolean(
-    error || (!fiatOnrampAvailable && fiatOnrampAvailabilityChecked) || fiatOnrampAvailabilityLoading
-  )
-  const [showFiatOnrampUnavailableTooltip, setShow] = useState<boolean>(false)
-  const openFiatOnrampUnavailableTooltip = useCallback(() => setShow(true), [setShow])
-  const closeFiatOnrampUnavailableTooltip = useCallback(() => setShow(false), [setShow])
 
   const { data: portfolioBalances } = useCachedPortfolioBalancesQuery({ account })
   const portfolio = portfolioBalances?.portfolios?.[0]
@@ -296,46 +241,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
           >
             <Trans>View and sell NFTs</Trans>
           </HeaderButton>
-        )}
-        {shouldShowBuyFiatButton && (
-          <HeaderButton
-            size={ButtonSize.medium}
-            emphasis={ButtonEmphasis.highSoft}
-            onClick={handleBuyCryptoClick}
-            disabled={disableBuyCryptoButton}
-            data-testid="wallet-buy-crypto"
-          >
-            {error ? (
-              <ThemedText.BodyPrimary>{error}</ThemedText.BodyPrimary>
-            ) : (
-              <>
-                {fiatOnrampAvailabilityLoading ? (
-                  <StyledLoadingButtonSpinner />
-                ) : (
-                  <CreditCard height="20px" width="20px" />
-                )}{' '}
-                <Trans>Buy crypto</Trans>
-              </>
-            )}
-          </HeaderButton>
-        )}
-        {Boolean(!fiatOnrampAvailable && fiatOnrampAvailabilityChecked) && (
-          <FiatOnrampNotAvailableText marginTop="8px">
-            <Trans>Not available in your region</Trans>
-            <Tooltip
-              show={showFiatOnrampUnavailableTooltip}
-              text={<Trans>Moonpay is not available in some regions. Click to learn more.</Trans>}
-            >
-              <FiatOnrampAvailabilityExternalLink
-                onMouseEnter={openFiatOnrampUnavailableTooltip}
-                onMouseLeave={closeFiatOnrampUnavailableTooltip}
-                style={{ color: 'inherit' }}
-                href="https://support.uniswap.org/hc/en-us/articles/11306664890381-Why-isn-t-MoonPay-available-in-my-region-"
-              >
-                <StyledInfoIcon />
-              </FiatOnrampAvailabilityExternalLink>
-            </Tooltip>
-          </FiatOnrampNotAvailableText>
         )}
         <MiniPortfolio account={account} />
         {isUnclaimed && (

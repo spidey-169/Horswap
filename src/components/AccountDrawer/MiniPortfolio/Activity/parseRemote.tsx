@@ -1,12 +1,10 @@
 import { t } from '@lingui/macro'
 import { ChainId, Currency, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES, UNI_ADDRESSES } from '@uniswap/sdk-core'
 import UniswapXBolt from 'assets/svg/bolt.svg'
-import moonpayLogoSrc from 'assets/svg/moonpay.svg'
 import { nativeOnChain } from 'constants/tokens'
 import {
   ActivityType,
   AssetActivityPartsFragment,
-  Currency as GQLCurrency,
   NftApprovalPartsFragment,
   NftApproveForAllPartsFragment,
   NftTransferPartsFragment,
@@ -24,7 +22,7 @@ import { isAddress } from 'utils'
 import { isSameAddress } from 'utils/addresses'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 
-import { MOONPAY_SENDER_ADDRESSES, OrderStatusTable, OrderTextTable } from '../constants'
+import { OrderStatusTable, OrderTextTable } from '../constants'
 import { Activity } from './types'
 
 type TransactionChanges = {
@@ -134,17 +132,6 @@ function getSwapDescriptor({
   return `${inputAmount} ${tokenIn.symbol} for ${outputAmount} ${tokenOut.symbol}`
 }
 
-/**
- *
- * @param transactedValue Transacted value amount from TokenTransfer API response
- * @returns parsed & formatted USD value as a string if currency is of type USD
- */
-function getTransactedValue(transactedValue: TokenTransferPartsFragment['transactedValue']): number | undefined {
-  if (!transactedValue) return undefined
-  const price = transactedValue?.currency === GQLCurrency.Usd ? transactedValue.value ?? undefined : undefined
-  return price
-}
-
 function parseSwap(changes: TransactionChanges, formatNumberOrString: FormatNumberOrStringFunctionType) {
   if (changes.NftTransfer.length > 0 && changes.TokenTransfer.length === 1) {
     const collectionCounts = getCollectionCounts(changes.NftTransfer)
@@ -251,25 +238,13 @@ function parseSendReceive(
   }
 
   if (transfer && assetName && amount) {
-    const isMoonpayPurchase = MOONPAY_SENDER_ADDRESSES.some((address) => isSameAddress(address, transfer?.sender))
-
     if (transfer.direction === 'IN') {
-      return isMoonpayPurchase && transfer.__typename === 'TokenTransfer'
-        ? {
-            title: t`Purchased`,
-            descriptor: `${amount} ${assetName} ${t`for`} ${formatNumberOrString({
-              input: getTransactedValue(transfer.transactedValue),
-              type: NumberType.FiatTokenPrice,
-            })}`,
-            logos: [moonpayLogoSrc],
-            currencies,
-          }
-        : {
-            title: t`Received`,
-            descriptor: `${amount} ${assetName} ${t`from`} `,
-            otherAccount: isAddress(transfer.sender) || undefined,
-            currencies,
-          }
+      return {
+        title: t`Received`,
+        descriptor: `${amount} ${assetName} ${t`from`} `,
+        otherAccount: isAddress(transfer.sender) || undefined,
+        currencies,
+      }
     } else {
       return {
         title: t`Sent`,
