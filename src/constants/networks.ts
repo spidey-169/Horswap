@@ -1,18 +1,5 @@
 import { ChainId } from '@uniswap/sdk-core'
 
-const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
-if (typeof INFURA_KEY === 'undefined') {
-  throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
-}
-const QUICKNODE_MAINNET_RPC_URL = process.env.REACT_APP_QUICKNODE_MAINNET_RPC_URL
-if (typeof QUICKNODE_MAINNET_RPC_URL === 'undefined') {
-  throw new Error(`REACT_APP_QUICKNODE_MAINNET_RPC_URL must be a defined environment variable`)
-}
-const QUICKNODE_BNB_RPC_URL = process.env.REACT_APP_BNB_RPC_URL
-if (typeof QUICKNODE_BNB_RPC_URL === 'undefined') {
-  throw new Error(`REACT_APP_BNB_RPC_URL must be a defined environment variable`)
-}
-
 /**
  * Fallback JSON-RPC endpoints.
  * These are used if the integrator does not provide an endpoint, or if the endpoint does not work.
@@ -26,7 +13,6 @@ if (typeof QUICKNODE_BNB_RPC_URL === 'undefined') {
 export const FALLBACK_URLS = {
   [ChainId.MAINNET]: [
     // "Safe" URLs
-    'https://api.mycryptoapi.com/eth',
     'https://cloudflare-eth.com',
     // "Fallback" URLs
     'https://rpc.ankr.com/eth',
@@ -126,34 +112,18 @@ export const FALLBACK_URLS = {
  * These are the URLs used by the interface when there is not another available source of chain data.
  */
 export const RPC_URLS = {
-  [ChainId.MAINNET]: [
-    `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-    QUICKNODE_MAINNET_RPC_URL,
-    ...FALLBACK_URLS[ChainId.MAINNET],
-  ],
-  [ChainId.GOERLI]: [`https://goerli.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.GOERLI]],
-  [ChainId.SEPOLIA]: [`https://sepolia.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.SEPOLIA]],
-  [ChainId.OPTIMISM]: [`https://optimism-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.OPTIMISM]],
-  [ChainId.OPTIMISM_GOERLI]: [
-    `https://optimism-goerli.infura.io/v3/${INFURA_KEY}`,
-    ...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI],
-  ],
-  [ChainId.ARBITRUM_ONE]: [
-    `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
-    ...FALLBACK_URLS[ChainId.ARBITRUM_ONE],
-  ],
-  [ChainId.ARBITRUM_GOERLI]: [
-    `https://arbitrum-goerli.infura.io/v3/${INFURA_KEY}`,
-    ...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI],
-  ],
-  [ChainId.POLYGON]: [`https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.POLYGON]],
-  [ChainId.POLYGON_MUMBAI]: [
-    `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
-    ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI],
-  ],
+  [ChainId.MAINNET]: [`https://ethereum.keydonix.com/v1/mainnet`, ...FALLBACK_URLS[ChainId.MAINNET]],
+  [ChainId.GOERLI]: [`https://ethereum.keydonix.com/v1/goerli`, ...FALLBACK_URLS[ChainId.GOERLI]],
+  [ChainId.SEPOLIA]: [...FALLBACK_URLS[ChainId.SEPOLIA]],
+  [ChainId.OPTIMISM]: [...FALLBACK_URLS[ChainId.OPTIMISM]],
+  [ChainId.OPTIMISM_GOERLI]: [...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI]],
+  [ChainId.ARBITRUM_ONE]: [...FALLBACK_URLS[ChainId.ARBITRUM_ONE]],
+  [ChainId.ARBITRUM_GOERLI]: [...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI]],
+  [ChainId.POLYGON]: [...FALLBACK_URLS[ChainId.POLYGON]],
+  [ChainId.POLYGON_MUMBAI]: [...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]],
   [ChainId.CELO]: FALLBACK_URLS[ChainId.CELO],
   [ChainId.CELO_ALFAJORES]: FALLBACK_URLS[ChainId.CELO_ALFAJORES],
-  [ChainId.BNB]: [QUICKNODE_BNB_RPC_URL, ...FALLBACK_URLS[ChainId.BNB]],
-  [ChainId.AVALANCHE]: [`https://avalanche-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.AVALANCHE]],
-  [ChainId.BASE]: [`https://base-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.BASE]],
+  [ChainId.BNB]: [...FALLBACK_URLS[ChainId.BNB]],
+  [ChainId.AVALANCHE]: [...FALLBACK_URLS[ChainId.AVALANCHE]],
+  [ChainId.BASE]: [...FALLBACK_URLS[ChainId.BASE]],
 }
