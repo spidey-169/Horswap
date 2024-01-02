@@ -102,20 +102,13 @@ const TextLink = styled(StyledRouterLink)`
   color: ${({ theme }) => theme.neutral2};
 `
 
-const Copyright = styled.span`
-  font-size: 16px;
-  line-height: 20px;
-  margin: 1rem 0 0 0;
-  color: ${({ theme }) => theme.neutral3};
-`
-
 const LogoSectionContent = () => {
   const isDarkMode = useIsDarkMode()
   return (
     <>
       <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Uniswap Logo" />
       <SocialLinks>
-        <SocialLink href="https://discord.gg/FCfyBSbCU5" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />
         </SocialLink>
         <SocialLink href="https://twitter.com/DarkFlorist" target="_blank" rel="noopener noreferrer">
@@ -125,7 +118,6 @@ const LogoSectionContent = () => {
           <GithubIcon size={32} />
         </SocialLink>
       </SocialLinks>
-      <Copyright>© {new Date().getFullYear()} Uniswap Labs</Copyright>
     </>
   )
 }
@@ -153,18 +145,9 @@ export const AboutFooter = () => {
           <ExternalTextLink href="https://uniswap.org/developers">Developers</ExternalTextLink>
         </LinkGroup>
         <LinkGroup>
-          <LinkGroupTitle>Company</LinkGroupTitle>
-          <ExternalTextLink href="https://boards.greenhouse.io/uniswaplabs">Careers</ExternalTextLink>
-          <ExternalTextLink href="https://uniswap.org/blog">Blog</ExternalTextLink>
-        </LinkGroup>
-        <LinkGroup>
           <LinkGroupTitle>Get Help</LinkGroupTitle>
-          <ExternalTextLink
-            href="https://support.uniswap.org/hc/en-us/requests/new"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Contact Us
+          <ExternalTextLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
+            Contact Us On Discord
           </ExternalTextLink>
           <ExternalTextLink href="https://support.uniswap.org/hc/en-us">Help Center</ExternalTextLink>
         </LinkGroup>
