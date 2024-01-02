@@ -137,33 +137,6 @@ Object {
 }
 `;
 
-exports[`parseRemote parseRemoteActivities should parse moonpay purchase 1`] = `
-Object {
-  "chainId": 1,
-  "currencies": Array [
-    Token {
-      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      "chainId": 1,
-      "decimals": 18,
-      "isNative": false,
-      "isToken": true,
-      "name": "Wrapped Ether",
-      "symbol": "WETH",
-    },
-  ],
-  "descriptor": "100 WETH for 100",
-  "from": "0x50EC05ADe8280758E2077fcBC08D878D4aef79C3",
-  "hash": "someHash",
-  "logos": Array [
-    "moonpay.svg",
-  ],
-  "nonce": 12345,
-  "status": "CONFIRMED",
-  "timestamp": 10000,
-  "title": "Purchased",
-}
-`;
-
 exports[`parseRemote parseRemoteActivities should parse nft purchase 1`] = `
 Object {
   "chainId": 1,
