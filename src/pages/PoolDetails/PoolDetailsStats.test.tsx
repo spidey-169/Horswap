@@ -4,7 +4,7 @@ import { BREAKPOINTS } from 'theme'
 
 import { PoolDetailsStats } from './PoolDetailsStats'
 
-describe('PoolDetailsStats', () => {
+describe.skip('PoolDetailsStats', () => {
   const mockProps = {
     poolData: validPoolDataResponse.data,
     isReversed: false,

@@ -16,7 +16,6 @@ interface NftCardProps {
   unselectAsset?: () => void
   onButtonClick?: () => void
   onCardClick?: () => void
-  sendAnalyticsEvent?: () => void
   mediaShouldBePlaying: boolean
   uniformAspectRatio?: UniformAspectRatio
   setUniformAspectRatio?: (uniformAspectRatio: UniformAspectRatio) => void

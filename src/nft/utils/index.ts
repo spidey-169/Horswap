@@ -19,7 +19,6 @@ export {
   formatWeiToDecimal,
   wrapScientificNotation,
 } from './currency'
-export { formatAssetEventProperties } from './formatEventProperties'
 export { isAudio } from './isAudio'
 export { isVideo } from './isVideo'
 export { floorFormatter, volumeFormatter } from './numbers'
