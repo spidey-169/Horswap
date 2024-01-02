@@ -206,17 +206,6 @@ export function usePairAdder(): (pair: Pair) => void {
   )
 }
 
-export function useHideBaseWalletBanner(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const hideBaseWalletBanner = useAppSelector((state) => state.user.hideBaseWalletBanner)
-
-  const toggleHideBaseWalletBanner = useCallback(() => {
-    dispatch(updateHideBaseWalletBanner({ hideBaseWalletBanner: true }))
-  }, [dispatch])
-
-  return [hideBaseWalletBanner, toggleHideBaseWalletBanner]
-}
-
 export function useUserDisabledUniswapX(): boolean {
   return useAppSelector((state) => state.user.disabledUniswapX) ?? false
 }
