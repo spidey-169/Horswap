@@ -137,22 +137,6 @@ Object {
 }
 `;
 
-exports[`parseRemote parseRemoteActivities should parse nft purchase 1`] = `
-Object {
-  "chainId": 1,
-  "descriptor": "1 SomeCollectionName",
-  "from": "0x50EC05ADe8280758E2077fcBC08D878D4aef79C3",
-  "hash": "someHash",
-  "logos": Array [
-    "imageUrl",
-  ],
-  "nonce": 12345,
-  "status": "CONFIRMED",
-  "timestamp": 10000,
-  "title": "Bought",
-}
-`;
-
 exports[`parseRemote parseRemoteActivities should parse receive 1`] = `
 Object {
   "chainId": 1,

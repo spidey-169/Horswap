@@ -2,8 +2,6 @@ import { Trans } from '@lingui/macro'
 import Column from 'components/Column'
 import { LoaderV2 } from 'components/Icons/LoadingSpinner'
 import { AutoRow } from 'components/Row'
-import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
-import { useIsNftPage } from 'hooks/useIsNftPage'
 import { useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
@@ -11,7 +9,6 @@ import { ThemedText } from 'theme/components'
 
 import { ActivityTab } from './Activity'
 import { usePendingActivity } from './Activity/hooks'
-import NFTs from './NFTs'
 import Pools from './Pools'
 import { PortfolioRowWrapper } from './PortfolioRow'
 import Tokens from './Tokens'
@@ -72,11 +69,6 @@ const Pages: Array<Page> = [
     component: Tokens,
   },
   {
-    title: <Trans>NFTs</Trans>,
-    key: 'nfts',
-    component: NFTs,
-  },
-  {
     title: <Trans>Pools</Trans>,
     key: 'pools',
     component: Pools,
@@ -89,10 +81,8 @@ const Pages: Array<Page> = [
 ]
 
 export default function MiniPortfolio({ account }: { account: string }) {
-  const isNftPage = useIsNftPage()
   const theme = useTheme()
-  const [currentPage, setCurrentPage] = useState(isNftPage ? 1 : 0)
-  const shouldDisableNFTRoutes = useDisableNFTRoutes()
+  const [currentPage, setCurrentPage] = useState(0)
   const [activityUnread, setActivityUnread] = useState(false)
 
   const { component: Page, key: currentKey } = Pages[currentPage]
@@ -107,7 +97,6 @@ export default function MiniPortfolio({ account }: { account: string }) {
     <Wrapper>
       <Nav data-testid="mini-portfolio-navbar">
         {Pages.map(({ title, key }, index) => {
-          if (shouldDisableNFTRoutes && key.includes('nfts')) return null
           const isUnselectedActivity = key === 'activity' && currentKey !== 'activity'
           const showActivityIndicator = isUnselectedActivity && (hasPendingActivity || activityUnread)
           const handleNavItemClick = () => {

@@ -5,7 +5,6 @@ import {
   MockClosedUniswapXOrder,
   MockNFTApproval,
   MockNFTApprovalForAll,
-  MockNFTPurchase,
   MockNFTReceive,
   MockNFTTransfer,
   MockOpenUniswapXOrder,
@@ -46,10 +45,6 @@ describe('parseRemote', () => {
     })
     it('should parse swap', () => {
       const result = parseRemoteActivities(jest.fn().mockReturnValue('100'), [MockTokenTransfer])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse nft purchase', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue('100'), [MockNFTPurchase])
       expect(result?.['someHash']).toMatchSnapshot()
     })
     it('should parse token approval', () => {

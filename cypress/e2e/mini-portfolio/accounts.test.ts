@@ -46,28 +46,6 @@ describe('Mini Portfolio account drawer', () => {
     cy.get('@portfolioSpy').should('have.been.calledOnce')
   })
 
-  it('fetches account information', () => {
-    // Open the mini portfolio
-    cy.intercept(/graphql/, { fixture: 'mini-portfolio/tokens.json' })
-    cy.get(getTestSelector('web3-status-connected')).click()
-
-    // Verify that wallet state loads correctly
-    cy.get(getTestSelector('mini-portfolio-navbar')).contains('Tokens')
-    cy.get(getTestSelector('mini-portfolio-page')).contains('Hidden (197)')
-
-    cy.intercept(/graphql/, { fixture: 'mini-portfolio/nfts.json' })
-    cy.get(getTestSelector('mini-portfolio-navbar')).contains('NFTs').click()
-    cy.get(getTestSelector('mini-portfolio-page')).contains('I Got Plenty')
-
-    cy.intercept(/graphql/, { fixture: 'mini-portfolio/pools.json' })
-    cy.get(getTestSelector('mini-portfolio-navbar')).contains('Pools').click()
-    cy.get(getTestSelector('mini-portfolio-page')).contains('No pools yet')
-
-    cy.intercept(/graphql/, { fixture: 'mini-portfolio/full_activity.json' })
-    cy.get(getTestSelector('mini-portfolio-navbar')).contains('Activity').click()
-    cy.get(getTestSelector('mini-portfolio-page')).contains('Contract Interaction')
-  })
-
   it('refetches balances when account changes', () => {
     cy.hardhat().then((hardhat) => {
       const accountA = hardhat.wallets[0].address

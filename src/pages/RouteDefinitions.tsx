@@ -10,10 +10,6 @@ import { isBrowserRouterEnabled } from 'utils/env'
 import Landing from './Landing'
 import Swap from './Swap'
 
-const NftExplore = lazy(() => import('nft/pages/explore'))
-const Collection = lazy(() => import('nft/pages/collection'))
-const Profile = lazy(() => import('nft/pages/profile'))
-const Asset = lazy(() => import('nft/pages/asset/Asset'))
 const AddLiquidity = lazy(() => import('pages/AddLiquidity'))
 const RedirectDuplicateTokenIds = lazy(() => import('pages/AddLiquidity/redirects'))
 const RedirectDuplicateTokenIdsV2 = lazy(() => import('pages/AddLiquidityV2/redirects'))
@@ -158,51 +154,6 @@ export const routes: RouteDefinition[] = [
   createRouteDefinition({ path: '/remove/:tokenId', getElement: () => <RemoveLiquidityV3 /> }),
   createRouteDefinition({ path: '/migrate/v2', getElement: () => <MigrateV2 /> }),
   createRouteDefinition({ path: '/migrate/v2/:address', getElement: () => <MigrateV2Pair /> }),
-  createRouteDefinition({
-    path: '/nfts',
-    getElement: () => (
-      <Suspense fallback={null}>
-        <NftExplore />
-      </Suspense>
-    ),
-    enabled: (args) => !args.shouldDisableNFTRoutes,
-  }),
-  createRouteDefinition({
-    path: '/nfts/asset/:contractAddress/:tokenId',
-    getElement: () => (
-      <Suspense fallback={null}>
-        <Asset />
-      </Suspense>
-    ),
-    enabled: (args) => !args.shouldDisableNFTRoutes,
-  }),
-  createRouteDefinition({
-    path: '/nfts/profile',
-    getElement: () => (
-      <Suspense fallback={null}>
-        <Profile />
-      </Suspense>
-    ),
-    enabled: (args) => !args.shouldDisableNFTRoutes,
-  }),
-  createRouteDefinition({
-    path: '/nfts/collection/:contractAddress',
-    getElement: () => (
-      <Suspense fallback={null}>
-        <Collection />
-      </Suspense>
-    ),
-    enabled: (args) => !args.shouldDisableNFTRoutes,
-  }),
-  createRouteDefinition({
-    path: '/nfts/collection/:contractAddress/activity',
-    getElement: () => (
-      <Suspense fallback={null}>
-        <Collection />
-      </Suspense>
-    ),
-    enabled: (args) => !args.shouldDisableNFTRoutes,
-  }),
   createRouteDefinition({ path: '*', getElement: () => <Navigate to="/not-found" replace /> }),
   createRouteDefinition({ path: '/not-found', getElement: () => <NotFound /> }),
 ]

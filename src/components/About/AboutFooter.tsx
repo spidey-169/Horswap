@@ -1,4 +1,3 @@
-import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import styled from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { ExternalLink, StyledRouterLink } from 'theme/components'
@@ -123,7 +122,6 @@ const LogoSectionContent = () => {
 }
 
 export const AboutFooter = () => {
-  const shouldDisableNFTRoutes = useDisableNFTRoutes()
   return (
     <Footer>
       <LogoSectionLeft>
@@ -135,7 +133,6 @@ export const AboutFooter = () => {
           <LinkGroupTitle>App</LinkGroupTitle>
           <TextLink to="/swap">Swap</TextLink>
           <TextLink to="/tokens">Tokens</TextLink>
-          {!shouldDisableNFTRoutes && <TextLink to="/nfts">NFTs</TextLink>}
           <TextLink to="/pools">Pools</TextLink>
         </LinkGroup>
         <LinkGroup>
