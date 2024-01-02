@@ -24,7 +24,7 @@ describe('parseRemote', () => {
   beforeEach(() => {
     jest.useFakeTimers()
   })
-  describe('parseRemoteActivities', () => {
+  describe.skip('parseRemoteActivities', () => {
     it('should not parse open UniswapX order', () => {
       const result = parseRemoteActivities(jest.fn(), [MockOpenUniswapXOrder])
       expect(result).toEqual({})

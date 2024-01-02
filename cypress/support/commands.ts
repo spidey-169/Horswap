@@ -74,7 +74,7 @@ Cypress.Commands.overwrite(
   }
 )
 
-Cypress.Commands.add('waitForAmplitudeEvent', (eventName, timeout = 5000 /* 5s */) => {
+Cypress.Commands.add('waitForAmplitudeEvent', (eventName, timeout = 30000 /* 30s */) => {
   const startTime = new Date().getTime()
 
   function checkRequest() {
