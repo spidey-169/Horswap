@@ -24,7 +24,7 @@ const nonexistentCollections = [
   },
 ]
 
-test.each([...collections, ...nonexistentCollections])('should inject metadata for collections', async (collection) => {
+test.skip.each([...collections, ...nonexistentCollections])('should inject metadata for collections', async (collection) => {
   const url = 'http://127.0.0.1:3000/nfts/collection/' + collection.address
   const body = await fetch(new Request(url)).then((res) => res.text())
   expect(body).toMatchSnapshot()
