@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { InterfaceElementName } from '@uniswap/analytics-events'
 import FeatureFlagModal from 'components/FeatureFlagModal/FeatureFlagModal'
-import { PrivacyPolicyModal } from 'components/PrivacyPolicy'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
@@ -124,7 +123,6 @@ const Icon = ({ href, children }: { href?: string; children: ReactNode }) => {
 export const MenuDropdown = () => {
   const theme = useTheme()
   const [isOpen, toggleOpen] = useReducer((s) => !s, false)
-  const togglePrivacyPolicy = useToggleModal(ApplicationModal.PRIVACY_POLICY)
   const openFeatureFlagsModal = useToggleModal(ApplicationModal.FEATURE_FLAGS)
   const ref = useRef<HTMLDivElement>(null)
   useOnClickOutside(ref, isOpen ? toggleOpen : undefined)
@@ -200,14 +198,6 @@ export const MenuDropdown = () => {
                 <SecondaryLinkedText href="https://uniswap.canny.io/feature-requests">
                   <Trans>Feedback</Trans> ↗
                 </SecondaryLinkedText>
-                <SecondaryLinkedText
-                  onClick={() => {
-                    toggleOpen()
-                    togglePrivacyPolicy()
-                  }}
-                >
-                  <Trans>Legal & Privacy</Trans> ↗
-                </SecondaryLinkedText>
                 {(isDevelopmentEnv() || isStagingEnv()) && (
                   <SecondaryLinkedText
                     onClick={() => {
@@ -234,7 +224,6 @@ export const MenuDropdown = () => {
           </NavDropdown>
         )}
       </Box>
-      <PrivacyPolicyModal />
       <FeatureFlagModal />
     </>
   )

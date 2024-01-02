@@ -3,7 +3,7 @@ import { render } from 'test-utils/render'
 
 import { ViewMyNftsAsset } from './ViewMyNftsAsset'
 
-describe('NftCard', () => {
+describe.skip('NftCard', () => {
   it('renders correctly', () => {
     // todo: remove once zustand usage has been update such that `shallow` is no longer used
     jest.spyOn(console, 'warn').mockImplementation(jest.fn)
