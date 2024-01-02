@@ -41,7 +41,7 @@ jest.mock('hooks/usePermit2Allowance')
 jest.mock('nft/hooks/usePriceImpact')
 
 const renderBagFooter = () => {
-  render(<BagFooter setModalIsOpen={() => undefined} eventProperties={{}} />)
+  render(<BagFooter setModalIsOpen={() => undefined} />)
 }
 
 const getBuyButton = () => screen.queryByTestId('nft-buy-button') as HTMLButtonElement
