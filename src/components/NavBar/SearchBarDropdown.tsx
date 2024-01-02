@@ -4,17 +4,12 @@ import { useWeb3React } from '@web3-react/core'
 import clsx from 'clsx'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
-import { HistoryDuration, SafetyLevel } from 'graphql/data/__generated__/types-and-hooks'
-import { useTrendingCollections } from 'graphql/data/nft/TrendingCollections'
 import { SearchToken } from 'graphql/data/SearchTokens'
 import useTrendingTokens from 'graphql/data/TrendingTokens'
 import { BACKEND_NOT_YET_SUPPORTED_CHAIN_IDS } from 'graphql/data/util'
-import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
-import { useIsNftPage } from 'hooks/useIsNftPage'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
 import { subheadSmall } from 'nft/css/common.css'
-import { GenieCollection, TrendingCollection } from 'nft/types'
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -25,15 +20,11 @@ import { SuspendConditionally } from '../Suspense/SuspendConditionally'
 import { SuspenseWithPreviousRenderAsFallback } from '../Suspense/SuspenseWithPreviousRenderAsFallback'
 import { useRecentlySearchedAssets } from './RecentlySearchedAssets'
 import * as styles from './SearchBar.css'
-import { CollectionRow, SkeletonRow, TokenRow } from './SuggestionRow'
-
-function isCollection(suggestion: GenieCollection | SearchToken | TrendingCollection) {
-  return (suggestion as SearchToken).decimals === undefined
-}
+import { SkeletonRow, TokenRow } from './SuggestionRow'
 
 interface SearchBarDropdownSectionProps {
   toggleOpen: () => void
-  suggestions: (GenieCollection | SearchToken)[]
+  suggestions: SearchToken[]
   header: JSX.Element
   headerIcon?: JSX.Element
   hoveredIndex?: number
@@ -62,15 +53,6 @@ const SearchBarDropdownSection = ({
         {suggestions.map((suggestion, index) =>
           isLoading || !suggestion ? (
             <SkeletonRow key={index} />
-          ) : isCollection(suggestion) ? (
-            <CollectionRow
-              key={suggestion.address}
-              collection={suggestion as GenieCollection}
-              isHovered={hoveredIndex === index + startingIndex}
-              setHoveredIndex={setHoveredIndex}
-              toggleOpen={toggleOpen}
-              index={index + startingIndex}
-            />
           ) : (
             <TokenRow
               key={suggestion.address}
@@ -85,10 +67,6 @@ const SearchBarDropdownSection = ({
       </Column>
     </Column>
   )
-}
-
-function isKnownToken(token: SearchToken) {
-  return token.project?.safetyLevel == SafetyLevel.Verified || token.project?.safetyLevel == SafetyLevel.MediumWarning
 }
 
 const ChainLogo = styled.img`
@@ -112,7 +90,6 @@ const ChainComingSoonBadge = styled(Badge)`
 interface SearchBarDropdownProps {
   toggleOpen: () => void
   tokens: SearchToken[]
-  collections: GenieCollection[]
   hasInput: boolean
   isLoading: boolean
 }
@@ -144,37 +121,12 @@ export const SearchBarDropdown = (props: SearchBarDropdownProps) => {
   )
 }
 
-function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }: SearchBarDropdownProps): JSX.Element {
+function SearchBarDropdownContents({ toggleOpen, tokens, hasInput }: SearchBarDropdownProps): JSX.Element {
   const [hoveredIndex, setHoveredIndex] = useState<number | undefined>(0)
   const { data: searchHistory } = useRecentlySearchedAssets()
   const shortenedHistory = useMemo(() => searchHistory?.slice(0, 2) ?? [...Array<SearchToken>(2)], [searchHistory])
   const { pathname } = useLocation()
-  const isNFTPage = useIsNftPage()
   const isTokenPage = pathname.includes('/tokens')
-  const shouldDisableNFTRoutes = useDisableNFTRoutes()
-
-  const { data: trendingCollections, loading: trendingCollectionsAreLoading } = useTrendingCollections(
-    3,
-    HistoryDuration.Day
-  )
-
-  const formattedTrendingCollections = useMemo(() => {
-    return !trendingCollectionsAreLoading
-      ? trendingCollections
-          ?.map((collection) => ({
-            ...collection,
-            collectionAddress: collection.address,
-            floorPrice: collection.floor,
-            stats: {
-              total_supply: collection.totalSupply,
-              one_day_change: collection.floorChange,
-              floor_price: collection.floor,
-            },
-          }))
-          .slice(0, isNFTPage ? 3 : 2) ?? []
-      : [...Array<GenieCollection>(isNFTPage ? 3 : 2)]
-  }, [trendingCollections, isNFTPage, trendingCollectionsAreLoading])
-
   const { data: trendingTokenData } = useTrendingTokens(useWeb3React().chainId)
 
   const trendingTokensLength = isTokenPage ? 3 : 2
@@ -183,11 +135,7 @@ function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }
     [trendingTokenData, trendingTokensLength]
   )
 
-  const totalSuggestions = hasInput
-    ? tokens.length + collections.length
-    : Math.min(shortenedHistory.length, 2) +
-      (isNFTPage || !isTokenPage ? formattedTrendingCollections?.length ?? 0 : 0) +
-      (isTokenPage || !isNFTPage ? trendingTokens?.length ?? 0 : 0)
+  const totalSuggestions = hasInput ? tokens.length : Math.min(shortenedHistory.length, 2)
 
   // Navigate search results via arrow keys
   useEffect(() => {
@@ -216,16 +164,11 @@ function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }
     }
   }, [toggleOpen, hoveredIndex, totalSuggestions])
 
-  const hasVerifiedCollection = collections.some((collection) => collection.isVerified)
-  const hasKnownToken = tokens.some(isKnownToken)
-  const showCollectionsFirst =
-    (isNFTPage && (hasVerifiedCollection || !hasKnownToken)) || (!isNFTPage && !hasKnownToken && hasVerifiedCollection)
-
   const tokenSearchResults =
     tokens.length > 0 ? (
       <SearchBarDropdownSection
         hoveredIndex={hoveredIndex}
-        startingIndex={showCollectionsFirst ? collections.length : 0}
+        startingIndex={0}
         setHoveredIndex={setHoveredIndex}
         toggleOpen={toggleOpen}
         suggestions={tokens}
@@ -237,34 +180,10 @@ function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }
       </Box>
     )
 
-  const collectionSearchResults =
-    collections.length > 0 ? (
-      <SearchBarDropdownSection
-        hoveredIndex={hoveredIndex}
-        startingIndex={showCollectionsFirst ? 0 : tokens.length}
-        setHoveredIndex={setHoveredIndex}
-        toggleOpen={toggleOpen}
-        suggestions={collections}
-        header={<Trans>NFT collections</Trans>}
-      />
-    ) : (
-      <Box className={styles.notFoundContainer}>No NFT collections found.</Box>
-    )
-
   return hasInput ? (
     // Empty or Up to 8 combined tokens and nfts
     <Column gap="20">
-      {showCollectionsFirst ? (
-        <>
-          {collectionSearchResults}
-          {tokenSearchResults}
-        </>
-      ) : (
-        <>
-          {tokenSearchResults}
-          {collectionSearchResults}
-        </>
-      )}
+      <>{tokenSearchResults}</>
     </Column>
   ) : (
     // Recent Searches, Trending Tokens, Trending Collections
@@ -281,30 +200,16 @@ function SearchBarDropdownContents({ toggleOpen, tokens, collections, hasInput }
           isLoading={!searchHistory}
         />
       )}
-      {!isNFTPage && (
-        <SearchBarDropdownSection
-          hoveredIndex={hoveredIndex}
-          startingIndex={shortenedHistory.length}
-          setHoveredIndex={setHoveredIndex}
-          toggleOpen={toggleOpen}
-          suggestions={trendingTokens}
-          header={<Trans>Popular tokens</Trans>}
-          headerIcon={<TrendingArrow />}
-          isLoading={!trendingTokenData}
-        />
-      )}
-      {Boolean(!isTokenPage && !shouldDisableNFTRoutes) && (
-        <SearchBarDropdownSection
-          hoveredIndex={hoveredIndex}
-          startingIndex={shortenedHistory.length + (isNFTPage ? 0 : trendingTokens?.length ?? 0)}
-          setHoveredIndex={setHoveredIndex}
-          toggleOpen={toggleOpen}
-          suggestions={formattedTrendingCollections as unknown as GenieCollection[]}
-          header={<Trans>Popular NFT collections</Trans>}
-          headerIcon={<TrendingArrow />}
-          isLoading={trendingCollectionsAreLoading}
-        />
-      )}
+      <SearchBarDropdownSection
+        hoveredIndex={hoveredIndex}
+        startingIndex={shortenedHistory.length}
+        setHoveredIndex={setHoveredIndex}
+        toggleOpen={toggleOpen}
+        suggestions={trendingTokens}
+        header={<Trans>Popular tokens</Trans>}
+        headerIcon={<TrendingArrow />}
+        isLoading={!trendingTokenData}
+      />
     </Column>
   )
 }

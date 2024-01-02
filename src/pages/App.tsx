@@ -5,7 +5,6 @@ import NavBar, { PageTabs } from 'components/NavBar'
 import { UK_BANNER_HEIGHT, UK_BANNER_HEIGHT_MD, UK_BANNER_HEIGHT_SM, UkBanner } from 'components/NavBar/UkBanner'
 import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import { useAtom } from 'jotai'
-import { useBag } from 'nft/hooks/useBag'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
@@ -116,8 +115,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', scrollListener)
   }, [])
 
-  const isBagExpanded = useBag((state) => state.bagExpanded)
-  const isHeaderTransparent = !scrolledState && !isBagExpanded
+  const isHeaderTransparent = !scrolledState
 
   const { account } = useWeb3React()
   const statsigUser: StatsigUser = useMemo(

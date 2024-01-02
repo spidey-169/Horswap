@@ -11,7 +11,6 @@ import { ThemedText } from 'theme/components'
 
 import { ActivityTab } from './Activity'
 import { usePendingActivity } from './Activity/hooks'
-import NFTs from './NFTs'
 import Pools from './Pools'
 import { PortfolioRowWrapper } from './PortfolioRow'
 import Tokens from './Tokens'
@@ -70,11 +69,6 @@ const Pages: Array<Page> = [
     title: <Trans>Tokens</Trans>,
     key: 'tokens',
     component: Tokens,
-  },
-  {
-    title: <Trans>NFTs</Trans>,
-    key: 'nfts',
-    component: NFTs,
   },
   {
     title: <Trans>Pools</Trans>,
