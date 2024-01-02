@@ -136,16 +136,12 @@ const userSlice = createSlice({
       }
       state.timestamp = currentTimestamp()
     },
-    setOriginCountry(state, { payload: country }) {
-      state.originCountry = country
-    },
   },
 })
 
 export const {
   addSerializedPair,
   addSerializedToken,
-  setOriginCountry,
   updateSelectedWallet,
   updateHideClosedPositions,
   updateUserRouterPreference,
