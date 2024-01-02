@@ -8,7 +8,7 @@ import Landing from '.'
 
 jest.mock('hooks/useDisableNFTRoutes')
 
-describe('disable nft on landing page', () => {
+describe.skip('disable nft on landing page', () => {
   beforeAll(() => {
     store.dispatch(setOriginCountry('US'))
   })

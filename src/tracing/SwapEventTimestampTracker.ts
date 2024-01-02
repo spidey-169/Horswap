@@ -58,5 +58,3 @@ export class SwapEventTimestampTracker {
     return endTime - startTime
   }
 }
-
-export const timestampTracker = SwapEventTimestampTracker.getInstance()
