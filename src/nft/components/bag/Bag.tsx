@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { NFTEventName } from '@uniswap/analytics-events'
-import { sendAnalyticsEvent } from 'analytics'
 import { useIsNftDetailsPage, useIsNftPage, useIsNftProfilePage } from 'hooks/useIsNftPage'
 import { BagFooter } from 'nft/components/bag/BagFooter'
 import { Box } from 'nft/components/Box'
@@ -9,7 +7,7 @@ import { Column } from 'nft/components/Flex'
 import { Overlay } from 'nft/components/modals/Overlay'
 import { useBag, useIsMobile, useProfilePageState, useSellAsset, useSubscribeScrollState } from 'nft/hooks'
 import { BagStatus, ProfilePageStateType } from 'nft/types'
-import { formatAssetEventProperties, recalculateBagUsingPooledAssets } from 'nft/utils'
+import { recalculateBagUsingPooledAssets } from 'nft/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Z_INDEX } from 'theme/zIndex'
@@ -137,13 +135,6 @@ const Bag = () => {
     (!isProfilePage && !isBuyingAssets && bagStatus === BagStatus.ADDING_TO_BAG) || (isProfilePage && !isSellingAssets)
   )
 
-  const eventProperties = useMemo(
-    () => ({
-      ...formatAssetEventProperties(itemsInBag.map((item) => item.asset)),
-    }),
-    [itemsInBag]
-  )
-
   if (!bagExpanded || !isNFTPage) {
     return null
   }
@@ -162,19 +153,12 @@ const Bag = () => {
         <Column ref={scrollRef} className={styles.assetsContainer} onScroll={scrollHandler} gap="12">
           {isProfilePage ? <ProfileBagContent /> : <BagContent />}
         </Column>
-        {hasAssetsToShow && !isProfilePage && (
-          <BagFooter setModalIsOpen={setModalIsOpen} eventProperties={eventProperties} />
-        )}
+        {hasAssetsToShow && !isProfilePage && <BagFooter setModalIsOpen={setModalIsOpen} />}
         {isSellingAssets && isProfilePage && (
           <ContinueButton
             onClick={() => {
               toggleBag()
               setProfilePageState(ProfilePageStateType.LISTING)
-              sendAnalyticsEvent(NFTEventName.NFT_PROFILE_PAGE_START_SELL, {
-                list_quantity: sellAssets.length,
-                collection_addresses: sellAssets.map((asset) => asset.asset_contract.address),
-                token_ids: sellAssets.map((asset) => asset.tokenId),
-              })
             }}
           >
             <Trans>Continue</Trans>

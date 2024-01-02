@@ -1,16 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
-import { SwapEventName } from '@uniswap/analytics-events'
 import { Percent } from '@uniswap/sdk-core'
 import { SwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@uniswap/universal-router-sdk'
 import { FeeOptions, toHex } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { sendAnalyticsEvent, useTrace } from 'analytics'
-import useBlockNumber from 'lib/hooks/useBlockNumber'
-import { formatCommonPropertiesForTrade, formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useCallback } from 'react'
 import { ClassicTrade, TradeFillType } from 'state/routing/types'
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import { trace } from 'tracing/trace'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import { UserRejectedRequestError, WrongChainError } from 'utils/errors'
@@ -45,15 +40,8 @@ interface SwapOptions {
   feeOptions?: FeeOptions
 }
 
-export function useUniversalRouterSwapCallback(
-  trade: ClassicTrade | undefined,
-  fiatValues: { amountIn?: number; amountOut?: number },
-  options: SwapOptions
-) {
+export function useUniversalRouterSwapCallback(trade: ClassicTrade | undefined, options: SwapOptions) {
   const { account, chainId, provider } = useWeb3React()
-  const analyticsContext = useTrace()
-  const blockNumber = useBlockNumber()
-  const isAutoSlippage = useUserSlippageTolerance()[0] === 'auto'
 
   return useCallback(async () => {
     return trace('swap.send', async ({ setTraceData, setTraceStatus, setTraceError }) => {
@@ -92,40 +80,16 @@ export function useUniversalRouterSwapCallback(
         } catch (gasError) {
           setTraceStatus('failed_precondition')
           setTraceError(gasError)
-          sendAnalyticsEvent(SwapEventName.SWAP_ESTIMATE_GAS_CALL_FAILED, {
-            ...formatCommonPropertiesForTrade(trade, options.slippageTolerance),
-            ...analyticsContext,
-            client_block_number: blockNumber,
-            tx,
-            error: gasError,
-            isAutoSlippage,
-          })
           console.warn(gasError)
           throw new GasEstimationError()
         }
         const gasLimit = calculateGasMargin(gasEstimate)
         setTraceData('gasLimit', gasLimit.toNumber())
-        const beforeSign = Date.now()
         const response = await provider
           .getSigner()
           .sendTransaction({ ...tx, gasLimit })
           .then((response) => {
-            sendAnalyticsEvent(SwapEventName.SWAP_SIGNED, {
-              ...formatSwapSignedAnalyticsEventProperties({
-                trade,
-                timeToSignSinceRequestMs: Date.now() - beforeSign,
-                allowedSlippage: options.slippageTolerance,
-                fiatValues,
-                txHash: response.hash,
-              }),
-              ...analyticsContext,
-            })
             if (tx.data !== response.data) {
-              sendAnalyticsEvent(SwapEventName.SWAP_MODIFIED_IN_WALLET, {
-                txHash: response.hash,
-                ...analyticsContext,
-              })
-
               if (!response.data || response.data.length === 0 || response.data === '0x') {
                 throw new ModifiedSwapError()
               }
@@ -154,16 +118,12 @@ export function useUniversalRouterSwapCallback(
     })
   }, [
     account,
-    analyticsContext,
-    blockNumber,
     chainId,
-    fiatValues,
     options.deadline,
     options.feeOptions,
     options.permit,
     options.slippageTolerance,
     provider,
     trade,
-    isAutoSlippage,
   ])
 }

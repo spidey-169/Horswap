@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { InterfaceElementName } from '@uniswap/analytics-events'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { ReactComponent as AppleLogo } from 'assets/svg/apple_logo.svg'
@@ -62,7 +61,6 @@ export default function BaseWalletBanner() {
               backgroundColor="white"
               onClick={() =>
                 openDownloadApp({
-                  element: InterfaceElementName.UNISWAP_WALLET_BANNER_DOWNLOAD_BUTTON,
                   appStoreParams: 'pt=123625782&ct=base-app-banner&mt=8',
                 })
               }

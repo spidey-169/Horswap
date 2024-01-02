@@ -16,7 +16,6 @@ interface NftCardProps {
   unselectAsset?: () => void
   onButtonClick?: () => void
   onCardClick?: () => void
-  sendAnalyticsEvent?: () => void
   mediaShouldBePlaying: boolean
   uniformAspectRatio?: UniformAspectRatio
   setUniformAspectRatio?: (uniformAspectRatio: UniformAspectRatio) => void
@@ -52,7 +51,6 @@ export const NftCard = ({
   isDisabled,
   onButtonClick,
   onCardClick,
-  sendAnalyticsEvent,
   mediaShouldBePlaying,
   uniformAspectRatio = UniformAspectRatios.square,
   setUniformAspectRatio,
@@ -90,7 +88,6 @@ export const NftCard = ({
       onClick={() => {
         if (bagExpanded) setBagExpanded({ bagExpanded: false })
         onCardClick?.()
-        sendAnalyticsEvent?.()
       }}
     >
       <MediaContainer isDisabled={isDisabled}>

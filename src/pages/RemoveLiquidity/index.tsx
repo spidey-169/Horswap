@@ -2,10 +2,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, InterfaceEventName, LiquidityEventName } from '@uniswap/analytics-events'
 import { Currency, Percent } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { sendAnalyticsEvent, TraceEvent, useTrace } from 'analytics'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import { V2Unsupported } from 'components/V2Unsupported'
 import { isSupportedChain } from 'constants/chains'
@@ -69,7 +67,6 @@ function RemoveLiquidity() {
   const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
 
   const theme = useTheme()
-  const trace = useTrace()
 
   // toggle wallet when disconnected
   const toggleWalletDrawer = useToggleAccountDrawer()
@@ -292,11 +289,6 @@ function RemoveLiquidity() {
           })
 
           setTxHash(response.hash)
-
-          sendAnalyticsEvent(LiquidityEventName.REMOVE_LIQUIDITY_SUBMITTED, {
-            label: [currencyA.symbol, currencyB.symbol].join('/'),
-            ...trace,
-          })
         })
         .catch((error: Error) => {
           setAttemptingTxn(false)
@@ -644,16 +636,9 @@ function RemoveLiquidity() {
             )}
             <div style={{ position: 'relative' }}>
               {!account ? (
-                <TraceEvent
-                  events={[BrowserEvent.onClick]}
-                  name={InterfaceEventName.CONNECT_WALLET_BUTTON_CLICKED}
-                  properties={{ received_swap_quote: false }}
-                  element={InterfaceElementName.CONNECT_WALLET_BUTTON}
-                >
-                  <ButtonLight onClick={toggleWalletDrawer}>
-                    <Trans>Connect wallet</Trans>
-                  </ButtonLight>
-                </TraceEvent>
+                <ButtonLight onClick={toggleWalletDrawer}>
+                  <Trans>Connect wallet</Trans>
+                </ButtonLight>
               ) : (
                 <RowBetween>
                   <ButtonConfirmed

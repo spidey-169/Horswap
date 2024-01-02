@@ -1,5 +1,3 @@
-import { InterfacePageName } from '@uniswap/analytics-events'
-import { Trace } from 'analytics'
 import { useNftAssetDetails } from 'graphql/data/nft/Details'
 import { AssetDetails } from 'nft/components/details/AssetDetails'
 import { AssetDetailsLoading } from 'nft/components/details/AssetDetailsLoading'
@@ -43,20 +41,14 @@ const AssetPage = () => {
   if (loading) return <AssetDetailsLoading />
   return (
     <>
-      <Trace
-        page={InterfacePageName.NFT_DETAILS_PAGE}
-        properties={{ collection_address: contractAddress, token_id: tokenId }}
-        shouldLogImpression
-      >
-        {!!asset && !!collection ? (
-          <AssetContainer>
-            <AssetDetails collection={collection} asset={asset} />
-            <AssetPriceDetailsContainer>
-              <AssetPriceDetails collection={collection} asset={asset} />
-            </AssetPriceDetailsContainer>
-          </AssetContainer>
-        ) : null}
-      </Trace>
+      {!!asset && !!collection ? (
+        <AssetContainer>
+          <AssetDetails collection={collection} asset={asset} />
+          <AssetPriceDetailsContainer>
+            <AssetPriceDetails collection={collection} asset={asset} />
+          </AssetPriceDetailsContainer>
+        </AssetContainer>
+      ) : null}
     </>
   )
 }

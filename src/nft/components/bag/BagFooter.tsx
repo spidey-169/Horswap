@@ -1,10 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, NFTEventName } from '@uniswap/analytics-events'
 import { ChainId, Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { sendAnalyticsEvent, TraceEvent } from 'analytics'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import Column from 'components/Column'
 import Loader from 'components/Icons/LoadingSpinner'
@@ -262,10 +260,9 @@ const PENDING_BAG_STATUSES = [
 
 interface BagFooterProps {
   setModalIsOpen: (open: boolean) => void
-  eventProperties: Record<string, unknown>
 }
 
-export const BagFooter = ({ setModalIsOpen, eventProperties }: BagFooterProps) => {
+export const BagFooter = ({ setModalIsOpen }: BagFooterProps) => {
   const toggleWalletDrawer = useToggleAccountDrawer()
   const theme = useTheme()
   const { account, chainId, connector } = useWeb3React()
@@ -446,12 +443,6 @@ export const BagFooter = ({ setModalIsOpen, eventProperties }: BagFooterProps) =
     setBagExpanded,
   ])
 
-  const traceEventProperties = {
-    usd_value: usdcValue?.toExact(),
-    using_erc20: !!inputCurrency,
-    ...eventProperties,
-  }
-
   return (
     <FooterContainer>
       <Footer>
@@ -467,7 +458,6 @@ export const BagFooter = ({ setModalIsOpen, eventProperties }: BagFooterProps) =
                     onClick={() => {
                       if (!bagIsLocked) {
                         setTokenSelectorOpen(true)
-                        sendAnalyticsEvent(NFTEventName.NFT_BUY_TOKEN_SELECTOR_CLICKED)
                       }
                     }}
                   >
@@ -500,38 +490,24 @@ export const BagFooter = ({ setModalIsOpen, eventProperties }: BagFooterProps) =
             usingPayWithAnyToken={usingPayWithAnyToken}
           />
         </FooterHeader>
-        <TraceEvent
-          events={[BrowserEvent.onClick]}
-          name={NFTEventName.NFT_BUY_BAG_PAY}
-          element={InterfaceElementName.NFT_BUY_BAG_PAY_BUTTON}
-          properties={{ ...traceEventProperties }}
-          shouldLogImpression={connected && !disabled}
+        <Warning color={warningTextColor}>{warningText}</Warning>
+        <Helper color={helperTextColor}>{helperText}</Helper>
+        <ActionButton
+          data-testid="nft-buy-button"
+          onClick={handleClick}
+          disabled={disabled || isPending}
+          $backgroundColor={buttonColor}
+          $color={buttonTextColor}
         >
-          <Warning color={warningTextColor}>{warningText}</Warning>
-          <Helper color={helperTextColor}>{helperText}</Helper>
-          <ActionButton
-            data-testid="nft-buy-button"
-            onClick={handleClick}
-            disabled={disabled || isPending}
-            $backgroundColor={buttonColor}
-            $color={buttonTextColor}
-          >
-            {isPending && <Loader size="20px" stroke="white" />}
-            {buttonText}
-          </ActionButton>
-        </TraceEvent>
+          {isPending && <Loader size="20px" stroke="white" />}
+          {buttonText}
+        </ActionButton>
       </Footer>
       <CurrencySearchModal
         isOpen={tokenSelectorOpen}
         onDismiss={() => setTokenSelectorOpen(false)}
         onCurrencySelect={(currency: Currency) => {
           setInputCurrency(currency.isNative ? undefined : currency)
-          if (currency.isToken) {
-            sendAnalyticsEvent(NFTEventName.NFT_BUY_TOKEN_SELECTED, {
-              token_address: currency.address,
-              token_symbol: currency.symbol,
-            })
-          }
         }}
         selectedCurrency={activeCurrency ?? undefined}
         onlyShowCurrenciesWithBalance={true}

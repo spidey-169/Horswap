@@ -1,5 +1,3 @@
-import { InterfaceEventName } from '@uniswap/analytics-events'
-import { sendAnalyticsEvent } from 'analytics'
 import clsx from 'clsx'
 import QueryTokenLogo from 'components/Logo/QueryTokenLogo'
 import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
@@ -37,17 +35,9 @@ interface CollectionRowProps {
   setHoveredIndex: (index: number | undefined) => void
   toggleOpen: () => void
   index: number
-  eventProperties: Record<string, unknown>
 }
 
-export const CollectionRow = ({
-  collection,
-  isHovered,
-  setHoveredIndex,
-  toggleOpen,
-  index,
-  eventProperties,
-}: CollectionRowProps) => {
+export const CollectionRow = ({ collection, isHovered, setHoveredIndex, toggleOpen, index }: CollectionRowProps) => {
   const [brokenImage, setBrokenImage] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
@@ -57,8 +47,7 @@ export const CollectionRow = ({
   const handleClick = useCallback(() => {
     addRecentlySearchedAsset({ ...collection, isNft: true, chain: Chain.Ethereum })
     toggleOpen()
-    sendAnalyticsEvent(InterfaceEventName.NAVBAR_RESULT_SELECTED, { ...eventProperties })
-  }, [addRecentlySearchedAsset, collection, toggleOpen, eventProperties])
+  }, [addRecentlySearchedAsset, collection, toggleOpen])
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -122,10 +111,9 @@ interface TokenRowProps {
   setHoveredIndex: (index: number | undefined) => void
   toggleOpen: () => void
   index: number
-  eventProperties: Record<string, unknown>
 }
 
-export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index, eventProperties }: TokenRowProps) => {
+export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index }: TokenRowProps) => {
   const addRecentlySearchedAsset = useAddRecentlySearchedAsset()
   const navigate = useNavigate()
   const { formatFiatPrice, formatPercent } = useFormatter()
@@ -135,8 +123,7 @@ export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index,
     address && addRecentlySearchedAsset({ address, chain: token.chain })
 
     toggleOpen()
-    sendAnalyticsEvent(InterfaceEventName.NAVBAR_RESULT_SELECTED, { ...eventProperties })
-  }, [addRecentlySearchedAsset, token, toggleOpen, eventProperties])
+  }, [addRecentlySearchedAsset, token, toggleOpen])
 
   const tokenDetailsPath = getTokenDetailsURL(token)
   // Close the modal on escape
