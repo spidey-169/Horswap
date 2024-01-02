@@ -5,10 +5,9 @@ import { MAIN_CARDS, MORE_CARDS } from 'components/About/constants'
 import ProtocolBanner from 'components/About/ProtocolBanner'
 import { useAccountDrawer } from 'components/AccountDrawer'
 import { BaseButton } from 'components/Button'
-import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import Swap from 'pages/Swap'
 import { parse } from 'qs'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ArrowDownCircle } from 'react-feather'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Link as NativeLink } from 'react-router-dom'
@@ -313,38 +312,9 @@ export default function Landing() {
   const isDarkMode = useIsDarkMode()
   const cardsRef = useRef<HTMLDivElement>(null)
   const selectedWallet = useAppSelector((state) => state.user.selectedWallet)
-  const shouldDisableNFTRoutes = useDisableNFTRoutes()
   const originCountry = useAppSelector((state: AppState) => state.user.originCountry)
-  const renderUkSpecificText = Boolean(originCountry) && originCountry === 'GB'
-  const cards = useMemo(() => {
-    const mainCards = MAIN_CARDS.filter(
-      (card) =>
-        !(shouldDisableNFTRoutes && card.to.startsWith('/nft')) && !(card.to.startsWith('/swap') && !originCountry)
-    )
-
-    mainCards.forEach((card) => {
-      if (card.to.startsWith('/swap') && renderUkSpecificText) {
-        card.description = 'Explore tokens on Ethereum, Polygon, Optimism and more '
-        card.cta = 'Discover Tokens'
-      }
-    })
-
-    return mainCards
-  }, [originCountry, renderUkSpecificText, shouldDisableNFTRoutes])
-
-  const extraCards = useMemo(
-    () =>
-      MORE_CARDS.filter(
-        (card) =>
-          !(
-            card.to.startsWith(
-              'https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-'
-            ) &&
-            (!originCountry || renderUkSpecificText)
-          )
-      ),
-    [originCountry, renderUkSpecificText]
-  )
+  const cards = MAIN_CARDS
+  const extraCards = MORE_CARDS
 
   const [accountDrawerOpen] = useAccountDrawer()
   const navigate = useNavigate()
@@ -358,34 +328,6 @@ export default function Landing() {
 
   const location = useLocation()
   const queryParams = parse(location.search, { ignoreQueryPrefix: true })
-
-  const titles = useMemo(() => {
-    if (!originCountry) {
-      return {
-        header: null,
-        subHeader: null,
-      }
-    }
-
-    if (renderUkSpecificText) {
-      return {
-        header: <Trans>Go direct to DeFi with Uniswap</Trans>,
-        subHeader: <Trans>Swap and explore tokens and NFTs</Trans>,
-      }
-    }
-
-    if (shouldDisableNFTRoutes) {
-      return {
-        header: <Trans>Trade crypto with confidence</Trans>,
-        subHeader: <Trans>Buy, sell, and explore tokens</Trans>,
-      }
-    }
-
-    return {
-      header: <Trans>Trade crypto and NFTs with confidence</Trans>,
-      subHeader: <Trans>Buy, sell, and explore tokens and NFTs</Trans>,
-    }
-  }, [originCountry, renderUkSpecificText, shouldDisableNFTRoutes])
 
   if (selectedWallet && !queryParams.intro) {
     return <Navigate to={{ ...location, pathname: '/swap' }} replace />
@@ -404,10 +346,12 @@ export default function Landing() {
       </GlowContainer>
       <ContentContainer isDarkMode={isDarkMode}>
         <TitleText isDarkMode={isDarkMode} $visible={!!originCountry}>
-          {titles.header}
+          <Trans>Trade crypto with confidence</Trans>
         </TitleText>
         <SubTextContainer $visible={!!originCountry}>
-          <SubText>{titles.subHeader}</SubText>
+          <SubText>
+            <Trans>Buy, sell, and explore tokens</Trans>
+          </SubText>
         </SubTextContainer>
         <ActionsContainer>
           <ButtonCTA as={Link} to="/swap">

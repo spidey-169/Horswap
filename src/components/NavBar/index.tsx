@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import { useAccountDrawer } from 'components/AccountDrawer'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
-import { useIsNftPage } from 'hooks/useIsNftPage'
 import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
@@ -76,7 +75,6 @@ export const PageTabs = () => {
 }
 
 const Navbar = ({ blur }: { blur: boolean }) => {
-  const isNftPage = useIsNftPage()
   const navigate = useNavigate()
   const isNavSearchInputVisible = useIsNavSearchInputVisible()
 
@@ -107,11 +105,9 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 onClick={handleUniIconClick}
               />
             </Box>
-            {!isNftPage && (
-              <Box display={{ sm: 'flex', lg: 'none' }}>
-                <ChainSelector leftAlign={true} />
-              </Box>
-            )}
+            <Box display={{ sm: 'flex', lg: 'none' }}>
+              <ChainSelector leftAlign={true} />
+            </Box>
             <Row display={{ sm: 'none', lg: 'flex' }}>
               <PageTabs />
             </Row>
