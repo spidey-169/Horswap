@@ -15,7 +15,6 @@ import { useDefaultActiveTokens } from '../../hooks/Tokens'
 import {
   addSerializedPair,
   addSerializedToken,
-  updateHideBaseWalletBanner,
   updateHideClosedPositions,
   updateUserDeadline,
   updateUserLocale,
