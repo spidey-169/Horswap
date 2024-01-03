@@ -3,7 +3,6 @@ import { CurrencyAmount, TradeType } from '@uniswap/sdk-core'
 import { DAI, USDC_MAINNET } from 'constants/tokens'
 import { RouterPreference, TradeState } from 'state/routing/types'
 import { usePreviewTrade } from 'state/routing/usePreviewTrade'
-import { useRouterPreference } from 'state/user/hooks'
 import { mocked } from 'test-utils/mocked'
 
 import { useRoutingAPITrade } from '../state/routing/useRoutingAPITrade'
@@ -34,7 +33,6 @@ beforeEach(() => {
 
   mocked(useIsWindowVisible).mockReturnValue(true)
   mocked(useAutoRouterSupported).mockReturnValue(true)
-  mocked(useRouterPreference).mockReturnValue([RouterPreference.CLIENT, () => undefined])
 })
 
 describe('#useBestV3Trade ExactIn', () => {

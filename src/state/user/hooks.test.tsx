@@ -2,16 +2,9 @@ import { act } from '@testing-library/react'
 import { Percent } from '@uniswap/sdk-core'
 import { USDC_MAINNET } from 'constants/tokens'
 import store from 'state'
-import { RouterPreference } from 'state/routing/types'
 import { renderHook } from 'test-utils/render'
 
-import {
-  deserializeToken,
-  serializeToken,
-  useRouterPreference,
-  useUserDisabledUniswapX,
-  useUserSlippageTolerance,
-} from './hooks'
+import { deserializeToken, serializeToken, useUserDisabledUniswapX, useUserSlippageTolerance } from './hooks'
 import { updateUserSlippageTolerance } from './reducer'
 import { SlippageTolerance } from './types'
 
@@ -68,17 +61,6 @@ describe('useUserSlippageTolerance', () => {
     } = renderHook(() => useUserSlippageTolerance())
     act(() => setSlippage(new Percent(5, 10_000)))
     expect(store.getState().user.userSlippageTolerance).toBe(5)
-  })
-})
-
-describe('useRouterPreference', () => {
-  it('returns `auto` by default', () => {
-    const {
-      result: {
-        current: [routerPreference],
-      },
-    } = renderHook(() => useRouterPreference())
-    expect(routerPreference).toBe(RouterPreference.API)
   })
 })
 

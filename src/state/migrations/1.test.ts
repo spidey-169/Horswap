@@ -7,7 +7,6 @@ import { migration1, PersistAppStateV1 } from './1'
 const previousState: PersistAppStateV1 = {
   user: {
     userLocale: null,
-    userRouterPreference: RouterPreference.API,
     userHideClosedPositions: false,
     userSlippageTolerance: SlippageTolerance.Auto,
     userSlippageToleranceHasBeenMigratedToAuto: true,

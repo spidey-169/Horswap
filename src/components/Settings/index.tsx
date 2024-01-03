@@ -22,7 +22,6 @@ import { Z_INDEX } from 'theme/zIndex'
 
 import MaxSlippageSettings from './MaxSlippageSettings'
 import MenuButton from './MenuButton'
-import RouterPreferenceSettings from './RouterPreferenceSettings'
 import TransactionDeadlineSettings from './TransactionDeadlineSettings'
 
 const CloseButton = styled.button`
@@ -57,11 +56,6 @@ const MenuFlyout = styled(AutoColumn)`
   `};
   user-select: none;
   padding: 16px;
-`
-
-const ExpandColumn = styled(AutoColumn)<{ $padTop: boolean }>`
-  gap: 16px;
-  padding-top: ${({ $padTop }) => ($padTop ? '16px' : '0')};
 `
 
 const MobileMenuContainer = styled(Row)`
@@ -101,12 +95,10 @@ export default function SettingsTab({
   autoSlippage,
   chainId,
   trade,
-  showRoutingSettings = true,
 }: {
   autoSlippage: Percent
   chainId?: number
   trade?: InterfaceTrade
-  showRoutingSettings?: boolean
 }) {
   const { chainId: connectedChainId } = useWeb3React()
   const showDeadlineSettings = Boolean(chainId && !L2_CHAIN_IDS.includes(chainId))
@@ -128,26 +120,18 @@ export default function SettingsTab({
   const Settings = useMemo(
     () => (
       <>
-        {showRoutingSettings && (
-          <AutoColumn gap="16px">
-            <RouterPreferenceSettings />
-          </AutoColumn>
-        )}
         <AnimatedDropdown open={!isUniswapXTrade(trade)}>
-          <ExpandColumn $padTop={showRoutingSettings}>
-            {showRoutingSettings && <Divider />}
-            <MaxSlippageSettings autoSlippage={autoSlippage} />
-            {showDeadlineSettings && (
-              <>
-                <Divider />
-                <TransactionDeadlineSettings />
-              </>
-            )}
-          </ExpandColumn>
+          <MaxSlippageSettings autoSlippage={autoSlippage} />
+          {showDeadlineSettings && (
+            <>
+              <Divider />
+              <TransactionDeadlineSettings />
+            </>
+          )}
         </AnimatedDropdown>
       </>
     ),
-    [autoSlippage, showDeadlineSettings, showRoutingSettings, trade]
+    [autoSlippage, showDeadlineSettings, trade]
   )
 
   return (

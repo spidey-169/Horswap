@@ -17,10 +17,9 @@ import { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { X } from 'react-feather'
 import { Text } from 'rebass'
 import { useAppDispatch } from 'state/hooks'
-import { RouterPreference } from 'state/routing/types'
 import { isClassicTrade } from 'state/routing/utils'
 import { SwapInfo } from 'state/swap/hooks'
-import { useRouterPreference, useUserDisabledUniswapX } from 'state/user/hooks'
+import { useUserDisabledUniswapX } from 'state/user/hooks'
 import { updateDisabledUniswapX } from 'state/user/reducer'
 import styled from 'styled-components'
 import { ThemedText } from 'theme/components'
@@ -57,7 +56,6 @@ const OptInContents = ({
   const {
     trade: { trade },
   } = swapInfo
-  const [, setRouterPreference] = useRouterPreference()
   const dispatch = useAppDispatch()
   const [showYoureIn, setShowYoureIn] = useState(false)
   const isVisible = isOnClassic
@@ -86,8 +84,7 @@ const OptInContents = ({
           }, 5000)
         }, 200)
 
-        if (!trade) return
-        setRouterPreference(RouterPreference.X)
+        return
       }}
       style={{
         cursor: 'pointer',
@@ -127,7 +124,6 @@ const OptInContents = ({
           size={18}
           onClick={() => {
             if (!trade) return
-            setRouterPreference(RouterPreference.API)
             dispatch(updateDisabledUniswapX({ disabledUniswapX: true }))
           }}
         />

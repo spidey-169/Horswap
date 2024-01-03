@@ -46,13 +46,13 @@ const PERMITTABLE_TOKENS: {
 
 enum UseERC20PermitState {
   // returned for any reason, e.g. it is an argent wallet, or the currency does not support it
-  NOT_APPLICABLE,
-  LOADING,
-  NOT_SIGNED,
-  SIGNED,
+  NOT_APPLICABLE = 0,
+  LOADING = 1,
+  NOT_SIGNED = 2,
+  SIGNED = 3,
 }
 
-interface BaseSignatureData {
+type StandardSignatureData = {
   v: number
   r: string
   s: string
@@ -63,13 +63,20 @@ interface BaseSignatureData {
   chainId: number
   tokenAddress: string
   permitType: PermitType
-}
-
-interface StandardSignatureData extends BaseSignatureData {
   amount: string
 }
 
-interface AllowedSignatureData extends BaseSignatureData {
+type AllowedSignatureData = {
+  v: number
+  r: string
+  s: string
+  deadline: number
+  nonce: number
+  owner: string
+  spender: string
+  chainId: number
+  tokenAddress: string
+  permitType: PermitType
   allowed: true
 }
 
