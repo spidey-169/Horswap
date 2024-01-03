@@ -106,16 +106,6 @@ function legacyUserMigrations(state: any): UserState {
     result.userDeadline = DEFAULT_DEADLINE_FROM_NOW
   }
 
-  // If `userRouterPreference` is not present, reset to default
-  if (typeof result.userRouterPreference !== 'string') {
-    result.userRouterPreference = RouterPreference.CLIENT
-  }
-
-  // If `userRouterPreference` is `AUTO`, migrate to `API`
-  if ((result.userRouterPreference as string) === 'auto') {
-    result.userRouterPreference = RouterPreference.CLIENT
-  }
-
   //If `buyFiatFlowCompleted` is present, delete it using filtering
   if ('buyFiatFlowCompleted' in result) {
     //ignoring due to type errors occuring since we now remove this state

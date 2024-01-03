@@ -35,7 +35,6 @@ describe('migration to v1', () => {
     expect(result?._persist.version).toEqual(1)
 
     expect(result?.user?.userLocale).toEqual(null)
-    expect(result?.user?.userRouterPreference).toEqual(RouterPreference.CLIENT)
     expect(result?.user?.userHideClosedPositions).toEqual(false)
     expect(result?.user?.userSlippageTolerance).toEqual(SlippageTolerance.Auto)
     expect(result?.user?.userSlippageToleranceHasBeenMigratedToAuto).toEqual(true)
