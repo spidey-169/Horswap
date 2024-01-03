@@ -2,7 +2,6 @@ import { DEFAULT_DEADLINE_FROM_NOW } from 'constants/misc'
 import { persistor } from 'state'
 
 import { initialState as initialListsState } from '../lists/reducer'
-import { RouterPreference } from '../routing/types'
 import { TransactionState } from '../transactions/reducer'
 import { initialState as initialTransactionsState } from '../transactions/reducer'
 import { UserState } from '../user/reducer'

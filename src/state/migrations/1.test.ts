@@ -1,5 +1,4 @@
 import { createMigrate } from 'redux-persist'
-import { RouterPreference } from 'state/routing/types'
 import { SlippageTolerance } from 'state/user/types'
 
 import { migration1, PersistAppStateV1 } from './1'
