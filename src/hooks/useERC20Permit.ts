@@ -46,10 +46,10 @@ const PERMITTABLE_TOKENS: {
 
 enum UseERC20PermitState {
   // returned for any reason, e.g. it is an argent wallet, or the currency does not support it
-  NOT_APPLICABLE = 0,
-  LOADING = 1,
-  NOT_SIGNED = 2,
-  SIGNED = 3,
+  NOT_APPLICABLE,
+  LOADING,
+  NOT_SIGNED,
+  SIGNED,
 }
 
 type StandardSignatureData = {
