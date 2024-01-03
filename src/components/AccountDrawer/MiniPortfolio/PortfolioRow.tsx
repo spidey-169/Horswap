@@ -3,7 +3,7 @@ import Row from 'components/Row'
 import { LoadingBubble } from 'components/Tokens/loading'
 import styled, { css, keyframes } from 'styled-components'
 
-export const PortfolioRowWrapper = styled(Row)<{ onClick?: any }>`
+const PortfolioRowWrapper = styled(Row)<{ onClick?: any }>`
   gap: 12px;
   height: 68px;
   padding: 0 16px;
