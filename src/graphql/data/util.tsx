@@ -1,5 +1,4 @@
 import { QueryResult } from '@apollo/client'
-import * as Sentry from '@sentry/react'
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { NATIVE_CHAIN_ID, nativeOnChain, WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
@@ -173,22 +172,6 @@ export function supportedChainIdFromGQLChain(chain: InterfaceGqlChain): ChainId
 export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined
 export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined {
   return isSupportedGQLChain(chain) ? CHAIN_NAME_TO_CHAIN_ID[chain] : undefined
-}
-
-export function logSentryErrorForUnsupportedChain({
-  extras,
-  errorMessage,
-}: {
-  extras?: Record<string, any>
-  errorMessage: string
-}) {
-  Sentry.withScope((scope) => {
-    extras &&
-      Object.entries(extras).map(([k, v]) => {
-        scope.setExtra(k, v)
-      })
-    Sentry.captureException(new Error(errorMessage))
-  })
 }
 
 export const BACKEND_SUPPORTED_CHAINS = [

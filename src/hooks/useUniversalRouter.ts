@@ -6,7 +6,6 @@ import { FeeOptions, toHex } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { useCallback } from 'react'
 import { ClassicTrade, TradeFillType } from 'state/routing/types'
-import { trace } from 'tracing/trace'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import { UserRejectedRequestError, WrongChainError } from 'utils/errors'
 import isZero from 'utils/isZero'
@@ -44,7 +43,7 @@ export function useUniversalRouterSwapCallback(trade: ClassicTrade | undefined, 
   const { account, chainId, provider } = useWeb3React()
 
   return useCallback(async () => {
-    return trace('swap.send', async ({ setTraceData, setTraceStatus, setTraceError }) => {
+    return (async () => {
       try {
         if (!account) throw new Error('missing account')
         if (!chainId) throw new Error('missing chainId')
@@ -52,8 +51,6 @@ export function useUniversalRouterSwapCallback(trade: ClassicTrade | undefined, 
         if (!trade) throw new Error('missing trade')
         const connectedChainId = await provider.getSigner().getChainId()
         if (chainId !== connectedChainId) throw new WrongChainError()
-
-        setTraceData('slippageTolerance', options.slippageTolerance.toFixed(2))
 
         // universal-router-sdk reconstructs V2Trade objects, so rather than updating the trade amounts to account for tax, we adjust the slippage tolerance as a workaround
         // TODO(WEB-2725): update universal-router-sdk to not reconstruct trades
@@ -78,13 +75,10 @@ export function useUniversalRouterSwapCallback(trade: ClassicTrade | undefined, 
         try {
           gasEstimate = await provider.estimateGas(tx)
         } catch (gasError) {
-          setTraceStatus('failed_precondition')
-          setTraceError(gasError)
           console.warn(gasError)
           throw new GasEstimationError()
         }
         const gasLimit = calculateGasMargin(gasEstimate)
-        setTraceData('gasLimit', gasLimit.toNumber())
         const response = await provider
           .getSigner()
           .sendTransaction({ ...tx, gasLimit })
@@ -97,25 +91,21 @@ export function useUniversalRouterSwapCallback(trade: ClassicTrade | undefined, 
             return response
           })
         return {
-          type: TradeFillType.Classic as const,
+          type: TradeFillType.Classic,
           response,
         }
       } catch (swapError: unknown) {
         if (swapError instanceof ModifiedSwapError) throw swapError
 
-        // GasEstimationErrors are already traced when they are thrown.
-        if (!(swapError instanceof GasEstimationError)) setTraceError(swapError)
-
         // Cancellations are not failures, and must be accounted for as 'cancelled'.
         if (didUserReject(swapError)) {
-          setTraceStatus('cancelled')
           // This error type allows us to distinguish between user rejections and other errors later too.
           throw new UserRejectedRequestError(swapErrorToUserReadableMessage(swapError))
         }
 
         throw new Error(swapErrorToUserReadableMessage(swapError))
       }
-    })
+    })()
   }, [
     account,
     chainId,

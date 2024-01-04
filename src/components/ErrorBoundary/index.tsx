@@ -1,10 +1,8 @@
 import { Trans } from '@lingui/macro'
-import * as Sentry from '@sentry/react'
-import { useWeb3React } from '@web3-react/core'
 import { ButtonLight, SmallButtonPrimary } from 'components/Button'
 import { ChevronUpIcon } from 'nft/components/icons'
 import { useIsMobile } from 'nft/hooks'
-import React, { PropsWithChildren, useState } from 'react'
+import React, { Component, ErrorInfo, ReactNode, useState } from 'react'
 import { Copy } from 'react-feather'
 import styled from 'styled-components'
 import { CopyToClipboard, ExternalLink, ThemedText } from 'theme/components'
@@ -217,20 +215,36 @@ const updateServiceWorkerInBackground = async () => {
   }
 }
 
-export default function ErrorBoundary({ children }: PropsWithChildren): JSX.Element {
-  const { chainId } = useWeb3React()
-  return (
-    <Sentry.ErrorBoundary
-      fallback={({ error, eventId }) => <Fallback error={error} eventId={eventId} />}
-      beforeCapture={(scope) => {
-        scope.setLevel('fatal')
-        scope.setTag('chain_id', chainId)
-      }}
-      onError={() => {
-        updateServiceWorkerInBackground()
-      }}
-    >
-      {children}
-    </Sentry.ErrorBoundary>
-  )
+interface Props {
+  children?: ReactNode
+}
+
+interface State {
+  error?: Error
+}
+
+export default class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    error: undefined,
+  }
+  constructor(props: Props) {
+    super(props)
+    this.state = { error: undefined }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    // Update state so the next render will show the fallback UI.
+    return { error }
+  }
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    updateServiceWorkerInBackground()
+    console.error('Uncaught error:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.error) {
+      ;<Fallback error={this.state.error} eventId={null} />
+    }
+    return this.props.children
+  }
 }

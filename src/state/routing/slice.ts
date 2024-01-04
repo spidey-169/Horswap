@@ -1,9 +1,8 @@
-import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Protocol } from '@uniswap/router-sdk'
 import { TradeType } from '@uniswap/sdk-core'
 import { isUniswapXSupportedChain } from 'constants/chains'
 import ms from 'ms'
-import { trace } from 'tracing/trace'
 
 import {
   GetQuoteArgs,
@@ -92,23 +91,15 @@ export const routingApi = createApi({
   endpoints: (build) => ({
     getQuote: build.query<TradeResult, GetQuoteArgs>({
       async onQueryStarted(args: GetQuoteArgs, { queryFulfilled }) {
-        trace(
-          'quote',
-          async ({ setTraceError, setTraceStatus }) => {
-            try {
-              await queryFulfilled
-            } catch (error: unknown) {
-              if (error && typeof error === 'object' && 'error' in error) {
-                const queryError = (error as Record<'error', FetchBaseQueryError>).error
-                if (typeof queryError.status === 'number') {
-                  setTraceStatus(queryError.status)
-                }
-                setTraceError(queryError)
-              } else {
-                throw error
-              }
+        ;(async () => {
+          try {
+            await queryFulfilled
+          } catch (error: unknown) {
+            if (!(error && typeof error === 'object' && 'error' in error)) {
+              throw error
             }
-          },
+          }
+        })(),
           {
             data: {
               ...args,
@@ -116,7 +107,6 @@ export const routingApi = createApi({
               isAutoRouter: args.routerPreference === RouterPreference.API,
             },
           }
-        )
       },
       async queryFn(args, _api, _extraOptions, fetch) {
         let fellBack = false

@@ -1,6 +1,5 @@
-import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import ms from 'ms'
-import { trace } from 'tracing/trace'
 
 import { GetQuickQuoteArgs, PreviewTradeResult, QuickRouteResponse, QuoteState } from './types'
 import { isExactInput, transformQuickRouteToTrade } from './utils'
@@ -23,29 +22,20 @@ export const quickRouteApi = createApi({
   endpoints: (build) => ({
     getQuickRoute: build.query<PreviewTradeResult, GetQuickQuoteArgs>({
       async onQueryStarted(args: GetQuickQuoteArgs, { queryFulfilled }) {
-        trace(
-          'quickroute',
-          async ({ setTraceError, setTraceStatus }) => {
-            try {
-              await queryFulfilled
-            } catch (error: unknown) {
-              if (error && typeof error === 'object' && 'error' in error) {
-                const queryError = (error as Record<'error', FetchBaseQueryError>).error
-                if (typeof queryError.status === 'number') {
-                  setTraceStatus(queryError.status)
-                }
-                setTraceError(queryError)
-              } else {
-                throw error
-              }
+        ;(async () => {
+          try {
+            await queryFulfilled
+          } catch (error: unknown) {
+            if (!(error && typeof error === 'object' && 'error' in error)) {
+              throw error
             }
-          },
+          }
+        })(),
           {
             data: {
               ...args,
             },
           }
-        )
       },
       async queryFn(args, _api, _extraOptions, fetch) {
         const quoteStartMark = performance.mark(`quickroute-fetch-start-${Date.now()}`)

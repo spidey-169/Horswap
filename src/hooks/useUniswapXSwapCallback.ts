@@ -1,11 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import * as Sentry from '@sentry/react'
 import { Percent } from '@uniswap/sdk-core'
 import { DutchOrder, DutchOrderBuilder } from '@uniswap/uniswapx-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { useCallback } from 'react'
 import { DutchOrderTrade, TradeFillType } from 'state/routing/types'
-import { trace } from 'tracing/trace'
 import { SignatureExpiredError, UserRejectedRequestError } from 'utils/errors'
 import { signTypedData } from 'utils/signing'
 import { didUserReject, swapErrorToUserReadableMessage } from 'utils/swapErrorToUserReadableMessage'
@@ -32,11 +30,6 @@ async function getUpdatedNonce(swapper: string, chainId: number): Promise<BigNum
     const { nonce } = await res.json()
     return BigNumber.from(nonce)
   } catch (e) {
-    Sentry.withScope(function (scope) {
-      scope.setTag('method', 'getUpdatedNonce')
-      scope.setLevel('warning')
-      Sentry.captureException(e)
-    })
     return null
   }
 }
@@ -52,7 +45,7 @@ export function useUniswapXSwapCallback({
 
   return useCallback(
     async () =>
-      trace('swapx.send', async ({ setTraceData, setTraceStatus }) => {
+      (async () => {
         if (!account) throw new Error('missing account')
         if (!provider) throw new Error('missing provider')
         if (!trade) throw new Error('missing trade')
@@ -62,13 +55,10 @@ export function useUniswapXSwapCallback({
             const updatedNonce = await getUpdatedNonce(account, trade.order.chainId)
 
             const startTime = Math.floor(Date.now() / 1000) + trade.startTimeBufferSecs
-            setTraceData('startTime', startTime)
 
             const endTime = startTime + trade.auctionPeriodSecs
-            setTraceData('endTime', endTime)
 
             const deadline = endTime + trade.deadlineBufferSecs
-            setTraceData('deadline', deadline)
 
             // Set timestamp and account based values when the user clicks 'swap' to make them as recent as possible
             const updatedOrder = DutchOrderBuilder.fromOrder(trade.order)
@@ -93,7 +83,6 @@ export function useUniswapXSwapCallback({
               throw swapError
             }
             if (didUserReject(swapError)) {
-              setTraceStatus('cancelled')
               throw new UserRejectedRequestError(swapErrorToUserReadableMessage(swapError))
             }
             throw new Error(swapErrorToUserReadableMessage(swapError))
@@ -126,7 +115,7 @@ export function useUniswapXSwapCallback({
           type: TradeFillType.UniswapX as const,
           response: { orderHash: body.hash, deadline: updatedOrder.info.deadline },
         }
-      }),
+      })(),
     [account, provider, trade]
   )
 }
