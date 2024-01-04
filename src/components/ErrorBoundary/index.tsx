@@ -6,7 +6,6 @@ import React, { Component, ErrorInfo, ReactNode, useState } from 'react'
 import { Copy } from 'react-feather'
 import styled from 'styled-components'
 import { CopyToClipboard, ExternalLink, ThemedText } from 'theme/components'
-import { isSentryEnabled } from 'utils/env'
 
 import { Column } from '../Column'
 
@@ -89,7 +88,7 @@ const CodeTitle = styled.div`
   word-break: break-word;
 `
 
-const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) => {
+const Fallback = ({ error }: { error: Error }) => {
   const [isExpanded, setExpanded] = useState(false)
   const isMobile = useIsMobile()
 
@@ -97,8 +96,6 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
   const [Title, Description] = isMobile
     ? [ThemedText.HeadlineSmall, ThemedText.BodySmall]
     : [ThemedText.HeadlineLarge, ThemedText.BodySecondary]
-
-  const showErrorId = isSentryEnabled() && eventId
 
   const showMoreButton = (
     <ShowMoreButton onClick={() => setExpanded((s) => !s)}>
@@ -115,65 +112,31 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
     <FallbackWrapper>
       <BodyWrapper>
         <Column gap="xl">
-          {showErrorId ? (
-            <>
-              <Column gap="sm">
-                <Title textAlign="center">
-                  <Trans>Something went wrong</Trans>
-                </Title>
-                <Description textAlign="center" color="neutral2">
-                  <Trans>
-                    Sorry, an error occured while processing your request. If you request support, be sure to provide
-                    your error ID.
-                  </Trans>
-                </Description>
-              </Column>
-              <CodeBlockWrapper>
-                <CodeTitle>
-                  <ThemedText.SubHeader>
-                    <Trans>Error ID: {eventId}</Trans>
-                  </ThemedText.SubHeader>
-                  <CopyToClipboard toCopy={eventId}>
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </CodeTitle>
-                <Separator />
-                {isExpanded && (
-                  <>
-                    <Code>{errorDetails}</Code>
-                    <Separator />
-                  </>
-                )}
-                {showMoreButton}
-              </CodeBlockWrapper>
-            </>
-          ) : (
-            <>
-              <Column gap="sm">
-                <Title textAlign="center">
-                  <Trans>Something went wrong</Trans>
-                </Title>
-                <Description textAlign="center" color="neutral2">
-                  <Trans>
-                    Sorry, an error occured while processing your request. If you request support, be sure to copy the
-                    details of this error.
-                  </Trans>
-                </Description>
-              </Column>
-              <CodeBlockWrapper>
-                <CodeTitle>
-                  <ThemedText.SubHeader>Error details</ThemedText.SubHeader>
-                  <CopyToClipboard toCopy={errorDetails}>
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </CodeTitle>
-                <Separator />
-                <Code>{errorDetails.split('\n').slice(0, isExpanded ? undefined : 4)}</Code>
-                <Separator />
-                {showMoreButton}
-              </CodeBlockWrapper>
-            </>
-          )}
+          <>
+            <Column gap="sm">
+              <Title textAlign="center">
+                <Trans>Something went wrong</Trans>
+              </Title>
+              <Description textAlign="center" color="neutral2">
+                <Trans>
+                  Sorry, an error occured while processing your request. If you request support, be sure to copy the
+                  details of this error.
+                </Trans>
+              </Description>
+            </Column>
+            <CodeBlockWrapper>
+              <CodeTitle>
+                <ThemedText.SubHeader>Error details</ThemedText.SubHeader>
+                <CopyToClipboard toCopy={errorDetails}>
+                  <CopyIcon />
+                </CopyToClipboard>
+              </CodeTitle>
+              <Separator />
+              <Code>{errorDetails.split('\n').slice(0, isExpanded ? undefined : 4)}</Code>
+              <Separator />
+              {showMoreButton}
+            </CodeBlockWrapper>
+          </>
           <StretchedRow>
             <SmallButtonPrimary onClick={() => window.location.reload()}>
               <Trans>Reload the app</Trans>
@@ -243,7 +206,7 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.error) {
-      ;<Fallback error={this.state.error} eventId={null} />
+      return <Fallback error={this.state.error} />
     }
     return this.props.children
   }

@@ -367,10 +367,6 @@ function parseRemoteActivity(
     )
     const supportedChain = supportedChainIdFromGQLChain(assetActivity.chain)
     if (!supportedChain) {
-      logSentryErrorForUnsupportedChain({
-        extras: { assetActivity },
-        errorMessage: 'Invalid activity from unsupported chain received from GQL',
-      })
       return undefined
     }
 
