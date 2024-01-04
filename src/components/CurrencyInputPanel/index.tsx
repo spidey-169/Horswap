@@ -3,7 +3,6 @@ import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 import { Pair } from '@uniswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
-import PrefetchBalancesWrapper from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import { isSupportedChain } from 'constants/chains'
 import { darken } from 'polished'
 import { ReactNode, useCallback, useState } from 'react'
@@ -159,10 +158,6 @@ const StyledNumericalInput = styled(NumericalInput)<{ $loading: boolean }>`
   text-align: left;
 `
 
-const StyledPrefetchBalancesWrapper = styled(PrefetchBalancesWrapper)<{ $fullWidth: boolean }>`
-  width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
-`
-
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
@@ -233,7 +228,7 @@ export default function CurrencyInputPanel({
                 />
               )}
 
-              <StyledPrefetchBalancesWrapper shouldFetchOnAccountUpdate={modalOpen} $fullWidth={hideInput}>
+              <>
                 <CurrencySelect
                   disabled={!chainAllowed}
                   visible={currency !== undefined}
@@ -276,7 +271,7 @@ export default function CurrencyInputPanel({
                     {onCurrencySelect && <StyledDropDown selected={!!currency} />}
                   </Aligner>
                 </CurrencySelect>
-              </StyledPrefetchBalancesWrapper>
+              </>
             </InputRow>
             {Boolean(!hideInput && !hideBalance && currency) && (
               <FiatRow>

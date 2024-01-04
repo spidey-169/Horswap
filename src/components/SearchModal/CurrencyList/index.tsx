@@ -1,10 +1,6 @@
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import Loader from 'components/Icons/LoadingSpinner'
+import { Currency } from '@uniswap/sdk-core'
 import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
 import { checkWarning } from 'constants/tokenSafety'
-import { TokenBalances } from 'lib/hooks/useTokenList/sorting'
-import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { Check } from 'react-feather'
 import { FixedSizeList } from 'react-window'
@@ -17,7 +13,7 @@ import Column, { AutoColumn } from '../../Column'
 import CurrencyLogo from '../../Logo/CurrencyLogo'
 import Row, { RowFixed } from '../../Row'
 import { MouseoverTooltip } from '../../Tooltip'
-import { LoadingRows, MenuItem } from '../styled'
+import { MenuItem } from '../styled'
 import { scrollbarStyle } from './index.css'
 
 function currencyKey(currency: Currency): string {
@@ -29,13 +25,6 @@ const CheckIcon = styled(Check)`
   width: 20px;
   margin-left: 4px;
   color: ${({ theme }) => theme.accent1};
-`
-
-const StyledBalanceText = styled(Text)`
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 5rem;
-  text-overflow: ellipsis;
 `
 
 const CurrencyName = styled(Text)`
@@ -61,10 +50,6 @@ const Tag = styled.div`
 const WarningContainer = styled.div`
   margin-left: 0.3em;
 `
-
-function Balance({ balance }: { balance: CurrencyAmount<Currency> }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
-}
 
 const TagContainer = styled.div`
   display: flex;
@@ -107,7 +92,6 @@ export function CurrencyRow({
   otherSelected,
   style,
   showCurrencyAmount,
-  balance,
 }: {
   currency: Currency
   onSelect: (hasWarning: boolean) => void
@@ -115,9 +99,7 @@ export function CurrencyRow({
   otherSelected: boolean
   style?: CSSProperties
   showCurrencyAmount?: boolean
-  balance?: CurrencyAmount<Currency>
 }) {
-  const { account } = useWeb3React()
   const key = currencyKey(currency)
   const warning = currency.isNative ? null : checkWarning(currency.address)
   const isBlockedToken = !!warning && !warning.canProceed
@@ -153,10 +135,7 @@ export function CurrencyRow({
         </RowFixed>
       </Column>
       {showCurrencyAmount ? (
-        <RowFixed style={{ justifySelf: 'flex-end' }}>
-          {account ? balance ? <Balance balance={balance} /> : <Loader /> : null}
-          {isSelected && <CheckIcon />}
-        </RowFixed>
+        <RowFixed style={{ justifySelf: 'flex-end' }}>{isSelected && <CheckIcon />}</RowFixed>
       ) : (
         isSelected && (
           <RowFixed style={{ justifySelf: 'flex-end' }}>
@@ -174,14 +153,6 @@ interface TokenRowProps {
   style: CSSProperties
 }
 
-const LoadingRow = () => (
-  <LoadingRows data-testid="loading-rows">
-    <div />
-    <div />
-    <div />
-  </LoadingRows>
-)
-
 export default function CurrencyList({
   height,
   currencies,
@@ -191,8 +162,6 @@ export default function CurrencyList({
   otherCurrency,
   fixedListRef,
   showCurrencyAmount,
-  isLoading,
-  balances,
 }: {
   height: number
   currencies: Currency[]
@@ -202,8 +171,6 @@ export default function CurrencyList({
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showCurrencyAmount?: boolean
-  isLoading: boolean
-  balances: TokenBalances
 }) {
   const itemData: Currency[] = useMemo(() => {
     if (otherListTokens && otherListTokens?.length > 0) {
@@ -218,19 +185,11 @@ export default function CurrencyList({
 
       const currency = row
 
-      const balance =
-        tryParseCurrencyAmount(
-          String(balances[currency.isNative ? 'ETH' : currency.address?.toLowerCase()]?.balance ?? 0),
-          currency
-        ) ?? CurrencyAmount.fromRawAmount(currency, 0)
-
       const isSelected = Boolean(currency && selectedCurrency && selectedCurrency.equals(currency))
       const otherSelected = Boolean(currency && otherCurrency && otherCurrency.equals(currency))
       const handleSelect = (hasWarning: boolean) => currency && onCurrencySelect(currency, hasWarning)
 
-      if (isLoading) {
-        return LoadingRow()
-      } else if (currency) {
+      if (currency) {
         return (
           <CurrencyRow
             style={style}
@@ -239,14 +198,13 @@ export default function CurrencyList({
             onSelect={handleSelect}
             otherSelected={otherSelected}
             showCurrencyAmount={showCurrencyAmount}
-            balance={balance}
           />
         )
       } else {
         return null
       }
     },
-    [selectedCurrency, otherCurrency, isLoading, onCurrencySelect, showCurrencyAmount, balances]
+    [selectedCurrency, otherCurrency, onCurrencySelect, showCurrencyAmount]
   )
 
   const itemKey = useCallback((index: number, data: typeof itemData) => {
@@ -256,32 +214,18 @@ export default function CurrencyList({
 
   return (
     <div data-testid="currency-list-wrapper">
-      {isLoading ? (
-        <FixedSizeList
-          className={scrollbarStyle}
-          height={height}
-          ref={fixedListRef as any}
-          width="100%"
-          itemData={[]}
-          itemCount={10}
-          itemSize={56}
-        >
-          {LoadingRow}
-        </FixedSizeList>
-      ) : (
-        <FixedSizeList
-          className={scrollbarStyle}
-          height={height}
-          ref={fixedListRef as any}
-          width="100%"
-          itemData={itemData}
-          itemCount={itemData.length}
-          itemSize={56}
-          itemKey={itemKey}
-        >
-          {Row}
-        </FixedSizeList>
-      )}
+      <FixedSizeList
+        className={scrollbarStyle}
+        height={height}
+        ref={fixedListRef as any}
+        width="100%"
+        itemData={itemData}
+        itemCount={itemData.length}
+        itemSize={56}
+        itemKey={itemKey}
+      >
+        {Row}
+      </FixedSizeList>
     </div>
   )
 }

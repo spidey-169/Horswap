@@ -5,7 +5,6 @@ import { useWeb3React } from '@web3-react/core'
 import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import PrefetchBalancesWrapper from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import Tooltip from 'components/Tooltip'
 import { isSupportedChain } from 'constants/chains'
 import ms from 'ms'
@@ -321,7 +320,7 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
                 />
               </div>
             )}
-            <PrefetchBalancesWrapper shouldFetchOnAccountUpdate={modalOpen}>
+            <>
               <Tooltip
                 show={tooltipVisible && !modalOpen}
                 placement="bottom"
@@ -371,7 +370,7 @@ const SwapCurrencyInputPanel = forwardRef<HTMLInputElement, SwapCurrencyInputPan
                   </Aligner>
                 </CurrencySelect>
               </Tooltip>
-            </PrefetchBalancesWrapper>
+            </>
           </InputRow>
           {Boolean(!hideInput && !hideBalance) && (
             <FiatRow>
