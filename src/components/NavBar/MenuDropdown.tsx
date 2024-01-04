@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import FeatureFlagModal from 'components/FeatureFlagModal/FeatureFlagModal'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
@@ -15,11 +14,9 @@ import { body, bodySmall } from 'nft/css/common.css'
 import { themeVars } from 'nft/css/sprinkles.css'
 import { ReactNode, useReducer, useRef } from 'react'
 import { NavLink, NavLinkProps } from 'react-router-dom'
-import { useToggleModal } from 'state/application/hooks'
 import styled, { useTheme } from 'styled-components'
 import { isDevelopmentEnv, isStagingEnv } from 'utils/env'
 
-import { ApplicationModal } from '../../state/application/reducer'
 import * as styles from './MenuDropdown.css'
 import { NavDropdown } from './NavDropdown'
 import { NavIcon } from './NavIcon'
@@ -119,7 +116,6 @@ const Icon = ({ href, children }: { href?: string; children: ReactNode }) => {
 export const MenuDropdown = () => {
   const theme = useTheme()
   const [isOpen, toggleOpen] = useReducer((s) => !s, false)
-  const openFeatureFlagsModal = useToggleModal(ApplicationModal.FEATURE_FLAGS)
   const ref = useRef<HTMLDivElement>(null)
   useOnClickOutside(ref, isOpen ? toggleOpen : undefined)
 
@@ -171,7 +167,6 @@ export const MenuDropdown = () => {
                   <SecondaryLinkedText
                     onClick={() => {
                       toggleOpen()
-                      openFeatureFlagsModal()
                     }}
                   >
                     <Trans>Feature Flags</Trans>
@@ -193,7 +188,6 @@ export const MenuDropdown = () => {
           </NavDropdown>
         )}
       </Box>
-      <FeatureFlagModal />
     </>
   )
 }

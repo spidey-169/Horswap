@@ -1,7 +1,6 @@
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { ChainId, Currency, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
 import { ZERO_PERCENT } from 'constants/misc'
-import { useQuickRouteMainnetEnabled } from 'featureFlags/flags/quickRouteMainnet'
 import { useMemo } from 'react'
 
 import { useGetQuickRouteQuery, useGetQuickRouteQueryState } from './quickRouteSlice'
@@ -26,11 +25,9 @@ function useQuickRouteArguments({
   inputTax: Percent
   outputTax: Percent
 }): GetQuickQuoteArgs | typeof skipToken {
-  const enabledMainnet = useQuickRouteMainnetEnabled()
-
   return useMemo(() => {
     if (!tokenIn || !tokenOut || !amount) return skipToken
-    if (!enabledMainnet || tokenIn.chainId !== ChainId.MAINNET) return skipToken
+    if (tokenIn.chainId !== ChainId.MAINNET) return skipToken
 
     return {
       amount: amount.quotient.toString(),
@@ -46,7 +43,7 @@ function useQuickRouteArguments({
       inputTax,
       outputTax,
     }
-  }, [amount, enabledMainnet, inputTax, outputTax, tokenIn, tokenOut, tradeType])
+  }, [amount, inputTax, outputTax, tokenIn, tokenOut, tradeType])
 }
 
 export function usePreviewTrade(

@@ -2,7 +2,6 @@ import 'cypress-hardhat/lib/browser'
 
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
 
-import { FeatureFlag } from '../../src/featureFlags'
 import { initialState, UserState } from '../../src/state/user/reducer'
 import { CONNECTED_WALLET_USER_STATE, setInitialUserState } from '../utils/user-state'
 
@@ -24,7 +23,6 @@ declare global {
     }
     interface VisitOptions {
       serviceWorker?: true
-      featureFlags?: Array<{ name: FeatureFlag; value: boolean }>
       /**
        * Initial user state.
        * @default {@type import('../utils/user-state').CONNECTED_WALLET_USER_STATE}
@@ -56,15 +54,6 @@ Cypress.Commands.overwrite(
               ...CONNECTED_WALLET_USER_STATE,
               ...(options?.userState ?? {}),
             })
-
-            // Set feature flags, if configured.
-            if (options?.featureFlags) {
-              const featureFlags = options.featureFlags.reduce(
-                (flags, flag) => ({ ...flags, [flag.name]: flag.value ? 'enabled' : 'control' }),
-                {}
-              )
-              win.localStorage.setItem('featureFlags', JSON.stringify(featureFlags))
-            }
 
             // Inject the mock ethereum provider.
             win.ethereum = provider

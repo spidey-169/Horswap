@@ -1,22 +1,17 @@
-import { useWeb3React } from '@web3-react/core'
 import ErrorBoundary from 'components/ErrorBoundary'
 import Loader from 'components/Icons/LoadingSpinner'
 import NavBar, { PageTabs } from 'components/NavBar'
 import { UK_BANNER_HEIGHT, UK_BANNER_HEIGHT_MD, UK_BANNER_HEIGHT_SM, UkBanner } from 'components/NavBar/UkBanner'
-import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import { useAtom } from 'jotai'
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import { useAppSelector } from 'state/hooks'
 import { AppState } from 'state/reducer'
-import { StatsigProvider, StatsigUser } from 'statsig-react'
 import styled from 'styled-components'
 import DarkModeQueryParamReader from 'theme/components/DarkModeQueryParamReader'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
-import { STATSIG_DUMMY_KEY } from 'tracing'
-import { getEnvName } from 'utils/env'
 
 import { RouteDefinition, routes, useRouterConfig } from './RouteDefinitions'
 
@@ -81,7 +76,6 @@ const HeaderWrapper = styled.div<{ transparent?: boolean; bannerIsVisible?: bool
 `
 
 export default function App() {
-  const isLoaded = useFeatureFlagsIsLoaded()
   const [, setShouldDisableNFTRoutes] = useAtom(shouldDisableNFTRoutesAtom)
 
   const location = useLocation()
@@ -117,14 +111,6 @@ export default function App() {
 
   const isHeaderTransparent = !scrolledState
 
-  const { account } = useWeb3React()
-  const statsigUser: StatsigUser = useMemo(
-    () => ({
-      customIDs: { address: account ?? '' },
-    }),
-    [account]
-  )
-
   const blockedPaths = document.querySelector('meta[property="x:blocked-paths"]')?.getAttribute('content')?.split(',')
   const shouldBlockPath = blockedPaths?.includes(pathname) ?? false
   if (shouldBlockPath && pathname !== '/swap') {
@@ -134,46 +120,31 @@ export default function App() {
   return (
     <ErrorBoundary>
       <DarkModeQueryParamReader />
-      <StatsigProvider
-        user={statsigUser}
-        // TODO: replace with proxy and cycle key
-        sdkKey={STATSIG_DUMMY_KEY}
-        waitForInitialization={false}
-        options={{
-          environment: { tier: getEnvName() },
-          api: process.env.REACT_APP_STATSIG_PROXY_URL,
-        }}
-      >
-        {renderUkBannner && <UkBanner />}
-        <HeaderWrapper transparent={isHeaderTransparent} bannerIsVisible={renderUkBannner} scrollY={scrollY}>
-          <NavBar blur={isHeaderTransparent} />
-        </HeaderWrapper>
-        <BodyWrapper bannerIsVisible={renderUkBannner}>
-          <Suspense>
-            <AppChrome />
-          </Suspense>
-          <Suspense fallback={<Loader />}>
-            {isLoaded ? (
-              <Routes>
-                {routes.map((route: RouteDefinition) =>
-                  route.enabled(routerConfig) ? (
-                    <Route key={route.path} path={route.path} element={route.getElement(routerConfig)}>
-                      {route.nestedPaths.map((nestedPath) => (
-                        <Route path={nestedPath} key={`${route.path}/${nestedPath}`} />
-                      ))}
-                    </Route>
-                  ) : null
-                )}
-              </Routes>
-            ) : (
-              <Loader />
+      {renderUkBannner && <UkBanner />}
+      <HeaderWrapper transparent={isHeaderTransparent} bannerIsVisible={renderUkBannner} scrollY={scrollY}>
+        <NavBar blur={isHeaderTransparent} />
+      </HeaderWrapper>
+      <BodyWrapper bannerIsVisible={renderUkBannner}>
+        <Suspense>
+          <AppChrome />
+        </Suspense>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            {routes.map((route: RouteDefinition) =>
+              route.enabled(routerConfig) ? (
+                <Route key={route.path} path={route.path} element={route.getElement(routerConfig)}>
+                  {route.nestedPaths.map((nestedPath) => (
+                    <Route path={nestedPath} key={`${route.path}/${nestedPath}`} />
+                  ))}
+                </Route>
+              ) : null
             )}
-          </Suspense>
-        </BodyWrapper>
-        <MobileBottomBar>
-          <PageTabs />
-        </MobileBottomBar>
-      </StatsigProvider>
+          </Routes>
+        </Suspense>
+      </BodyWrapper>
+      <MobileBottomBar>
+        <PageTabs />
+      </MobileBottomBar>
     </ErrorBoundary>
   )
 }

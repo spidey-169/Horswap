@@ -9,9 +9,8 @@ import MulticallJSON from '@uniswap/v3-periphery/artifacts/contracts/lens/Uniswa
 import NFTPositionManagerJSON from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useWeb3React } from '@web3-react/core'
 import { isSupportedChain } from 'constants/chains'
-import { DEPRECATED_RPC_PROVIDERS, RPC_PROVIDERS } from 'constants/providers'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { BaseContract } from 'ethers/lib/ethers'
-import { useFallbackProviderEnabled } from 'featureFlags/flags/fallbackProvider'
 import { ContractInput, useUniswapPricesQuery } from 'graphql/data/__generated__/types-and-hooks'
 import { toContractInput } from 'graphql/data/util'
 import useStablecoinPrice from 'hooks/useStablecoinPrice'
@@ -32,7 +31,7 @@ function useContractMultichain<T extends BaseContract>(
 ): ContractMap<T> {
   const { chainId: walletChainId, provider: walletProvider } = useWeb3React()
 
-  const networkProviders = useFallbackProviderEnabled() ? RPC_PROVIDERS : DEPRECATED_RPC_PROVIDERS
+  const networkProviders = RPC_PROVIDERS
 
   return useMemo(() => {
     const relevantChains =

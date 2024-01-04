@@ -12,9 +12,6 @@ window.GIT_COMMIT_HASH = process.env.REACT_APP_GIT_COMMIT_HASH
 // This is used to identify the user in Sentry.
 const SENTRY_USER_ID_KEY = 'sentry-user-id'
 
-// Actual KEYs are set by proxy servers.
-export const STATSIG_DUMMY_KEY = 'client-0000000000000000000000000000000000000000000'
-
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   release: process.env.REACT_APP_GIT_COMMIT_HASH,

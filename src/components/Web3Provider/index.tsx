@@ -2,9 +2,7 @@ import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/cor
 import { Connector } from '@web3-react/types'
 import { connections, getConnection } from 'connection'
 import { isSupportedChain } from 'constants/chains'
-import { DEPRECATED_RPC_PROVIDERS, RPC_PROVIDERS } from 'constants/providers'
-import { useFallbackProviderEnabled } from 'featureFlags/flags/fallbackProvider'
-import { TraceJsonRpcVariant, useTraceJsonRpcFlag } from 'featureFlags/flags/traceJsonRpc'
+import { RPC_PROVIDERS } from 'constants/providers'
 import usePrevious from 'hooks/usePrevious'
 import { ReactNode, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -28,23 +26,16 @@ function Updater() {
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
 
-  const providers = useFallbackProviderEnabled() ? RPC_PROVIDERS : DEPRECATED_RPC_PROVIDERS
+  const providers = RPC_PROVIDERS
 
   // Trace RPC calls (for debugging).
   const networkProvider = isSupportedChain(chainId) ? providers[chainId] : undefined
-  const shouldTrace = useTraceJsonRpcFlag() === TraceJsonRpcVariant.Enabled
   useEffect(() => {
-    if (shouldTrace) {
-      provider?.on('debug', trace)
-      if (provider !== networkProvider) {
-        networkProvider?.on('debug', trace)
-      }
-    }
     return () => {
       provider?.off('debug', trace)
       networkProvider?.off('debug', trace)
     }
-  }, [networkProvider, provider, shouldTrace])
+  }, [networkProvider, provider])
 
   // Send analytics events when the active account changes.
   const previousAccount = usePrevious(account)
