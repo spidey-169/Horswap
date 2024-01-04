@@ -23,24 +23,12 @@ const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [ChainId.BASE_GOERLI]
 // TODO: include BASE_GOERLI when routing is implemented
 export type SupportedInterfaceChain = Exclude<SupportedChainsType, ChainId.BASE_GOERLI>
 
-export function isSupportedChain(
-  chainId: number | null | undefined | ChainId,
-  featureFlags?: Record<number, boolean>
-): chainId is SupportedInterfaceChain {
-  if (featureFlags && chainId && chainId in featureFlags) {
-    return featureFlags[chainId]
-  }
+export function isSupportedChain(chainId: number | null | undefined | ChainId): chainId is SupportedInterfaceChain {
   return !!chainId && SUPPORTED_CHAINS.indexOf(chainId) !== -1 && NOT_YET_UX_SUPPORTED_CHAIN_IDS.indexOf(chainId) === -1
 }
 
-export function asSupportedChain(
-  chainId: number | null | undefined | ChainId,
-  featureFlags?: Record<number, boolean>
-): SupportedInterfaceChain | undefined {
+export function asSupportedChain(chainId: number | null | undefined | ChainId): SupportedInterfaceChain | undefined {
   if (!chainId) return undefined
-  if (featureFlags && chainId in featureFlags && !featureFlags[chainId]) {
-    return undefined
-  }
   return isSupportedChain(chainId) ? chainId : undefined
 }
 

@@ -26,9 +26,8 @@ import ERC721_ABI from 'abis/erc721.json'
 import ERC1155_ABI from 'abis/erc1155.json'
 import { ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Erc20, Erc721, Erc1155, Weth } from 'abis/types'
 import WETH_ABI from 'abis/weth.json'
-import { DEPRECATED_RPC_PROVIDERS, RPC_PROVIDERS } from 'constants/providers'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
-import { useFallbackProviderEnabled } from 'featureFlags/flags/fallbackProvider'
 import { useMemo } from 'react'
 import { NonfungiblePositionManager, TickLens, UniswapInterfaceMulticall } from 'types/v3'
 import { V3Migrator } from 'types/v3/V3Migrator'
@@ -68,7 +67,7 @@ function useMainnetContract<T extends Contract = Contract>(address: string | und
   const { chainId } = useWeb3React()
   const isMainnet = chainId === ChainId.MAINNET
   const contract = useContract(isMainnet ? address : undefined, ABI, false)
-  const providers = useFallbackProviderEnabled() ? RPC_PROVIDERS : DEPRECATED_RPC_PROVIDERS
+  const providers = RPC_PROVIDERS
 
   return useMemo(() => {
     if (isMainnet) return contract

@@ -3,10 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AboutSection } from 'components/Tokens/TokenDetails/About'
 import AddressSection from 'components/Tokens/TokenDetails/AddressSection'
-import BalanceSummary from 'components/Tokens/TokenDetails/BalanceSummary'
 import { BreadcrumbNavLink } from 'components/Tokens/TokenDetails/BreadcrumbNavLink'
 import ChartSection from 'components/Tokens/TokenDetails/ChartSection'
-import MobileBalanceSummaryFooter from 'components/Tokens/TokenDetails/MobileBalanceSummaryFooter'
 import ShareButton from 'components/Tokens/TokenDetails/ShareButton'
 import TokenDetailsSkeleton, {
   Hr,
@@ -21,7 +19,6 @@ import TokenSafetyMessage from 'components/TokenSafety/TokenSafetyMessage'
 import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { NATIVE_CHAIN_ID, nativeOnChain } from 'constants/tokens'
 import { checkWarning } from 'constants/tokenSafety'
-import { useInfoTDPEnabled } from 'featureFlags/flags/infoTDP'
 import { TokenPriceQuery } from 'graphql/data/__generated__/types-and-hooks'
 import { Chain, TokenQuery, TokenQueryData } from 'graphql/data/Token'
 import { QueryToken } from 'graphql/data/Token'
@@ -127,7 +124,6 @@ export default function TokenDetails({
       }, {} as { [key: string]: string | undefined }) ?? {},
     [tokenQueryData]
   )
-  const isInfoTDPEnabled = useInfoTDPEnabled()
 
   const { token: detailedToken, didFetchFromChain } = useRelevantToken(address, pageChainId, tokenQueryData)
 
@@ -250,9 +246,7 @@ export default function TokenDetails({
           />
         </div>
         {tokenWarning && <TokenSafetyMessage tokenAddress={address} warning={tokenWarning} />}
-        {!isInfoTDPEnabled && detailedToken && <BalanceSummary token={detailedToken} />}
       </RightPanel>
-      {!isInfoTDPEnabled && detailedToken && <MobileBalanceSummaryFooter token={detailedToken} />}
 
       <TokenSafetyModal
         isOpen={openTokenSafetyModal || !!continueSwap}

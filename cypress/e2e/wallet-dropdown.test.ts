@@ -1,5 +1,3 @@
-import { FeatureFlag } from 'featureFlags'
-
 import { getTestSelector } from '../utils'
 
 describe('Wallet Dropdown', () => {
@@ -23,13 +21,9 @@ describe('Wallet Dropdown', () => {
     })
   }
 
-  function itChangesLocale({ featureFlag = false }: { featureFlag?: boolean } = {}) {
+  function itChangesLocale() {
     it('should change locale', () => {
       cy.contains('Uniswap available in: English').should('not.exist')
-
-      if (featureFlag) {
-        cy.get(getTestSelector('language-settings-button')).click()
-      }
 
       cy.get(getTestSelector('wallet-language-item')).contains('Afrikaans').click({ force: true })
       cy.location('search').should('match', /\?lng=af-ZA$/)
@@ -53,11 +47,11 @@ describe('Wallet Dropdown', () => {
 
   describe('should change locale with feature flag', () => {
     beforeEach(() => {
-      cy.visit('/', { featureFlags: [{ name: FeatureFlag.currencyConversion, value: true }] })
+      cy.visit('/', {})
       cy.get(getTestSelector('web3-status-connected')).click()
       cy.get(getTestSelector('wallet-settings')).click()
     })
-    itChangesLocale({ featureFlag: true })
+    itChangesLocale()
   })
 
   describe('testnet toggle', () => {
@@ -141,19 +135,19 @@ describe('Wallet Dropdown', () => {
 
   describe('local currency', () => {
     it('loads local currency from the query param', () => {
-      cy.visit('/', { featureFlags: [{ name: FeatureFlag.currencyConversion, value: true }] })
+      cy.visit('/', {})
       cy.get(getTestSelector('web3-status-connected')).click()
       cy.get(getTestSelector('wallet-settings')).click()
       cy.contains('USD')
 
-      cy.visit('/?cur=AUD', { featureFlags: [{ name: FeatureFlag.currencyConversion, value: true }] })
+      cy.visit('/?cur=AUD', {})
       cy.get(getTestSelector('web3-status-connected')).click()
       cy.get(getTestSelector('wallet-settings')).click()
       cy.contains('AUD')
     })
 
     it('loads local currency from menu', () => {
-      cy.visit('/', { featureFlags: [{ name: FeatureFlag.currencyConversion, value: true }] })
+      cy.visit('/', {})
       cy.get(getTestSelector('web3-status-connected')).click()
       cy.get(getTestSelector('wallet-settings')).click()
       cy.contains('USD')

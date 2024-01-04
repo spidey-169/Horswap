@@ -1,8 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { ChainId } from '@uniswap/sdk-core'
 import { TokenList } from '@uniswap/token-lists'
-import { DEPRECATED_RPC_PROVIDERS, RPC_PROVIDERS } from 'constants/providers'
-import { useFallbackProviderEnabled } from 'featureFlags/flags/fallbackProvider'
+import { RPC_PROVIDERS } from 'constants/providers'
 import getTokenList from 'lib/hooks/useTokenList/fetchTokenList'
 import resolveENSContentHash from 'lib/utils/resolveENSContentHash'
 import { useCallback } from 'react'
@@ -12,7 +11,7 @@ import { fetchTokenList } from '../state/lists/actions'
 
 export function useFetchListCallback(): (listUrl: string, skipValidation?: boolean) => Promise<TokenList> {
   const dispatch = useAppDispatch()
-  const providers = useFallbackProviderEnabled() ? RPC_PROVIDERS : DEPRECATED_RPC_PROVIDERS
+  const providers = RPC_PROVIDERS
 
   return useCallback(
     async (listUrl: string, skipValidation?: boolean) => {

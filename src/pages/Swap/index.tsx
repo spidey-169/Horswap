@@ -23,7 +23,6 @@ import { useConnectionReady } from 'connection/eagerlyConnect'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
-import { useUniswapXDefaultEnabled } from 'featureFlags/flags/uniswapXDefault'
 import { useCurrency, useDefaultActiveTokens } from 'hooks/Tokens'
 import { useIsSwapUnsupported } from 'hooks/useIsSwapUnsupported'
 import { useMaxAmountIn } from 'hooks/useMaxAmountIn'
@@ -568,7 +567,6 @@ export function Swap({
   const switchingChain = useAppSelector((state) => state.wallets.switchingChain)
   const showOptInSmall = !useScreenSize().navSearchInputVisible
   const isDark = useIsDarkMode()
-  const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
   const swapElement = (
     <SwapWrapper isDark={isDark} className={className} id="swap-page">
@@ -770,14 +768,14 @@ export function Swap({
           )}
         </div>
       </AutoColumn>
-      {!showOptInSmall && !isUniswapXDefaultEnabled && <UniswapXOptIn isSmall={false} swapInfo={swapInfo} />}
+      {!showOptInSmall && <UniswapXOptIn isSmall={false} swapInfo={swapInfo} />}
     </SwapWrapper>
   )
 
   return (
     <>
       {swapElement}
-      {showOptInSmall && !isUniswapXDefaultEnabled && <UniswapXOptIn isSmall swapInfo={swapInfo} />}
+      {showOptInSmall && <UniswapXOptIn isSmall swapInfo={swapInfo} />}
     </>
   )
 }

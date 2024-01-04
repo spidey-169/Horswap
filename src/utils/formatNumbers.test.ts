@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { CurrencyAmount, Percent } from '@uniswap/sdk-core'
 import { USDC_MAINNET } from 'constants/tokens'
-import { useCurrencyConversionFlagEnabled } from 'featureFlags/flags/currencyConversion'
 import { Currency } from 'graphql/data/__generated__/types-and-hooks'
 import { useLocalCurrencyConversionRate } from 'graphql/data/ConversionRate'
 import { useActiveLocalCurrency } from 'hooks/useActiveLocalCurrency'
@@ -13,12 +12,10 @@ import { NumberType, useFormatter } from './formatNumbers'
 jest.mock('hooks/useActiveLocale')
 jest.mock('hooks/useActiveLocalCurrency')
 jest.mock('graphql/data/ConversionRate')
-jest.mock('featureFlags/flags/currencyConversion')
 
 describe('formatNumber', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it('formats token reference numbers correctly', () => {
@@ -318,7 +315,6 @@ describe('formatNumber', () => {
 describe('formatUSDPrice', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it('format fiat price correctly', () => {
@@ -359,7 +355,6 @@ describe('formatUSDPrice', () => {
 describe('formatPriceImpact', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it('should correctly format undefined', () => {
@@ -393,7 +388,6 @@ describe('formatPriceImpact', () => {
 describe('formatSlippage', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it('should correctly format undefined', () => {
@@ -427,7 +421,6 @@ describe('formatSlippage', () => {
 describe('formatReviewSwapCurrencyAmount', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it('should use TokenTx formatting under a default length', () => {
@@ -464,7 +457,6 @@ describe('formatReviewSwapCurrencyAmount', () => {
 describe('formatPercent', () => {
   beforeEach(() => {
     mocked(useLocalCurrencyConversionRate).mockReturnValue({ data: 1.0, isLoading: false })
-    mocked(useCurrencyConversionFlagEnabled).mockReturnValue(true)
   })
 
   it.each([[null], [undefined], [Infinity], [NaN]])('should correctly format %p', (value) => {

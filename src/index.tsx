@@ -5,7 +5,6 @@ import 'tracing'
 import 'connection/eagerlyConnect'
 
 import { ApolloProvider } from '@apollo/client'
-import { FeatureFlagsProvider } from 'featureFlags'
 import { apolloClient } from 'graphql/data/apollo'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import { MulticallUpdater } from 'lib/state/multicall'
@@ -59,25 +58,23 @@ const Router = isBrowserRouterEnabled() ? BrowserRouter : HashRouter
 createRoot(container).render(
   <StrictMode>
     <Provider store={store}>
-      <FeatureFlagsProvider>
-        <QueryClientProvider client={queryClient}>
-          <Router>
-            <LanguageProvider>
-              <Web3Provider>
-                <ApolloProvider client={apolloClient}>
-                  <BlockNumberProvider>
-                    <Updaters />
-                    <ThemeProvider>
-                      <ThemedGlobalStyle />
-                      <App />
-                    </ThemeProvider>
-                  </BlockNumberProvider>
-                </ApolloProvider>
-              </Web3Provider>
-            </LanguageProvider>
-          </Router>
-        </QueryClientProvider>
-      </FeatureFlagsProvider>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <LanguageProvider>
+            <Web3Provider>
+              <ApolloProvider client={apolloClient}>
+                <BlockNumberProvider>
+                  <Updaters />
+                  <ThemeProvider>
+                    <ThemedGlobalStyle />
+                    <App />
+                  </ThemeProvider>
+                </BlockNumberProvider>
+              </ApolloProvider>
+            </Web3Provider>
+          </LanguageProvider>
+        </Router>
+      </QueryClientProvider>
     </Provider>
   </StrictMode>
 )

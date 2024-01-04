@@ -5,7 +5,6 @@ import {
   SupportedLocalCurrency,
 } from 'constants/localCurrencies'
 import { DEFAULT_LOCALE, SupportedLocale } from 'constants/locales'
-import { useCurrencyConversionFlagEnabled } from 'featureFlags/flags/currencyConversion'
 import { Currency as GqlCurrency } from 'graphql/data/__generated__/types-and-hooks'
 import { useLocalCurrencyConversionRate } from 'graphql/data/ConversionRate'
 import { useActiveLocalCurrency } from 'hooks/useActiveLocalCurrency'
@@ -599,20 +598,12 @@ export function useFormatterLocales(): {
   formatterLocale: SupportedLocale
   formatterLocalCurrency: SupportedLocalCurrency
 } {
-  const currencyConversionEnabled = useCurrencyConversionFlagEnabled()
   const activeLocale = useActiveLocale()
   const activeLocalCurrency = useActiveLocalCurrency()
 
-  if (currencyConversionEnabled) {
-    return {
-      formatterLocale: activeLocale,
-      formatterLocalCurrency: activeLocalCurrency,
-    }
-  }
-
   return {
-    formatterLocale: DEFAULT_LOCALE,
-    formatterLocalCurrency: DEFAULT_LOCAL_CURRENCY,
+    formatterLocale: activeLocale,
+    formatterLocalCurrency: activeLocalCurrency,
   }
 }
 

@@ -1,4 +1,3 @@
-import { useInfoPoolPageEnabled } from 'featureFlags/flags/infoPoolPage'
 import { useAtom } from 'jotai'
 import { lazy, ReactNode, Suspense, useMemo } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
@@ -44,7 +43,6 @@ const LazyLoadSpinner = () => (
 interface RouterConfig {
   browserRouterEnabled?: boolean
   hash?: string
-  infoPoolPageEnabled?: boolean
   shouldDisableNFTRoutes?: boolean
 }
 
@@ -54,16 +52,14 @@ interface RouterConfig {
 export function useRouterConfig(): RouterConfig {
   const browserRouterEnabled = isBrowserRouterEnabled()
   const { hash } = useLocation()
-  const infoPoolPageEnabled = useInfoPoolPageEnabled()
   const [shouldDisableNFTRoutes] = useAtom(shouldDisableNFTRoutesAtom)
   return useMemo(
     () => ({
       browserRouterEnabled,
       hash,
-      infoPoolPageEnabled,
       shouldDisableNFTRoutes: Boolean(shouldDisableNFTRoutes),
     }),
-    [browserRouterEnabled, hash, infoPoolPageEnabled, shouldDisableNFTRoutes]
+    [browserRouterEnabled, hash, shouldDisableNFTRoutes]
   )
 }
 
@@ -102,7 +98,7 @@ export const routes: RouteDefinition[] = [
   createRouteDefinition({
     path: '/pools/:chainName/:poolAddress',
     getElement: () => <PoolDetails />,
-    enabled: (args) => Boolean(args.infoPoolPageEnabled),
+    enabled: () => true,
   }),
   createRouteDefinition({
     path: '/vote/*',
