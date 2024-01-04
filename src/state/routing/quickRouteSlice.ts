@@ -22,20 +22,13 @@ export const quickRouteApi = createApi({
   endpoints: (build) => ({
     getQuickRoute: build.query<PreviewTradeResult, GetQuickQuoteArgs>({
       async onQueryStarted(args: GetQuickQuoteArgs, { queryFulfilled }) {
-        ;(async () => {
-          try {
-            await queryFulfilled
-          } catch (error: unknown) {
-            if (!(error && typeof error === 'object' && 'error' in error)) {
-              throw error
-            }
+        try {
+          await queryFulfilled
+        } catch (error: unknown) {
+          if (!(error && typeof error === 'object' && 'error' in error)) {
+            throw error
           }
-        })(),
-          {
-            data: {
-              ...args,
-            },
-          }
+        }
       },
       async queryFn(args, _api, _extraOptions, fetch) {
         const quoteStartMark = performance.mark(`quickroute-fetch-start-${Date.now()}`)

@@ -90,23 +90,14 @@ export const routingApi = createApi({
   }),
   endpoints: (build) => ({
     getQuote: build.query<TradeResult, GetQuoteArgs>({
-      async onQueryStarted(args: GetQuoteArgs, { queryFulfilled }) {
-        ;(async () => {
-          try {
-            await queryFulfilled
-          } catch (error: unknown) {
-            if (!(error && typeof error === 'object' && 'error' in error)) {
-              throw error
-            }
+      async onQueryStarted(_args: GetQuoteArgs, { queryFulfilled }) {
+        try {
+          await queryFulfilled
+        } catch (error: unknown) {
+          if (!(error && typeof error === 'object' && 'error' in error)) {
+            throw error
           }
-        })(),
-          {
-            data: {
-              ...args,
-              isPrice: args.routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE,
-              isAutoRouter: args.routerPreference === RouterPreference.API,
-            },
-          }
+        }
       },
       async queryFn(args, _api, _extraOptions, fetch) {
         let fellBack = false
