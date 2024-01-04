@@ -15,7 +15,7 @@ import {
   TokenTransferPartsFragment,
   TransactionDetailsPartsFragment,
 } from 'graphql/data/__generated__/types-and-hooks'
-import { gqlToCurrency, logSentryErrorForUnsupportedChain, supportedChainIdFromGQLChain } from 'graphql/data/util'
+import { gqlToCurrency, supportedChainIdFromGQLChain } from 'graphql/data/util'
 import ms from 'ms'
 import { useEffect, useState } from 'react'
 import { isAddress } from 'utils'
@@ -97,10 +97,6 @@ function getSwapTitle(sent: TokenTransferPartsFragment, received: TokenTransferP
   const supportedSentChain = supportedChainIdFromGQLChain(sent.asset.chain)
   const supportedReceivedChain = supportedChainIdFromGQLChain(received.asset.chain)
   if (!supportedSentChain || !supportedReceivedChain) {
-    logSentryErrorForUnsupportedChain({
-      extras: { sentAsset: sent.asset, receivedAsset: received.asset },
-      errorMessage: 'Invalid activity from unsupported chain received from GQL',
-    })
     return undefined
   }
   if (
@@ -329,10 +325,6 @@ function parseUniswapXOrder({ details, chain, timestamp }: OrderActivity): Activ
 
   const supportedChain = supportedChainIdFromGQLChain(chain)
   if (!supportedChain) {
-    logSentryErrorForUnsupportedChain({
-      extras: { details },
-      errorMessage: 'Invalid activity from unsupported chain received from GQL',
-    })
     return undefined
   }
 
@@ -375,10 +367,6 @@ function parseRemoteActivity(
     )
     const supportedChain = supportedChainIdFromGQLChain(assetActivity.chain)
     if (!supportedChain) {
-      logSentryErrorForUnsupportedChain({
-        extras: { assetActivity },
-        errorMessage: 'Invalid activity from unsupported chain received from GQL',
-      })
       return undefined
     }
 

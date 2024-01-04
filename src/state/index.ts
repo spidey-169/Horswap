@@ -3,7 +3,6 @@ import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { persistStore } from 'redux-persist'
 
 import { updateVersion } from './global/actions'
-import { sentryEnhancer } from './logging'
 import reducer from './reducer'
 import { quickRouteApi } from './routing/quickRouteSlice'
 import { routingApi } from './routing/slice'
@@ -11,7 +10,7 @@ import { routingApi } from './routing/slice'
 export function createDefaultStore() {
   return configureStore({
     reducer,
-    enhancers: (defaultEnhancers) => defaultEnhancers.concat(sentryEnhancer),
+    enhancers: (defaultEnhancers) => defaultEnhancers,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         thunk: true,

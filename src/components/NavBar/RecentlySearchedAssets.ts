@@ -1,7 +1,7 @@
 import { NATIVE_CHAIN_ID, nativeOnChain } from 'constants/tokens'
 import { Chain, useRecentlySearchedAssetsQuery } from 'graphql/data/__generated__/types-and-hooks'
 import { SearchToken } from 'graphql/data/SearchTokens'
-import { logSentryErrorForUnsupportedChain, supportedChainIdFromGQLChain } from 'graphql/data/util'
+import { supportedChainIdFromGQLChain } from 'graphql/data/util'
 import { useAtom } from 'jotai'
 import { atomWithStorage, useAtomValue } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
@@ -68,10 +68,6 @@ export function useRecentlySearchedAssets() {
         // Handles special case where wMATIC data needs to be used for MATIC
         const chain = supportedChainIdFromGQLChain(asset.chain)
         if (!chain) {
-          logSentryErrorForUnsupportedChain({
-            extras: { asset },
-            errorMessage: 'Invalid chain retrieved from Seach Token/Collection Query',
-          })
           return
         }
         const native = nativeOnChain(chain)

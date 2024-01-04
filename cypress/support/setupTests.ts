@@ -32,7 +32,7 @@ beforeEach(() => {
         'origin-country': 'US',
       }
     )
-  }).intercept('https://*.sentry.io', { statusCode: 200 })
+  })
 
   // Mock our own token list responses to avoid the latency of IPFS.
   cy.intercept('https://gateway.ipfs.io/ipns/tokens.uniswap.org', TokenListJSON)
