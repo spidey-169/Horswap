@@ -45,7 +45,7 @@ function testTradeLineItems(trade: InterfaceTrade, props: Partial<typeof lineIte
 }
 
 /* eslint-disable jest/expect-expect */ // allow expect inside testTradeLineItems
-describe.skip('SwapLineItem.tsx', () => {
+describe('SwapLineItem.tsx', () => {
   it('exact input', () => {
     testTradeLineItems(TEST_TRADE_EXACT_INPUT)
   })

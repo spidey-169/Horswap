@@ -6,7 +6,7 @@ import UniswapXRouterLabel from './UniswapXRouterLabel'
 
 jest.mock('uuid')
 
-describe.skip('UniswapXRouterLabel', () => {
+describe('UniswapXRouterLabel', () => {
   it('matches snapshot', () => {
     mocked(uuid).mockReturnValue('test-id')
     const { asFragment } = render(<UniswapXRouterLabel>test router label</UniswapXRouterLabel>)

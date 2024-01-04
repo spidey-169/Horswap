@@ -63,7 +63,7 @@ const project = {
 }
 
 describe('LoadedRow.tsx', () => {
-  it.skip('renders a row', () => {
+  it('renders a row', () => {
     const { asFragment } = render(
       <LoadedRow
         tokenListIndex={0}

@@ -2,7 +2,7 @@ import { render } from 'test-utils/render'
 
 import { EmptyWalletModule } from './EmptyWalletContent'
 
-describe.skip('EmptyWalletContent.tsx', () => {
+describe('EmptyWalletContent.tsx', () => {
   it('matches base snapshot', () => {
     const { asFragment } = render(
       <div>

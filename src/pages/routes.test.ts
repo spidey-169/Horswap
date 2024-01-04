@@ -3,7 +3,7 @@ import { parseStringPromise } from 'xml2js'
 
 import { routes } from './RouteDefinitions'
 
-describe.skip('Routes', () => {
+describe('Routes', () => {
   it('sitemap URLs should exist as Router paths', async () => {
     const pathNames: string[] = routes.map((routeDef) => routeDef.path)
     const contents = fs.readFileSync('./public/sitemap.xml', 'utf8')

@@ -158,36 +158,6 @@ Array [
     "enabled": [Function],
     "getElement": [Function],
     "nestedPaths": Array [],
-    "path": "/nfts",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/nfts/asset/:contractAddress/:tokenId",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/nfts/profile",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/nfts/collection/:contractAddress",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/nfts/collection/:contractAddress/activity",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
     "path": "*",
   },
   Object {

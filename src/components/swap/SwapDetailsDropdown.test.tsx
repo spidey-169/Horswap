@@ -12,7 +12,7 @@ import { act, render, screen } from 'test-utils/render'
 import SwapDetailsDropdown from './SwapDetailsDropdown'
 
 describe('SwapDetailsDropdown.tsx', () => {
-  it.skip('renders a trade', () => {
+  it('renders a trade', () => {
     const { asFragment } = render(
       <SwapDetailsDropdown
         trade={TEST_TRADE_EXACT_INPUT}

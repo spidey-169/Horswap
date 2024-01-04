@@ -90,7 +90,7 @@ describe('PoolDetailsPage', () => {
     })
   })
 
-  it.skip('pool header is displayed when data is received from thegraph', () => {
+  it('pool header is displayed when data is received from thegraph', () => {
     const { asFragment } = render(<PoolDetails />)
     expect(asFragment()).toMatchSnapshot()
 
