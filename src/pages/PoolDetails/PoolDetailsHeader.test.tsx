@@ -13,7 +13,7 @@ describe('PoolDetailsHeader', () => {
     toggleReversed: jest.fn(),
   }
 
-  it.skip('renders header text correctly', () => {
+  it('renders header text correctly', () => {
     const { asFragment } = render(<PoolDetailsHeader {...mockProps} />)
     expect(asFragment()).toMatchSnapshot()
 

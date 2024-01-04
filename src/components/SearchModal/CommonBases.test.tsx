@@ -6,7 +6,7 @@ import CommonBases from './CommonBases'
 const mockOnSelect = jest.fn()
 
 describe('CommonBases', () => {
-  it.skip('renders without crashing', () => {
+  it('renders without crashing', () => {
     const { container } = render(<CommonBases chainId={ChainId.MAINNET} onSelect={mockOnSelect} />)
     expect(container).toMatchSnapshot()
   })

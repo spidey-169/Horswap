@@ -21,7 +21,7 @@ describe('UnsupportedCurrencyFooter.tsx with unsupported tokens', () => {
     mocked(getExplorerLink).mockReturnValue(unsupportedTokenExplorerLink)
   })
 
-  it.skip('renders', () => {
+  it('renders', () => {
     const { asFragment } = render(<UnsupportedCurrencyFooter show={true} currencies={[unsupportedToken]} />)
     expect(asFragment()).toMatchSnapshot()
   })

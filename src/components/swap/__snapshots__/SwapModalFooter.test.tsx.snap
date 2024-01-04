@@ -420,17 +420,17 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5:focus {
-  box-shadow: 0 0 0 1pt #fb58ff;
-  background-color: #fb58ff;
+  box-shadow: 0 0 0 1pt #5cff58;
+  background-color: #5cff58;
 }
 
 .c5:hover {
-  background-color: #fb58ff;
+  background-color: #5cff58;
 }
 
 .c5:active {
-  box-shadow: 0 0 0 1pt #fb3fff;
-  background-color: #fb3fff;
+  box-shadow: 0 0 0 1pt #43ff3f;
+  background-color: #43ff3f;
 }
 
 .c5:disabled {
@@ -453,7 +453,6 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
     <button
       class="c3 c4 c5 c6"
       data-testid="confirm-swap-button"
-      id="confirm-swap-or-send"
     >
       <div
         class="c7 css-1jyz67g"
@@ -930,17 +929,17 @@ exports[`SwapModalFooter.tsx renders a preview trade while disabling submission 
 }
 
 .c5:focus {
-  box-shadow: 0 0 0 1pt #fb58ff;
-  background-color: #fb58ff;
+  box-shadow: 0 0 0 1pt #5cff58;
+  background-color: #5cff58;
 }
 
 .c5:hover {
-  background-color: #fb58ff;
+  background-color: #5cff58;
 }
 
 .c5:active {
-  box-shadow: 0 0 0 1pt #fb3fff;
-  background-color: #fb3fff;
+  box-shadow: 0 0 0 1pt #43ff3f;
+  background-color: #43ff3f;
 }
 
 .c5:disabled {
@@ -970,7 +969,6 @@ exports[`SwapModalFooter.tsx renders a preview trade while disabling submission 
       class="c3 c4 c5 c6"
       data-testid="confirm-swap-button"
       disabled=""
-      id="confirm-swap-or-send"
     >
       <div
         class="c7 css-1jyz67g"

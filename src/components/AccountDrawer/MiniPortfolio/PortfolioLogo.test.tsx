@@ -5,12 +5,12 @@ import { render } from 'test-utils/render'
 import { PortfolioLogo } from './PortfolioLogo'
 
 describe('PortfolioLogo', () => {
-  it.skip('renders without L2 icon', () => {
+  it('renders without L2 icon', () => {
     const { container } = render(<PortfolioLogo chainId={ChainId.MAINNET} currencies={[DAI, USDC_MAINNET]} />)
     expect(container).toMatchSnapshot()
   })
 
-  it.skip('renders with L2 icon', () => {
+  it('renders with L2 icon', () => {
     const { container } = render(
       <PortfolioLogo chainId={ChainId.ARBITRUM_ONE} currencies={[DAI_ARBITRUM_ONE, BRIDGED_USDC_ARBITRUM]} />
     )
