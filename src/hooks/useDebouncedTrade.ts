@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { ClassicTrade, InterfaceTrade, QuoteMethod, RouterPreference, TradeState } from 'state/routing/types'
 import { usePreviewTrade } from 'state/routing/usePreviewTrade'
 import { useRoutingAPITrade } from 'state/routing/useRoutingAPITrade'
-import { useRouterPreference } from 'state/user/hooks'
 
 import useAutoRouterSupported from './useAutoRouterSupported'
 import useDebounce from './useDebounce'
@@ -92,7 +91,7 @@ export function useDebouncedTrade(
     )
   }, [amountSpecified, chainId, otherCurrency])
 
-  const [routerPreference] = useRouterPreference()
+  const routerPreference = RouterPreference.CLIENT
 
   const skipBothFetches = !autoRouterSupported || !isWindowVisible || isWrap
   const skipRoutingFetch = skipBothFetches || isDebouncing

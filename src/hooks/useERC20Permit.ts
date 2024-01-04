@@ -52,7 +52,7 @@ enum UseERC20PermitState {
   SIGNED,
 }
 
-interface BaseSignatureData {
+type StandardSignatureData = {
   v: number
   r: string
   s: string
@@ -63,13 +63,20 @@ interface BaseSignatureData {
   chainId: number
   tokenAddress: string
   permitType: PermitType
-}
-
-interface StandardSignatureData extends BaseSignatureData {
   amount: string
 }
 
-interface AllowedSignatureData extends BaseSignatureData {
+type AllowedSignatureData = {
+  v: number
+  r: string
+  s: string
+  deadline: number
+  nonce: number
+  owner: string
+  spender: string
+  chainId: number
+  tokenAddress: string
+  permitType: PermitType
   allowed: true
 }
 

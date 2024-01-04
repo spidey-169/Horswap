@@ -1,5 +1,4 @@
 import { createMigrate } from 'redux-persist'
-import { RouterPreference } from 'state/routing/types'
 import { SlippageTolerance } from 'state/user/types'
 
 import { migration1, PersistAppStateV1 } from './1'
@@ -7,7 +6,6 @@ import { migration1, PersistAppStateV1 } from './1'
 const previousState: PersistAppStateV1 = {
   user: {
     userLocale: null,
-    userRouterPreference: RouterPreference.API,
     userHideClosedPositions: false,
     userSlippageTolerance: SlippageTolerance.Auto,
     userSlippageToleranceHasBeenMigratedToAuto: true,
@@ -36,7 +34,6 @@ describe('migration to v1', () => {
     expect(result?._persist.version).toEqual(1)
 
     expect(result?.user?.userLocale).toEqual(null)
-    expect(result?.user?.userRouterPreference).toEqual(RouterPreference.API)
     expect(result?.user?.userHideClosedPositions).toEqual(false)
     expect(result?.user?.userSlippageTolerance).toEqual(SlippageTolerance.Auto)
     expect(result?.user?.userSlippageToleranceHasBeenMigratedToAuto).toEqual(true)

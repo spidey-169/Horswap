@@ -1,5 +1,4 @@
 import { createStore, Store } from 'redux'
-import { RouterPreference } from 'state/routing/types'
 
 import reducer, {
   addSerializedPair,
@@ -10,7 +9,6 @@ import reducer, {
   updateSelectedWallet,
   updateUserDeadline,
   updateUserLocale,
-  updateUserRouterPreference,
   updateUserSlippageTolerance,
   UserState,
 } from './reducer'
@@ -60,13 +58,6 @@ describe('swap reducer', () => {
     it('updates the userDeadline', () => {
       store.dispatch(updateUserDeadline({ userDeadline: 5 }))
       expect(store.getState().userDeadline).toEqual(5)
-    })
-  })
-
-  describe('updateRouterPreference', () => {
-    it('updates the routerPreference', () => {
-      store.dispatch(updateUserRouterPreference({ userRouterPreference: RouterPreference.API }))
-      expect(store.getState().userRouterPreference).toEqual(RouterPreference.API)
     })
   })
 

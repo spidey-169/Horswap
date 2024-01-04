@@ -4,7 +4,6 @@ import { deletePersistedConnectionMeta, getPersistedConnectionMeta } from 'conne
 import { ConnectionType } from '../../connection/types'
 import { SupportedLocale } from '../../constants/locales'
 import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants/misc'
-import { RouterPreference } from '../../state/routing/types'
 import { SerializedPair, SerializedToken, SlippageTolerance } from './types'
 
 const selectedWallet = getPersistedConnectionMeta()?.type
@@ -17,9 +16,6 @@ export interface UserState {
   lastUpdateVersionTimestamp?: number
 
   userLocale: SupportedLocale | null
-
-  // which router should be used to calculate trades
-  userRouterPreference: RouterPreference
 
   // hides closed (inactive) positions across the app
   userHideClosedPositions: boolean
@@ -65,7 +61,6 @@ function pairKey(token0Address: string, token1Address: string) {
 export const initialState: UserState = {
   selectedWallet,
   userLocale: null,
-  userRouterPreference: RouterPreference.API,
   userHideClosedPositions: false,
   userSlippageTolerance: SlippageTolerance.Auto,
   userSlippageToleranceHasBeenMigratedToAuto: true,
@@ -102,9 +97,6 @@ const userSlice = createSlice({
       state.userDeadline = action.payload.userDeadline
       state.timestamp = currentTimestamp()
     },
-    updateUserRouterPreference(state, action) {
-      state.userRouterPreference = action.payload.userRouterPreference
-    },
     updateHideClosedPositions(state, action) {
       state.userHideClosedPositions = action.payload.userHideClosedPositions
     },
@@ -113,9 +105,6 @@ const userSlice = createSlice({
     },
     updateDisabledUniswapX(state, action) {
       state.disabledUniswapX = action.payload.disabledUniswapX
-    },
-    updateOptedOutOfUniswapX(state, action) {
-      state.optedOutOfUniswapX = action.payload.optedOutOfUniswapX
     },
     addSerializedToken(state, { payload: { serializedToken } }) {
       if (!state.tokens) {
@@ -144,12 +133,10 @@ export const {
   addSerializedToken,
   updateSelectedWallet,
   updateHideClosedPositions,
-  updateUserRouterPreference,
   updateUserDeadline,
   updateUserLocale,
   updateUserSlippageTolerance,
   updateHideBaseWalletBanner,
   updateDisabledUniswapX,
-  updateOptedOutOfUniswapX,
 } = userSlice.actions
 export default userSlice.reducer

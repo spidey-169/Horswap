@@ -2,7 +2,6 @@ import { DEFAULT_DEADLINE_FROM_NOW } from 'constants/misc'
 import { persistor } from 'state'
 
 import { initialState as initialListsState } from '../lists/reducer'
-import { RouterPreference } from '../routing/types'
 import { TransactionState } from '../transactions/reducer'
 import { initialState as initialTransactionsState } from '../transactions/reducer'
 import { UserState } from '../user/reducer'
@@ -104,16 +103,6 @@ function legacyUserMigrations(state: any): UserState {
     result.userDeadline > 180 * 60
   ) {
     result.userDeadline = DEFAULT_DEADLINE_FROM_NOW
-  }
-
-  // If `userRouterPreference` is not present, reset to default
-  if (typeof result.userRouterPreference !== 'string') {
-    result.userRouterPreference = RouterPreference.API
-  }
-
-  // If `userRouterPreference` is `AUTO`, migrate to `API`
-  if ((result.userRouterPreference as string) === 'auto') {
-    result.userRouterPreference = RouterPreference.API
   }
 
   //If `buyFiatFlowCompleted` is present, delete it using filtering

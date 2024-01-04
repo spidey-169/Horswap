@@ -37,7 +37,6 @@ export const sentryEnhancer = Sentry.createReduxEnhancer({
         selectedWallet: user.selectedWallet,
         lastUpdateVersionTimestamp: user.lastUpdateVersionTimestamp,
         userLocale: user.userLocale,
-        userRouterPreference: user.userRouterPreference,
         userHideClosedPositions: user.userHideClosedPositions,
         userSlippageTolerance: user.userSlippageTolerance,
         userSlippageToleranceHasBeenMigratedToAuto: user.userSlippageToleranceHasBeenMigratedToAuto,

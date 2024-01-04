@@ -20,7 +20,6 @@ import { FullRange, MintState as MintV3State } from './mint/v3/reducer'
 import { AppState } from './reducer'
 import { quickRouteApi } from './routing/quickRouteSlice'
 import { routingApi } from './routing/slice'
-import { RouterPreference } from './routing/types'
 import { SignatureState } from './signatures/reducer'
 import { TransactionState } from './transactions/reducer'
 import { TransactionDetails } from './transactions/types'
@@ -71,7 +70,6 @@ interface ExpectedUserState {
   selectedWallet?: ConnectionType
   lastUpdateVersionTimestamp?: number
   userLocale: SupportedLocale | null
-  userRouterPreference: RouterPreference
   userHideClosedPositions: boolean
   userSlippageTolerance: number | SlippageTolerance.Auto
   userSlippageToleranceHasBeenMigratedToAuto: boolean
