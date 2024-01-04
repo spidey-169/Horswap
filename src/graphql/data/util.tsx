@@ -56,7 +56,7 @@ export function isPricePoint(p: PricePoint | null): p is PricePoint {
   return p !== null
 }
 
-export const GQL_MAINNET_CHAINS = [
+const GQL_MAINNET_CHAINS = [
   Chain.Ethereum,
   Chain.Polygon,
   Chain.Celo,
