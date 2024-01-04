@@ -82,14 +82,14 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
     // Periodically evaluate all providers
     const currentTime = Date.now()
     // Note that this async action will not affect the current perform call
-    // this.providerEvaluations.forEach((providerEval) => {
-    // if (currentTime - providerEval.performance.lastEvaluated >= this.evaluationIntervalMs) {
-    //     this.evaluateProvider(providerEval)
-    // }
-    // })
-    //
-    // this.providerEvaluations = AppRpcProvider.sortProviders(this.providerEvaluations.slice())
-    //
+    this.providerEvaluations.forEach((providerEval) => {
+      if (currentTime - providerEval.performance.lastEvaluated >= this.evaluationIntervalMs) {
+        this.evaluateProvider(providerEval)
+      }
+    })
+
+    this.providerEvaluations = AppRpcProvider.sortProviders(this.providerEvaluations.slice())
+
     // Always broadcast "sendTransaction" to all backends
     if (method === 'sendTransaction') {
       const results: Array<string | Error> = await Promise.all(

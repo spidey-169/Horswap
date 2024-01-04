@@ -192,10 +192,6 @@ export function useUserDisabledUniswapX(): boolean {
   return useAppSelector((state) => state.user.disabledUniswapX) ?? false
 }
 
-export function useUserOptedOutOfUniswapX(): boolean {
-  return useAppSelector((state) => state.user.optedOutOfUniswapX) ?? false
-}
-
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
  * @param tokenA one of the two tokens

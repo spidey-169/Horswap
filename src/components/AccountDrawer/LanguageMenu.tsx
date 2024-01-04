@@ -20,7 +20,7 @@ function LanguageMenuItem({ locale, isActive }: { locale: SupportedLocale; isAct
   )
 }
 
-export function LanguageMenuItems() {
+function LanguageMenuItems() {
   const activeLocale = useActiveLocale()
 
   return (
