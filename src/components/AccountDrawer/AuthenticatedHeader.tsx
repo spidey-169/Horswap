@@ -18,7 +18,6 @@ import { NumberType, useFormatter } from 'utils/formatNumbers'
 import StatusIcon from '../Identicon/StatusIcon'
 import { useCachedPortfolioBalancesQuery } from '../PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import IconButton, { IconHoverText, IconWithConfirmTextButton } from './IconButton'
-import MiniPortfolio from './MiniPortfolio'
 import { portfolioFadeInAnimation } from './MiniPortfolio/PortfolioRow'
 
 const AuthenticatedHeaderWrapper = styled.div`
@@ -169,7 +168,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
             <LoadingBubble height="16px" width="100px" margin="4px 0 20px 0" />
           </Column>
         )}
-        <MiniPortfolio account={account} />
       </PortfolioDrawerContainer>
     </AuthenticatedHeaderWrapper>
   )
