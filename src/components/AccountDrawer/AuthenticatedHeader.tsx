@@ -2,9 +2,6 @@ import { useWeb3React } from '@web3-react/core'
 import Column from 'components/Column'
 import { Power } from 'components/Icons/Power'
 import { Settings } from 'components/Icons/Settings'
-import { AutoRow } from 'components/Row'
-import { LoadingBubble } from 'components/Tokens/loading'
-import { DeltaArrow } from 'components/Tokens/TokenDetails/Delta'
 import { getConnection } from 'connection'
 import useENSName from 'hooks/useENSName'
 import { useCallback, useState } from 'react'
@@ -13,12 +10,9 @@ import { updateSelectedWallet } from 'state/user/reducer'
 import styled from 'styled-components'
 import { CopyHelper, ThemedText } from 'theme/components'
 import { shortenAddress } from 'utils'
-import { NumberType, useFormatter } from 'utils/formatNumbers'
 
 import StatusIcon from '../Identicon/StatusIcon'
-import { useCachedPortfolioBalancesQuery } from '../PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import IconButton, { IconHoverText, IconWithConfirmTextButton } from './IconButton'
-import { portfolioFadeInAnimation } from './MiniPortfolio/PortfolioRow'
 
 const AuthenticatedHeaderWrapper = styled.div`
   padding: 20px 16px;
@@ -73,10 +67,6 @@ const CopyText = styled(CopyHelper).attrs({
   iconPosition: 'right',
 })``
 
-const FadeInColumn = styled(Column)`
-  ${portfolioFadeInAnimation}
-`
-
 const PortfolioDrawerContainer = styled(Column)`
   flex: 1;
 `
@@ -85,7 +75,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const { connector } = useWeb3React()
   const { ENSName } = useENSName(account)
   const dispatch = useAppDispatch()
-  const { formatNumber, formatPercent } = useFormatter()
 
   const connection = getConnection(connector)
   const disconnect = useCallback(() => {
@@ -96,11 +85,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
     dispatch(updateSelectedWallet({ wallet: undefined }))
   }, [connector, dispatch])
 
-  const { data: portfolioBalances } = useCachedPortfolioBalancesQuery({ account })
-  const portfolio = portfolioBalances?.portfolios?.[0]
-  const totalBalance = portfolio?.tokensTotalDenominatedValue?.value
-  const absoluteChange = portfolio?.tokensTotalDenominatedValueChange?.absolute?.value
-  const percentChange = portfolio?.tokensTotalDenominatedValueChange?.percentage?.value
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false)
 
   return (
@@ -139,36 +123,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
           />
         </IconContainer>
       </HeaderWrapper>
-      <PortfolioDrawerContainer>
-        {totalBalance !== undefined ? (
-          <FadeInColumn gap="xs">
-            <ThemedText.HeadlineLarge fontWeight={535} data-testid="portfolio-total-balance">
-              {formatNumber({
-                input: totalBalance,
-                type: NumberType.PortfolioBalance,
-              })}
-            </ThemedText.HeadlineLarge>
-            <AutoRow marginBottom="20px">
-              {absoluteChange !== 0 && percentChange && (
-                <>
-                  <DeltaArrow delta={absoluteChange} />
-                  <ThemedText.BodySecondary>
-                    {`${formatNumber({
-                      input: Math.abs(absoluteChange as number),
-                      type: NumberType.PortfolioBalance,
-                    })} (${formatPercent(percentChange)})`}
-                  </ThemedText.BodySecondary>
-                </>
-              )}
-            </AutoRow>
-          </FadeInColumn>
-        ) : (
-          <Column gap="xs">
-            <LoadingBubble height="44px" width="170px" />
-            <LoadingBubble height="16px" width="100px" margin="4px 0 20px 0" />
-          </Column>
-        )}
-      </PortfolioDrawerContainer>
     </AuthenticatedHeaderWrapper>
   )
 }

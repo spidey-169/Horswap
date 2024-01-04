@@ -4,7 +4,6 @@ import PortfolioDrawer, { useAccountDrawer } from 'components/AccountDrawer'
 import { usePendingActivity } from 'components/AccountDrawer/MiniPortfolio/Activity/hooks'
 import Loader, { LoaderV3 } from 'components/Icons/LoadingSpinner'
 import { IconWrapper } from 'components/Identicon/StatusIcon'
-import PrefetchBalancesWrapper from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import { getConnection } from 'connection'
 import { useConnectionReady } from 'connection/eagerlyConnect'
 import { ConnectionMeta, getPersistedConnectionMeta, setPersistedConnectionMeta } from 'connection/meta'
@@ -234,13 +233,12 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-  const [isDrawerOpen] = useAccountDrawer()
   return (
-    <PrefetchBalancesWrapper shouldFetchOnAccountUpdate={isDrawerOpen}>
+    <>
       <Web3StatusInner />
       <Portal>
         <PortfolioDrawer />
       </Portal>
-    </PrefetchBalancesWrapper>
+    </>
   )
 }

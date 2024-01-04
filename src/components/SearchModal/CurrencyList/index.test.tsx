@@ -1,9 +1,7 @@
 import { screen } from '@testing-library/react'
 import { Currency, CurrencyAmount as mockCurrencyAmount, Token as mockToken } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
 import { DAI, USDC_MAINNET, WBTC } from 'constants/tokens'
 import * as mockJSBI from 'jsbi'
-import { mocked } from 'test-utils/mocked'
 import { render } from 'test-utils/render'
 
 import CurrencyList from '.'
@@ -35,15 +33,7 @@ jest.mock('../../../state/connection/hooks', () => {
 
 it('renders loading rows when isLoading is true', () => {
   const component = render(
-    <CurrencyList
-      height={10}
-      currencies={[]}
-      otherListTokens={[]}
-      selectedCurrency={null}
-      onCurrencySelect={noOp}
-      isLoading={true}
-      balances={{}}
-    />
+    <CurrencyList height={10} currencies={[]} otherListTokens={[]} selectedCurrency={null} onCurrencySelect={noOp} />
   )
   expect(component.findByTestId('loading-rows')).toBeTruthy()
   expect(screen.queryByText('Wrapped BTC')).not.toBeInTheDocument()
@@ -59,36 +49,9 @@ it('renders currency rows correctly when currencies list is non-empty', () => {
       otherListTokens={[]}
       selectedCurrency={null}
       onCurrencySelect={noOp}
-      isLoading={false}
-      balances={{}}
     />
   )
   expect(screen.getByText('Wrapped BTC')).toBeInTheDocument()
   expect(screen.getByText('DAI')).toBeInTheDocument()
   expect(screen.getByText('USDC')).toBeInTheDocument()
-})
-
-it('renders currency rows correctly with balances', () => {
-  mocked(useWeb3React).mockReturnValue({
-    account: '0x52270d8234b864dcAC9947f510CE9275A8a116Db',
-    isActive: true,
-  } as ReturnType<typeof useWeb3React>)
-  render(
-    <CurrencyList
-      height={10}
-      currencies={[DAI, USDC_MAINNET, WBTC]}
-      otherListTokens={[]}
-      selectedCurrency={null}
-      onCurrencySelect={noOp}
-      isLoading={false}
-      showCurrencyAmount
-      balances={{
-        [DAI.address.toLowerCase()]: { usdValue: 2, balance: 2 },
-      }}
-    />
-  )
-  expect(screen.getByText('Wrapped BTC')).toBeInTheDocument()
-  expect(screen.getByText('DAI')).toBeInTheDocument()
-  expect(screen.getByText('USDC')).toBeInTheDocument()
-  expect(screen.getByText('2')).toBeInTheDocument()
 })
