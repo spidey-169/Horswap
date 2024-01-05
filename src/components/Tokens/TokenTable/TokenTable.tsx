@@ -76,7 +76,7 @@ function LoadingTokenTable({ rowCount = PAGE_SIZE }: { rowCount?: number }) {
 
 export default function TokenTable() {
   const chainName = validateUrlChainParam(useParams<{ chainName?: string }>().chainName)
-  const { tokens, tokenSortRank, loadingTokens, sparklines } = useTopTokens(chainName)
+  const { tokens, tokenSortRank, loadingTokens } = useTopTokens(chainName)
 
   /* loading and error state */
   if (loadingTokens && !tokens) {
@@ -107,7 +107,6 @@ export default function TokenTable() {
                   tokenListIndex={index}
                   tokenListLength={tokens.length}
                   token={token}
-                  sparklineMap={sparklines}
                   sortRank={tokenSortRank[token.address]}
                 />
               )

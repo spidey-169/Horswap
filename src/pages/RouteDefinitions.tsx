@@ -22,8 +22,6 @@ const PoolDetails = lazy(() => import('pages/PoolDetails'))
 const PoolFinder = lazy(() => import('pages/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('pages/RemoveLiquidity'))
 const RemoveLiquidityV3 = lazy(() => import('pages/RemoveLiquidity/V3'))
-const TokenDetails = lazy(() => import('pages/TokenDetails'))
-const Tokens = lazy(() => import('pages/Tokens'))
 const Vote = lazy(() => import('pages/Vote'))
 
 // this is the same svg defined in assets/images/blue-loader.svg
@@ -89,12 +87,6 @@ export const routes: RouteDefinition[] = [
       return args.browserRouterEnabled && args.hash ? <Navigate to={args.hash.replace('#', '')} replace /> : <Landing />
     },
   }),
-  createRouteDefinition({
-    path: '/tokens',
-    nestedPaths: [':chainName'],
-    getElement: () => <Tokens />,
-  }),
-  createRouteDefinition({ path: '/tokens/:chainName/:tokenAddress', getElement: () => <TokenDetails /> }),
   createRouteDefinition({
     path: '/pools/:chainName/:poolAddress',
     getElement: () => <PoolDetails />,

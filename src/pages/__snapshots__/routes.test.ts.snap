@@ -11,20 +11,6 @@ Array [
   Object {
     "enabled": [Function],
     "getElement": [Function],
-    "nestedPaths": Array [
-      ":chainName",
-    ],
-    "path": "/tokens",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/tokens/:chainName/:tokenAddress",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
     "nestedPaths": Array [],
     "path": "/pools/:chainName/:poolAddress",
   },

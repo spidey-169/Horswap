@@ -5,27 +5,6 @@ import { render, screen } from 'test-utils/render'
 
 import { LoadedRow } from './TokenRow'
 
-const sparklineData = [
-  {
-    __typename: 'TimestampedAmount',
-    id: 'VGltZXN0YW1wZWRBbW91bnQ6Ni41MjM1MTI1NzI1Nzc0MDZfMTY4NTk3NjkzNV9VU0Q=',
-    timestamp: 1685976935,
-    value: 6.523512572577406,
-  },
-  {
-    __typename: 'TimestampedAmount',
-    id: 'VGltZXN0YW1wZWRBbW91bnQ6Ni41MDQ2NTU5Njk1ODg3NzJfMTY4NTk3NzUzNV9VU0Q=',
-    timestamp: 1685977535,
-    value: 6.504655969588772,
-  },
-  {
-    __typename: 'TimestampedAmount',
-    id: 'VGltZXN0YW1wZWRBbW91bnQ6Ni40NzU2MTY0ODczODQ0NDlfMTY4NTk3ODEzNV9VU0Q=',
-    timestamp: 1685978135,
-    value: 6.475616487384449,
-  },
-]
-
 const market = {
   __typename: 'TokenMarket' as const,
   id: 'VG9rZW5NYXJrZXQ6RVRIRVJFVU1fMHhBMGI4Njk5MWM2MjE4YjM2YzFkMTlENGEyZTlFYjBjRTM2MDZlQjQ4X1VTRA==',
@@ -79,7 +58,6 @@ describe('LoadedRow.tsx', () => {
           market,
           project,
         }}
-        sparklineMap={{ '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': sparklineData }}
         sortRank={2}
       />
     )
@@ -103,7 +81,6 @@ describe('LoadedRow.tsx', () => {
           market: newMarket,
           project,
         }}
-        sparklineMap={{ '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': sparklineData }}
         sortRank={2}
       />
     )

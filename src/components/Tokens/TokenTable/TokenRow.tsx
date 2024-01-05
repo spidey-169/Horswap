@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro'
-import { ParentSize } from '@visx/responsive'
-import SparklineChart from 'components/Charts/SparklineChart'
 import { ArrowChangeDown } from 'components/Icons/ArrowChangeDown'
 import { ArrowChangeUp } from 'components/Icons/ArrowChangeUp'
 import { Info } from 'components/Icons/Info'
 import QueryTokenLogo from 'components/Logo/QueryTokenLogo'
 import { MouseoverTooltip } from 'components/Tooltip'
-import { SparklineMap, TopToken } from 'graphql/data/TopTokens'
+import { TopToken } from 'graphql/data/TopTokens'
 import { getTokenDetailsURL } from 'graphql/data/util'
 import { useAtomValue } from 'jotai/utils'
 import { ForwardedRef, forwardRef } from 'react'
@@ -206,18 +204,7 @@ const HeaderCellWrapper = styled.span<{ onClick?: () => void }>`
     ${ClickableStyle}
   }
 `
-const SparkLineCell = styled(Cell)`
-  padding: 0px 24px;
-  min-width: 120px;
 
-  @media only screen and (max-width: ${MAX_WIDTH_MEDIA_BREAKPOINT}) {
-    display: none;
-  }
-`
-const SparkLine = styled(Cell)`
-  width: 124px;
-  height: 42px;
-`
 const StyledLink = styled(Link)`
   text-decoration: none;
 `
@@ -267,15 +254,9 @@ const SmallLoadingBubble = styled(LoadingBubble)`
 const MediumLoadingBubble = styled(LoadingBubble)`
   width: 65%;
 `
-const LongLoadingBubble = styled(LoadingBubble)`
-  width: 90%;
-`
 const IconLoadingBubble = styled(LoadingBubble)`
   border-radius: 50%;
   width: 24px;
-`
-export const SparkLineLoadingBubble = styled(LongLoadingBubble)`
-  height: 4px;
 `
 
 const InfoIconContainer = styled.div`
@@ -344,7 +325,6 @@ function TokenRow({
   percentChange,
   tvl,
   volume,
-  sparkLine,
   ...rest
 }: {
   first?: boolean
@@ -354,7 +334,6 @@ function TokenRow({
   tvl: ReactNode
   price: ReactNode
   percentChange: ReactNode
-  sparkLine?: ReactNode
   tokenInfo: ReactNode
   volume: ReactNode
   last?: boolean
@@ -376,7 +355,6 @@ function TokenRow({
       <VolumeCell data-testid="volume-cell" sortable={header}>
         {volume}
       </VolumeCell>
-      <SparkLineCell>{sparkLine}</SparkLineCell>
     </>
   )
   if (header) return <StyledHeaderRow data-testid="header-row">{rowCells}</StyledHeaderRow>
@@ -394,7 +372,6 @@ export function HeaderRow() {
       percentChange={<HeaderCell category={TokenSortMethod.PERCENT_CHANGE} />}
       tvl={<HeaderCell category={TokenSortMethod.TOTAL_VALUE_LOCKED} />}
       volume={<HeaderCell category={TokenSortMethod.VOLUME} />}
-      sparkLine={null}
     />
   )
 }
@@ -416,7 +393,6 @@ export function LoadingRow(props: { first?: boolean; last?: boolean }) {
       percentChange={<LoadingBubble />}
       tvl={<LoadingBubble />}
       volume={<LoadingBubble />}
-      sparkLine={<SparkLineLoadingBubble />}
       {...props}
     />
   )
@@ -426,7 +402,6 @@ interface LoadedRowProps {
   tokenListIndex: number
   tokenListLength: number
   token: NonNullable<TopToken>
-  sparklineMap: SparklineMap
   sortRank: number
 }
 
@@ -489,23 +464,6 @@ export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HT
                 type: NumberType.FiatTokenStats,
               })}
             </ClickableContent>
-          }
-          sparkLine={
-            <SparkLine>
-              <ParentSize>
-                {({ width, height }) =>
-                  props.sparklineMap && (
-                    <SparklineChart
-                      width={width}
-                      height={height}
-                      tokenData={token}
-                      pricePercentChange={token.market?.pricePercentChange?.value}
-                      sparklineMap={props.sparklineMap}
-                    />
-                  )
-                }
-              </ParentSize>
-            </SparkLine>
           }
           first={tokenListIndex === 0}
           last={tokenListIndex === tokenListLength - 1}

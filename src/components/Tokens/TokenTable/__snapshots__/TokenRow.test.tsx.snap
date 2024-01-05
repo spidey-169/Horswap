@@ -182,16 +182,6 @@ exports[`LoadedRow.tsx renders a row 1`] = `
   flex: 1;
 }
 
-.c24 {
-  padding: 0px 24px;
-  min-width: 120px;
-}
-
-.c25 {
-  width: 124px;
-  height: 42px;
-}
-
 .c0 {
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -303,12 +293,6 @@ exports[`LoadedRow.tsx renders a row 1`] = `
     -webkit-box-align: flex-end;
     -ms-flex-align: flex-end;
     align-items: flex-end;
-  }
-}
-
-@media only screen and (max-width:1200px) {
-  .c24 {
-    display: none;
   }
 }
 
@@ -486,36 +470,6 @@ exports[`LoadedRow.tsx renders a row 1`] = `
             class="c5"
           >
             $444.7M
-          </div>
-        </div>
-        <div
-          class="c2 c24"
-        >
-          <div
-            class="c2 c25"
-          >
-            <div
-              style="width: 100%; height: 100%;"
-            >
-              <svg
-                height="0"
-                width="0"
-              >
-                <g
-                  class="visx-group"
-                  transform="translate(0, 5)"
-                >
-                  <path
-                    class="visx-linepath"
-                    d="M0,0C0,0,53.166666666666664,11.310946288825667,55,11.810946288825667C56.833333333333336,12.310946288825667,110,30,110,30"
-                    fill="transparent"
-                    stroke="#40B66B"
-                    stroke-linecap="round"
-                    stroke-width="1.5"
-                  />
-                </g>
-              </svg>
-            </div>
           </div>
         </div>
       </div>
