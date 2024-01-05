@@ -9,10 +9,6 @@ const StyledDownArrow = styled(ArrowChangeDown)<{ $noColor?: boolean }>`
   color: ${({ theme, $noColor }) => ($noColor ? theme.neutral2 : theme.critical)};
 `
 
-export function calculateDelta(start: number, current: number) {
-  return (current / start - 1) * 100
-}
-
 function isValidDelta(delta: number | null | undefined): delta is number {
   // Null-check not including zero
   return delta !== null && delta !== undefined && delta !== Infinity && !isNaN(delta)
