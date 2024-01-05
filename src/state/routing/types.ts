@@ -157,7 +157,7 @@ export enum TradeFillType {
 }
 
 export type ApproveInfo = { needsApprove: true; approveGasEstimateUSD: number } | { needsApprove: false }
-export type WrapInfo = { needsWrap: true; wrapGasEstimateUSD: number } | { needsWrap: false }
+type WrapInfo = { needsWrap: true; wrapGasEstimateUSD: number } | { needsWrap: false }
 
 export class ClassicTrade extends Trade<Currency, Currency, TradeType> {
   public readonly fillType = TradeFillType.Classic
