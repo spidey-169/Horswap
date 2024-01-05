@@ -1,6 +1,6 @@
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
-import { NATIVE_CHAIN_ID, nativeOnChain, WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
+import { nativeOnChain } from 'constants/tokens'
 import ms from 'ms'
 import { getNativeTokenDBAddress } from 'utils/nativeTokens'
 
@@ -118,50 +118,4 @@ export function supportedChainIdFromGQLChain(chain: InterfaceGqlChain): ChainId
 export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined
 export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined {
   return isSupportedGQLChain(chain) ? CHAIN_NAME_TO_CHAIN_ID[chain] : undefined
-}
-
-export const BACKEND_SUPPORTED_CHAINS = [
-  Chain.Ethereum,
-  Chain.Arbitrum,
-  Chain.Optimism,
-  Chain.Polygon,
-  Chain.Base,
-  Chain.Bnb,
-  Chain.Celo,
-] as const
-export const BACKEND_NOT_YET_SUPPORTED_CHAIN_IDS = [ChainId.AVALANCHE] as const
-
-export function getTokenDetailsURL({
-  address,
-  chain,
-  inputAddress,
-}: {
-  address?: string | null
-  chain: Chain
-  inputAddress?: string | null
-}) {
-  const chainName = chain.toLowerCase()
-  const tokenAddress = address ?? NATIVE_CHAIN_ID
-  const inputAddressSuffix = inputAddress ? `?inputCurrency=${inputAddress}` : ''
-  return `/tokens/${chainName}/${tokenAddress}${inputAddressSuffix}`
-}
-
-export function unwrapToken<
-  T extends {
-    address?: string | null
-  } | null
->(chainId: number, token: T): T {
-  if (!token?.address) return token
-
-  const address = token.address.toLowerCase()
-  const nativeAddress = WRAPPED_NATIVE_CURRENCY[chainId]?.address.toLowerCase()
-  if (address !== nativeAddress) return token
-
-  const nativeToken = nativeOnChain(chainId)
-  return {
-    ...token,
-    ...nativeToken,
-    address: NATIVE_CHAIN_ID,
-    extensions: undefined, // prevents marking cross-chain wrapped tokens as native
-  }
 }
