@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react'
 import { CurrencyAmount, TradeType } from '@uniswap/sdk-core'
 import { DAI, USDC_MAINNET } from 'constants/tokens'
 import { RouterPreference, TradeState } from 'state/routing/types'
-import { usePreviewTrade } from 'state/routing/usePreviewTrade'
 import { mocked } from 'test-utils/mocked'
 
 import { useRoutingAPITrade } from '../state/routing/useRoutingAPITrade'
@@ -18,13 +17,11 @@ jest.mock('./useAutoRouterSupported')
 jest.mock('./useDebounce')
 jest.mock('./useIsWindowVisible')
 jest.mock('state/routing/useRoutingAPITrade')
-jest.mock('state/routing/usePreviewTrade')
 jest.mock('state/user/hooks')
 
 // helpers to set mock expectations
 const expectRouterMock = (state: TradeState) => {
   mocked(useRoutingAPITrade).mockReturnValue({ state, trade: undefined })
-  mocked(usePreviewTrade).mockReturnValue({ state, trade: undefined })
 }
 
 beforeEach(() => {

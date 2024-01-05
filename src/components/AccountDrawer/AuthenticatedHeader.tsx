@@ -1,5 +1,4 @@
 import { useWeb3React } from '@web3-react/core'
-import Column from 'components/Column'
 import { Power } from 'components/Icons/Power'
 import { Settings } from 'components/Icons/Settings'
 import { getConnection } from 'connection'
@@ -66,10 +65,6 @@ const CopyText = styled(CopyHelper).attrs({
   iconSize: 14,
   iconPosition: 'right',
 })``
-
-const PortfolioDrawerContainer = styled(Column)`
-  flex: 1;
-`
 
 export default function AuthenticatedHeader({ account, openSettings }: { account: string; openSettings: () => void }) {
   const { connector } = useWeb3React()

@@ -55,6 +55,6 @@ export function useRoutingAPIArguments({
             inputTax,
             outputTax,
           },
-    [account, amount, routerPreference, tokenIn, tokenOut, tradeType, inputTax, outputTax]
+    [account, amount, tokenIn, tokenOut, routerPreference, tradeType, inputTax, outputTax]
   )
 }

@@ -1,4 +1,4 @@
-import { MixedRouteSDK, ONE, Protocol, Trade } from '@uniswap/router-sdk'
+import { MixedRouteSDK, ONE, Trade } from '@uniswap/router-sdk'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token, TradeType } from '@uniswap/sdk-core'
 import { DutchOrderInfo, DutchOrderInfoJSON, DutchOrderTrade as IDutchOrderTrade } from '@uniswap/uniswapx-sdk'
 import { Route as V2Route } from '@uniswap/v2-sdk'
@@ -25,8 +25,6 @@ export enum QuoteMethod {
 export const INTERNAL_ROUTER_PREFERENCE_PRICE = 'price' as const
 
 export enum RouterPreference {
-  X = 'uniswapx',
-  API = 'api',
   CLIENT = 'client',
 }
 
@@ -147,26 +145,6 @@ type URAClassicQuoteResponse = {
   allQuotes: Array<URAQuoteResponse>
 }
 export type URAQuoteResponse = URAClassicQuoteResponse | URADutchOrderQuoteResponse
-
-export type QuickRouteResponse = {
-  tokenIn: {
-    address: string
-    decimals: number
-    symbol: string
-    name: string
-  }
-  tokenOut: {
-    address: string
-    decimals: number
-    symbol: string
-    name: string
-  }
-  tradeType: 'EXACT_IN' | 'EXACT_OUT'
-  quote: {
-    amount: string
-    path: string
-  }
-}
 
 export function isClassicQuoteResponse(data: URAQuoteResponse): data is URAClassicQuoteResponse {
   return data.routing === URAQuoteType.CLASSIC
@@ -461,18 +439,6 @@ export type TradeResult =
       latencyMs?: number
     }
 
-export type PreviewTradeResult =
-  | {
-      state: QuoteState.NOT_FOUND
-      trade?: undefined
-      latencyMs?: number
-    }
-  | {
-      state: QuoteState.SUCCESS
-      trade: PreviewTrade
-      latencyMs?: number
-    }
-
 export enum PoolType {
   V2Pool = 'v2-pool',
   V3Pool = 'v3-pool',
@@ -492,16 +458,3 @@ export enum URAQuoteType {
   CLASSIC = 'CLASSIC',
   DUTCH_LIMIT = 'DUTCH_LIMIT',
 }
-
-type ClassicAPIConfig = {
-  protocols: Protocol[]
-}
-
-type UniswapXConfig = {
-  swapper?: string
-  exclusivityOverrideBps?: number
-  auctionPeriodSecs?: number
-  startTimeBufferSecs?: number
-}
-
-export type RoutingConfig = (UniswapXConfig | ClassicAPIConfig)[]
