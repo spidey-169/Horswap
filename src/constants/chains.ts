@@ -121,7 +121,3 @@ export function getChainPriority(chainId: ChainId): number {
       return 8
   }
 }
-
-export function isUniswapXSupportedChain(chainId: number) {
-  return chainId === ChainId.MAINNET
-}
