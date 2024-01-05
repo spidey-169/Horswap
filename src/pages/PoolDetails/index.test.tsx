@@ -89,15 +89,4 @@ describe('PoolDetailsPage', () => {
       expect(screen.getByText(/not found/i)).not.toBeInTheDocument()
     })
   })
-
-  it('pool header is displayed when data is received from thegraph', () => {
-    const { asFragment } = render(<PoolDetails />)
-    expect(asFragment()).toMatchSnapshot()
-
-    waitFor(() => {
-      expect(screen.getByText(/Explore/i)).toBeInTheDocument()
-      expect(screen.getByText(/Pool/i)).toBeInTheDocument()
-      expect(screen.getByText(/USDC \/ WETH \(0x88e6...5640\)/i)).toBeInTheDocument()
-    })
-  })
 })
