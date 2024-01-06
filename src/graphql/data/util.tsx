@@ -1,59 +1,16 @@
-import { QueryResult } from '@apollo/client'
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { NATIVE_CHAIN_ID, nativeOnChain, WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
 import ms from 'ms'
-import { useEffect } from 'react'
 import { getNativeTokenDBAddress } from 'utils/nativeTokens'
 
-import { Chain, ContractInput, HistoryDuration, TokenStandard } from './__generated__/types-and-hooks'
+import { Chain, ContractInput, TokenStandard } from './__generated__/types-and-hooks'
 
 export enum PollingInterval {
   Slow = ms(`5m`),
   Normal = ms(`1m`),
   Fast = AVERAGE_L1_BLOCK_TIME,
   LightningMcQueen = ms(`3s`), // approx block interval for polygon
-}
-
-// Polls a query only when the current component is mounted, as useQuery's pollInterval prop will continue to poll after unmount
-export function usePollQueryWhileMounted<T, K>(queryResult: QueryResult<T, K>, interval: PollingInterval) {
-  const { startPolling, stopPolling } = queryResult
-
-  useEffect(() => {
-    startPolling(interval)
-    return stopPolling
-  }, [interval, startPolling, stopPolling])
-
-  return queryResult
-}
-
-export enum TimePeriod {
-  HOUR,
-  DAY,
-  WEEK,
-  MONTH,
-  YEAR,
-}
-
-export function toHistoryDuration(timePeriod: TimePeriod): HistoryDuration {
-  switch (timePeriod) {
-    case TimePeriod.HOUR:
-      return HistoryDuration.Hour
-    case TimePeriod.DAY:
-      return HistoryDuration.Day
-    case TimePeriod.WEEK:
-      return HistoryDuration.Week
-    case TimePeriod.MONTH:
-      return HistoryDuration.Month
-    case TimePeriod.YEAR:
-      return HistoryDuration.Year
-  }
-}
-
-export type PricePoint = { timestamp: number; value: number }
-
-export function isPricePoint(p: PricePoint | null): p is PricePoint {
-  return p !== null
 }
 
 const GQL_MAINNET_CHAINS = [
@@ -70,9 +27,9 @@ const GQL_MAINNET_CHAINS = [
 const GQL_TESTNET_CHAINS = [Chain.EthereumGoerli, Chain.EthereumSepolia] as const
 
 const UX_SUPPORTED_GQL_CHAINS = [...GQL_MAINNET_CHAINS, ...GQL_TESTNET_CHAINS] as const
-export type InterfaceGqlChain = (typeof UX_SUPPORTED_GQL_CHAINS)[number]
+type InterfaceGqlChain = (typeof UX_SUPPORTED_GQL_CHAINS)[number]
 
-export const CHAIN_ID_TO_BACKEND_NAME: { [key: number]: InterfaceGqlChain } = {
+const CHAIN_ID_TO_BACKEND_NAME: { [key: number]: InterfaceGqlChain } = {
   [ChainId.MAINNET]: Chain.Ethereum,
   [ChainId.GOERLI]: Chain.EthereumGoerli,
   [ChainId.SEPOLIA]: Chain.EthereumSepolia,
@@ -138,17 +95,6 @@ const URL_CHAIN_PARAM_TO_BACKEND: { [key: string]: InterfaceGqlChain } = {
 export function getValidUrlChainName(chainName: string | undefined): Chain | undefined {
   const validChainName = chainName && URL_CHAIN_PARAM_TO_BACKEND[chainName]
   return validChainName ? validChainName : undefined
-}
-
-/**
- * @param chainName parsed in chain name from url query parameter
- * @returns if chainName is a valid chain name supported by the backend, returns the backend chain name, otherwise returns Chain.Ethereum
- */
-export function validateUrlChainParam(chainName: string | undefined) {
-  const isValidChainName = chainName && URL_CHAIN_PARAM_TO_BACKEND[chainName]
-  const isValidBackEndChain =
-    isValidChainName && (BACKEND_SUPPORTED_CHAINS as ReadonlyArray<Chain>).includes(isValidChainName)
-  return isValidBackEndChain ? URL_CHAIN_PARAM_TO_BACKEND[chainName] : Chain.Ethereum
 }
 
 const CHAIN_NAME_TO_CHAIN_ID: { [key in InterfaceGqlChain]: ChainId } = {

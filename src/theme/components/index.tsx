@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { MOBILE_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import React, {
   forwardRef,
@@ -234,61 +233,6 @@ export function CopyLinkIcon({ toCopy }: { toCopy: string }) {
     </CopyToClipboard>
   )
 }
-
-const FullAddress = styled.span`
-  @media only screen and (max-width: ${MOBILE_MEDIA_BREAKPOINT}) {
-    display: none;
-  }
-`
-const TruncatedAddress = styled.span`
-  display: none;
-  @media only screen and (max-width: ${MOBILE_MEDIA_BREAKPOINT}) {
-    display: flex;
-  }
-`
-
-const CopyAddressRow = styled.div<{ isClicked: boolean }>`
-  ${ClickableStyle}
-  color: inherit;
-  stroke: inherit;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  gap: 6px;
-  ${({ theme, isClicked }) => isClicked && `opacity: ${theme.opacity.click} !important`}
-`
-
-const CopyContractAddressWrapper = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
-`
-
-export function CopyContractAddress({ address }: { address: string }) {
-  const [isCopied, setCopied] = useCopyClipboard()
-  const [tooltipX, setTooltipX] = useState<number | undefined>()
-  const copy = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      setTooltipX(e.clientX)
-      setCopied(address)
-    },
-    [address, setCopied]
-  )
-
-  const truncated = `${address.slice(0, 4)}...${address.slice(-3)}`
-  return (
-    <CopyContractAddressWrapper onClick={copy}>
-      <CopyAddressRow isClicked={isCopied}>
-        <FullAddress>{address}</FullAddress>
-        <TruncatedAddress>{truncated}</TruncatedAddress>
-        <Copy size={14} />
-      </CopyAddressRow>
-      {isCopied && <Tooltip isCopyContractTooltip tooltipX={tooltipX} />}
-    </CopyContractAddressWrapper>
-  )
-}
-
 const CopyHelperContainer = styled.div<{ clicked: boolean; color?: string; gap: number }>`
   ${ClickableStyle}
   display: flex;
@@ -326,7 +270,7 @@ interface CopyHelperProps {
   children: ReactNode
 }
 
-export type CopyHelperRefType = { forceCopy: () => void }
+type CopyHelperRefType = { forceCopy: () => void }
 export const CopyHelper = forwardRef<CopyHelperRefType, CopyHelperProps>(
   (
     {
