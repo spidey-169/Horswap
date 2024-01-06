@@ -29,8 +29,3 @@ export function DeltaArrow({ delta, noColor = false, size = 16 }: DeltaArrowProp
     <StyledUpArrow width={size} height={size} key="arrow-up" aria-label="up" $noColor={noColor} />
   )
 }
-
-export const DeltaText = styled.span<{ delta?: number }>`
-  color: ${({ theme, delta }) =>
-    delta !== undefined ? (Math.sign(delta) < 0 ? theme.critical : theme.success) : theme.neutral1};
-`
