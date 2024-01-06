@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import { WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
 import { useMemo } from 'react'
 import { ClassicTrade, InterfaceTrade, QuoteMethod, RouterPreference, TradeState } from 'state/routing/types'
-import { usePreviewTrade } from 'state/routing/usePreviewTrade'
 import { useRoutingAPITrade } from 'state/routing/useRoutingAPITrade'
 
 import useAutoRouterSupported from './useAutoRouterSupported'
@@ -12,27 +11,12 @@ import useIsWindowVisible from './useIsWindowVisible'
 
 // Prevents excessive quote requests between keystrokes.
 const DEBOUNCE_TIME = 350
-const DEBOUNCE_TIME_QUICKROUTE = 50
 
 export function useDebouncedTrade(
   tradeType: TradeType,
   amountSpecified?: CurrencyAmount<Currency>,
   otherCurrency?: Currency,
-  routerPreferenceOverride?: RouterPreference.X,
-  account?: string,
-  inputTax?: Percent,
-  outputTax?: Percent
-): {
-  state: TradeState
-  trade?: InterfaceTrade
-  swapQuoteLatency?: number
-}
-
-export function useDebouncedTrade(
-  tradeType: TradeType,
-  amountSpecified?: CurrencyAmount<Currency>,
-  otherCurrency?: Currency,
-  routerPreferenceOverride?: RouterPreference.API | RouterPreference.CLIENT,
+  routerPreferenceOverride?: RouterPreference.CLIENT,
   account?: string,
   inputTax?: Percent,
   outputTax?: Percent
@@ -74,8 +58,6 @@ export function useDebouncedTrade(
   )
   const isDebouncing = useDebounce(inputs, DEBOUNCE_TIME) !== inputs
 
-  const isPreviewTradeDebouncing = useDebounce(inputs, DEBOUNCE_TIME_QUICKROUTE) !== inputs
-
   const isWrap = useMemo(() => {
     if (!chainId || !amountSpecified || !otherCurrency) return false
     const weth = WRAPPED_NATIVE_CURRENCY[chainId]
@@ -90,17 +72,6 @@ export function useDebouncedTrade(
   const skipBothFetches = !autoRouterSupported || !isWindowVisible || isWrap
   const skipRoutingFetch = skipBothFetches || isDebouncing
 
-  const skipPreviewTradeFetch =
-    skipBothFetches || routerPreference === RouterPreference.CLIENT || isPreviewTradeDebouncing
-
-  const previewTradeResult = usePreviewTrade(
-    skipPreviewTradeFetch,
-    tradeType,
-    amountSpecified,
-    otherCurrency,
-    inputTax,
-    outputTax
-  )
   const routingApiTradeResult = useRoutingAPITrade(
     skipRoutingFetch,
     tradeType,
@@ -112,7 +83,5 @@ export function useDebouncedTrade(
     outputTax
   )
 
-  return previewTradeResult.currentTrade && !routingApiTradeResult.currentTrade
-    ? previewTradeResult
-    : routingApiTradeResult
+  return routingApiTradeResult
 }
