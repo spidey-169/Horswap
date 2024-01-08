@@ -1,22 +1,18 @@
 import { Trans } from '@lingui/macro'
-import { Currency } from '@uniswap/sdk-core'
 import { FeeAmount } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ButtonGray } from 'components/Button'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import { RowBetween } from 'components/Row'
-import { useFeeTierDistribution } from 'hooks/useFeeTierDistribution'
-import { PoolState, usePools } from 'hooks/usePools'
 import usePrevious from 'hooks/usePrevious'
 import { DynamicSection } from 'pages/AddLiquidity/styled'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Box } from 'rebass'
 import styled, { keyframes } from 'styled-components'
 import { ThemedText } from 'theme/components'
 
 import { FeeOption } from './FeeOption'
-import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
 
 const pulse = (color: string) => keyframes`
@@ -49,54 +45,17 @@ export default function FeeSelector({
   disabled = false,
   feeAmount,
   handleFeePoolSelect,
-  currencyA,
-  currencyB,
 }: {
   disabled?: boolean
   feeAmount?: FeeAmount
   handleFeePoolSelect: (feeAmount: FeeAmount) => void
-  currencyA?: Currency
-  currencyB?: Currency
 }) {
   const { chainId } = useWeb3React()
-
-  const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
-
-  // get pool data on-chain for latest states
-  const pools = usePools([
-    [currencyA, currencyB, FeeAmount.LOWEST],
-    [currencyA, currencyB, FeeAmount.LOW],
-    [currencyA, currencyB, FeeAmount.MEDIUM],
-    [currencyA, currencyB, FeeAmount.HIGH],
-  ])
-
-  const poolsByFeeTier: Record<FeeAmount, PoolState> = useMemo(
-    () =>
-      pools.reduce(
-        (acc, [curPoolState, curPool]) => {
-          acc = {
-            ...acc,
-            ...{ [curPool?.fee as FeeAmount]: curPoolState },
-          }
-          return acc
-        },
-        {
-          // default all states to NOT_EXISTS
-          [FeeAmount.LOWEST]: PoolState.NOT_EXISTS,
-          [FeeAmount.LOW]: PoolState.NOT_EXISTS,
-          [FeeAmount.MEDIUM]: PoolState.NOT_EXISTS,
-          [FeeAmount.HIGH]: PoolState.NOT_EXISTS,
-        }
-      ),
-    [pools]
-  )
 
   const [showOptions, setShowOptions] = useState(false)
   const [pulsing, setPulsing] = useState(false)
 
   const previousFeeAmount = usePrevious(feeAmount)
-
-  const recommended = useRef(false)
 
   const handleFeePoolSelectWithEvent = useCallback(
     (fee: FeeAmount) => {
@@ -106,25 +65,12 @@ export default function FeeSelector({
   )
 
   useEffect(() => {
-    if (feeAmount || isLoading || isError) {
+    if (feeAmount) {
       return
     }
 
-    if (!largestUsageFeeTier) {
-      // cannot recommend, open options
-      setShowOptions(true)
-    } else {
-      setShowOptions(false)
-
-      recommended.current = true
-
-      handleFeePoolSelect(largestUsageFeeTier)
-    }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
-
-  useEffect(() => {
-    setShowOptions(isError)
-  }, [isError])
+    setShowOptions(true)
+  }, [feeAmount, handleFeePoolSelect])
 
   useEffect(() => {
     if (feeAmount && previousFeeAmount !== feeAmount) {
@@ -152,15 +98,7 @@ export default function FeeSelector({
                   <ThemedText.DeprecatedLabel className="selected-fee-label">
                     <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Trans>
                   </ThemedText.DeprecatedLabel>
-                  <Box style={{ width: 'fit-content', marginTop: '8px' }} className="selected-fee-percentage">
-                    {distributions && (
-                      <FeeTierPercentageBadge
-                        distributions={distributions}
-                        feeAmount={feeAmount}
-                        poolState={poolsByFeeTier[feeAmount]}
-                      />
-                    )}
-                  </Box>
+                  <Box style={{ width: 'fit-content', marginTop: '8px' }} className="selected-fee-percentage"></Box>
                 </>
               )}
             </AutoColumn>
@@ -181,8 +119,6 @@ export default function FeeSelector({
                     feeAmount={_feeAmount}
                     active={feeAmount === _feeAmount}
                     onClick={() => handleFeePoolSelectWithEvent(_feeAmount)}
-                    distributions={distributions}
-                    poolState={poolsByFeeTier[_feeAmount]}
                     key={i}
                   />
                 )

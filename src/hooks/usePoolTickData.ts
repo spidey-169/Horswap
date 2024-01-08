@@ -2,12 +2,9 @@ import { ChainId, Currency, V3_CORE_FACTORY_ADDRESSES } from '@uniswap/sdk-core'
 import { FeeAmount, nearestUsableTick, Pool, TICK_SPACINGS, tickToPrice } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ZERO_ADDRESS } from 'constants/misc'
-import { useAllV3TicksQuery } from 'graphql/thegraph/__generated__/types-and-hooks'
-import { TickData, Ticks } from 'graphql/thegraph/AllV3TicksQuery'
-import { apolloClient } from 'graphql/thegraph/apollo'
+import { TickData } from 'graphql/thegraph/AllV3TicksQuery'
 import JSBI from 'jsbi'
 import { useSingleContractMultipleData } from 'lib/hooks/multicall'
-import ms from 'ms'
 import { useEffect, useMemo, useState } from 'react'
 import computeSurroundingTicks from 'utils/computeSurroundingTicks'
 
@@ -137,33 +134,6 @@ function useTicksFromTickLens(
   )
 }
 
-function useTicksFromSubgraph(
-  currencyA: Currency | undefined,
-  currencyB: Currency | undefined,
-  feeAmount: FeeAmount | undefined,
-  skip = 0
-) {
-  const { chainId } = useWeb3React()
-  const poolAddress =
-    currencyA && currencyB && feeAmount
-      ? Pool.getAddress(
-          currencyA?.wrapped,
-          currencyB?.wrapped,
-          feeAmount,
-          undefined,
-          chainId ? V3_CORE_FACTORY_ADDRESSES[chainId] : undefined
-        )
-      : undefined
-
-  return useAllV3TicksQuery({
-    variables: { poolAddress: poolAddress?.toLowerCase(), skip },
-    skip: !poolAddress,
-    pollInterval: ms(`30s`),
-    client: apolloClient,
-  })
-}
-
-const MAX_THE_GRAPH_TICK_FETCH_VALUE = 1000
 // Fetches all ticks for a given pool
 function useAllV3Ticks(
   currencyA: Currency | undefined,
@@ -178,29 +148,10 @@ function useAllV3Ticks(
 
   const tickLensTickData = useTicksFromTickLens(!useSubgraph ? currencyA : undefined, currencyB, feeAmount)
 
-  const [skipNumber, setSkipNumber] = useState(0)
-  const [subgraphTickData, setSubgraphTickData] = useState<Ticks>([])
-  const {
-    data,
-    error,
-    loading: isLoading,
-  } = useTicksFromSubgraph(useSubgraph ? currencyA : undefined, currencyB, feeAmount, skipNumber)
-
-  useEffect(() => {
-    if (data?.ticks.length) {
-      setSubgraphTickData((tickData) => [...tickData, ...data.ticks])
-      if (data.ticks.length === MAX_THE_GRAPH_TICK_FETCH_VALUE) {
-        setSkipNumber((skipNumber) => skipNumber + MAX_THE_GRAPH_TICK_FETCH_VALUE)
-      }
-    }
-  }, [data?.ticks])
-
   return {
-    isLoading: useSubgraph
-      ? isLoading || data?.ticks.length === MAX_THE_GRAPH_TICK_FETCH_VALUE
-      : tickLensTickData.isLoading,
-    error: useSubgraph ? error : tickLensTickData.isError,
-    ticks: useSubgraph ? subgraphTickData : tickLensTickData.tickData,
+    isLoading: tickLensTickData.isLoading,
+    error: tickLensTickData.isError,
+    ticks: tickLensTickData.tickData,
   }
 }
 

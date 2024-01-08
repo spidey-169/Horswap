@@ -33,7 +33,6 @@ import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import FeeSelector from '../../components/FeeSelector'
 import HoverInlineText from '../../components/HoverInlineText'
-import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { PositionPreview } from '../../components/PositionPreview'
 import RangeSelector from '../../components/RangeSelector'
@@ -648,8 +647,6 @@ function AddLiquidity() {
                         disabled={!quoteCurrency || !baseCurrency}
                         feeAmount={feeAmount}
                         handleFeePoolSelect={handleFeePoolSelect}
-                        currencyA={baseCurrency ?? undefined}
-                        currencyB={quoteCurrency ?? undefined}
                       />
                     </AutoColumn>{' '}
                   </>
@@ -765,20 +762,6 @@ function AddLiquidity() {
                             </Trans>
                           </AutoColumn>
                         )}
-                        <LiquidityChartRangeInput
-                          currencyA={baseCurrency ?? undefined}
-                          currencyB={quoteCurrency ?? undefined}
-                          feeAmount={feeAmount}
-                          ticksAtLimit={ticksAtLimit}
-                          price={
-                            price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
-                          }
-                          priceLower={priceLower}
-                          priceUpper={priceUpper}
-                          onLeftRangeInput={onLeftRangeInput}
-                          onRightRangeInput={onRightRangeInput}
-                          interactive={!hasExistingPosition}
-                        />
                       </>
                     ) : (
                       <AutoColumn gap="md">
