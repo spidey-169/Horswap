@@ -11,7 +11,7 @@ const DOCUMENT = process.env.PUBLIC_URL + '/index.html'
  * Matches with App Shell-style routing, so that navigation requests are fulfilled with an index.html shell.
  * See https://developers.google.com/web/fundamentals/architecture/app-shell
  */
-export function matchDocument({ request, url }: RouteMatchCallbackOptions) {
+function matchDocument({ request, url }: RouteMatchCallbackOptions) {
   // If this isn't a navigation, skip.
   if (request.mode !== 'navigate') {
     return false
