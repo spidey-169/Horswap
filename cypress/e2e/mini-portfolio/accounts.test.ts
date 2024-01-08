@@ -1,16 +1,6 @@
 import { getTestSelector } from '../../utils'
 
 describe('Mini Portfolio account drawer', () => {
-  beforeEach(() => {
-    const portfolioSpy = cy.spy().as('portfolioSpy')
-    cy.intercept(/api.uniswap.org\/v1\/graphql/, (req) => {
-      if (req.body.operationName === 'PortfolioBalances') {
-        portfolioSpy(req)
-      }
-    })
-    cy.visit('/swap')
-  })
-
   it('fetches balances when account button is first hovered', () => {
     // The balances should not be fetched before the account button is hovered
     cy.get('@portfolioSpy').should('not.have.been.called')
