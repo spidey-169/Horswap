@@ -100,10 +100,3 @@ function useFeeValue(token: Token, fee: number | undefined, queriedPrice: number
     return [price, feeValue]
   }, [fee, queriedPrice, stablecoinPrice])
 }
-
-export function useFeeValues(position: PositionInfo) {
-  const [priceA, feeValueA] = useFeeValue(position.pool.token0, position.fees?.[0], position.prices?.[0])
-  const [priceB, feeValueB] = useFeeValue(position.pool.token1, position.fees?.[1], position.prices?.[1])
-
-  return { priceA, priceB, fees: (feeValueA || 0) + (feeValueB || 0) }
-}
