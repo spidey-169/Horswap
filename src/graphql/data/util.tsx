@@ -2,6 +2,7 @@ import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { nativeOnChain } from 'constants/tokens'
 import ms from 'ms'
+
 import { Chain, TokenStandard } from './__generated__/types-and-hooks'
 
 export enum PollingInterval {
