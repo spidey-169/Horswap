@@ -82,7 +82,7 @@ export enum PoolState {
   INVALID,
 }
 
-export function usePools(
+function usePools(
   poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][]
 ): [PoolState, Pool | null][] {
   const { chainId } = useWeb3React()
