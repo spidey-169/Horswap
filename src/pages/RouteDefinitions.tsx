@@ -18,7 +18,6 @@ const NotFound = lazy(() => import('pages/NotFound'))
 const Pool = lazy(() => import('pages/Pool'))
 const PositionPage = lazy(() => import('pages/Pool/PositionPage'))
 const PoolV2 = lazy(() => import('pages/Pool/v2'))
-const PoolDetails = lazy(() => import('pages/PoolDetails'))
 const PoolFinder = lazy(() => import('pages/PoolFinder'))
 const RemoveLiquidity = lazy(() => import('pages/RemoveLiquidity'))
 const RemoveLiquidityV3 = lazy(() => import('pages/RemoveLiquidity/V3'))
@@ -86,11 +85,6 @@ export const routes: RouteDefinition[] = [
     getElement: (args) => {
       return args.browserRouterEnabled && args.hash ? <Navigate to={args.hash.replace('#', '')} replace /> : <Landing />
     },
-  }),
-  createRouteDefinition({
-    path: '/pools/:chainName/:poolAddress',
-    getElement: () => <PoolDetails />,
-    enabled: () => true,
   }),
   createRouteDefinition({
     path: '/vote/*',
