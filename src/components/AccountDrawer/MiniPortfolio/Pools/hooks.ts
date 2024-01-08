@@ -2,24 +2,16 @@ import {
   ChainId,
   MULTICALL_ADDRESSES,
   NONFUNGIBLE_POSITION_MANAGER_ADDRESSES as V3NFT_ADDRESSES,
-  Token,
 } from '@uniswap/sdk-core'
 import type { AddressMap } from '@uniswap/smart-order-router'
 import MulticallJSON from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json'
-import NFTPositionManagerJSON from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useWeb3React } from '@web3-react/core'
 import { isSupportedChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { BaseContract } from 'ethers/lib/ethers'
-import { ContractInput, useUniswapPricesQuery } from 'graphql/data/__generated__/types-and-hooks'
-import { toContractInput } from 'graphql/data/util'
-import useStablecoinPrice from 'hooks/useStablecoinPrice'
 import { useMemo } from 'react'
-import { NonfungiblePositionManager, UniswapInterfaceMulticall } from 'types/v3'
+import { UniswapInterfaceMulticall } from 'types/v3'
 import { getContract } from 'utils'
-import { CurrencyKey, currencyKey, currencyKeyFromGraphQL } from 'utils/currencyKey'
-
-import { PositionInfo } from './cache'
 
 type ContractMap<T extends BaseContract> = { [key: number]: T }
 
