@@ -15,19 +15,9 @@ export function isProductionEnv(): boolean {
   return process.env.NODE_ENV === 'production' && !isStagingEnv()
 }
 
-export function isAppUniswapOrg({ hostname }: { hostname: string }): boolean {
-  return hostname === 'app.uniswap.org'
-}
-
-export function isAppUniswapStagingOrg({ hostname }: { hostname: string }): boolean {
-  return hostname === 'app.corn-staging.com'
-}
-
 export function isBrowserRouterEnabled(): boolean {
   if (isProductionEnv()) {
     if (
-      isAppUniswapOrg(window.location) ||
-      isAppUniswapStagingOrg(window.location) ||
       isLocalhost(window.location) // cypress tests
     ) {
       return true
