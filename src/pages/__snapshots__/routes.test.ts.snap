@@ -12,12 +12,6 @@ Array [
     "enabled": [Function],
     "getElement": [Function],
     "nestedPaths": Array [],
-    "path": "/pools/:chainName/:poolAddress",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
     "path": "/vote/*",
   },
   Object {
