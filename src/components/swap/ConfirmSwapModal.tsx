@@ -12,7 +12,7 @@ import { SwapResult } from 'hooks/useSwapCallback'
 import useWrapCallback from 'hooks/useWrapCallback'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { useCallback, useEffect, useState } from 'react'
-import { InterfaceTrade, TradeFillType } from 'state/routing/types'
+import { InterfaceTrade } from 'state/routing/types'
 import { isPreviewTrade } from 'state/routing/utils'
 import { Field } from 'state/swap/actions'
 import { useIsTransactionConfirmed, useSwapTransactionStatus } from 'state/transactions/hooks'
@@ -82,9 +82,6 @@ function useConfirmModalState({
   // at the bottom of the modal, even after they complete steps 1 and 2.
   const generateRequiredSteps = useCallback(() => {
     const steps: PendingConfirmModalState[] = []
-    if (trade.fillType === TradeFillType.UniswapX && trade.wrapInfo.needsWrap) {
-      steps.push(ConfirmModalState.WRAPPING)
-    }
     if (
       allowance.state === AllowanceState.REQUIRED &&
       allowance.needsSetupApproval &&
@@ -101,7 +98,7 @@ function useConfirmModalState({
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [allowance, trade])
+  }, [allowance])
 
   const { chainId } = useWeb3React()
 
@@ -346,7 +343,6 @@ export default function ConfirmSwapModal({
         tokenApprovalPending={allowance.state === AllowanceState.REQUIRED && allowance.isApprovalPending}
         revocationPending={allowance.state === AllowanceState.REQUIRED && allowance.isRevocationPending}
         swapError={swapError}
-        onRetryUniswapXSignature={onConfirm}
       />
     )
   }, [
@@ -364,7 +360,6 @@ export default function ConfirmSwapModal({
     fiatValueOutput,
     onAcceptChanges,
     swapFailed,
-    onConfirm,
   ])
 
   const l2Badge = () => {

@@ -1,13 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import { ChainId, Currency, CurrencyAmount, TradeType } from '@uniswap/sdk-core'
-import UniswapXBolt from 'assets/svg/bolt.svg'
 import { nativeOnChain } from 'constants/tokens'
 import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { ChainTokenMap, useAllTokensMultichain } from 'hooks/Tokens'
 import { useMemo } from 'react'
-import { isOnChainOrder, useAllSignatures } from 'state/signatures/hooks'
-import { SignatureDetails, SignatureType } from 'state/signatures/types'
 import { useMultichainTransactions } from 'state/transactions/hooks'
 import {
   AddLiquidityV2PoolTransactionInfo,
@@ -25,7 +22,7 @@ import {
 } from 'state/transactions/types'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 
-import { CancelledTransactionTitleTable, getActivityTitle, OrderTextTable } from '../constants'
+import { CancelledTransactionTitleTable, getActivityTitle } from '../constants'
 import { Activity, ActivityMap } from './types'
 
 type FormatNumberFunctionType = ReturnType<typeof useFormatter>['formatNumber']
@@ -75,7 +72,7 @@ function parseSwap(
   return {
     descriptor: buildCurrencyDescriptor(tokenIn, inputRaw, tokenOut, outputRaw, formatNumber, undefined),
     currencies: [tokenIn, tokenOut],
-    prefixIconSrc: swap.isUniswapXOrder ? UniswapXBolt : undefined,
+    prefixIconSrc: undefined,
   }
 }
 
@@ -236,39 +233,8 @@ export function transactionToActivity(
   }
 }
 
-export function signatureToActivity(
-  signature: SignatureDetails,
-  tokens: ChainTokenMap,
-  formatNumber: FormatNumberFunctionType
-): Activity | undefined {
-  switch (signature.type) {
-    case SignatureType.SIGN_UNISWAPX_ORDER: {
-      // Only returns Activity items for orders that don't have an on-chain counterpart
-      if (isOnChainOrder(signature.status)) return undefined
-
-      const { title, statusMessage, status } = OrderTextTable[signature.status]
-
-      return {
-        hash: signature.orderHash,
-        chainId: signature.chainId,
-        title,
-        status,
-        offchainOrderStatus: signature.status,
-        timestamp: signature.addedTime / 1000,
-        from: signature.offerer,
-        statusMessage,
-        prefixIconSrc: UniswapXBolt,
-        ...parseSwap(signature.swapInfo, signature.chainId, tokens, formatNumber),
-      }
-    }
-    default:
-      return undefined
-  }
-}
-
 export function useLocalActivities(account: string): ActivityMap {
   const allTransactions = useMultichainTransactions()
-  const allSignatures = useAllSignatures()
   const tokens = useAllTokensMultichain()
   const { formatNumber } = useFormatter()
 
@@ -281,13 +247,6 @@ export function useLocalActivities(account: string): ActivityMap {
       if (activity) activityMap[transaction.hash] = activity
     }
 
-    for (const signature of Object.values(allSignatures)) {
-      if (signature.offerer !== account) continue
-
-      const activity = signatureToActivity(signature, tokens, formatNumber)
-      if (activity) activityMap[signature.id] = activity
-    }
-
     return activityMap
-  }, [account, allSignatures, allTransactions, formatNumber, tokens])
+  }, [account, allTransactions, formatNumber, tokens])
 }

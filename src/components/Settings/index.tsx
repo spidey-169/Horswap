@@ -14,8 +14,6 @@ import { useCallback, useMemo, useRef } from 'react'
 import { X } from 'react-feather'
 import { useCloseModal, useModalIsOpen, useToggleSettingsMenu } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/reducer'
-import { InterfaceTrade } from 'state/routing/types'
-import { isUniswapXTrade } from 'state/routing/utils'
 import styled from 'styled-components'
 import { Divider, ThemedText } from 'theme/components'
 import { Z_INDEX } from 'theme/zIndex'
@@ -91,15 +89,7 @@ const MobileMenuHeader = styled(Row)`
   margin-bottom: 16px;
 `
 
-export default function SettingsTab({
-  autoSlippage,
-  chainId,
-  trade,
-}: {
-  autoSlippage: Percent
-  chainId?: number
-  trade?: InterfaceTrade
-}) {
+export default function SettingsTab({ autoSlippage, chainId }: { autoSlippage: Percent; chainId?: number }) {
   const { chainId: connectedChainId } = useWeb3React()
   const showDeadlineSettings = Boolean(chainId && !L2_CHAIN_IDS.includes(chainId))
   const node = useRef<HTMLDivElement | null>(null)
@@ -120,7 +110,7 @@ export default function SettingsTab({
   const Settings = useMemo(
     () => (
       <>
-        <AnimatedDropdown open={!isUniswapXTrade(trade)}>
+        <AnimatedDropdown open={true}>
           <MaxSlippageSettings autoSlippage={autoSlippage} />
           {showDeadlineSettings && (
             <>
@@ -131,7 +121,7 @@ export default function SettingsTab({
         </AnimatedDropdown>
       </>
     ),
-    [autoSlippage, showDeadlineSettings, trade]
+    [autoSlippage, showDeadlineSettings]
   )
 
   return (

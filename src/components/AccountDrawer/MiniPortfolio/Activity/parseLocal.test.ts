@@ -13,9 +13,7 @@ import {
 import { renderHook } from 'test-utils/render'
 import { useFormatter } from 'utils/formatNumbers'
 
-import { UniswapXOrderStatus } from '../../../../lib/hooks/orders/types'
-import { SignatureDetails, SignatureType } from '../../../../state/signatures/types'
-import { signatureToActivity, transactionToActivity, useLocalActivities } from './parseLocal'
+import { transactionToActivity, useLocalActivities } from './parseLocal'
 
 function mockSwapInfo(
   type: MockTradeType,
@@ -33,7 +31,6 @@ function mockSwapInfo(
       outputCurrencyId: outputCurrency.address,
       expectedOutputCurrencyAmountRaw: outputCurrencyAmountRaw,
       minimumOutputCurrencyAmountRaw: outputCurrencyAmountRaw,
-      isUniswapXOrder: false,
     }
   } else {
     return {
@@ -44,7 +41,6 @@ function mockSwapInfo(
       maximumInputCurrencyAmountRaw: inputCurrencyAmountRaw,
       outputCurrencyId: outputCurrency.address,
       outputCurrencyAmountRaw,
-      isUniswapXOrder: false,
     }
   }
 }
@@ -500,31 +496,5 @@ describe('parseLocalActivity', () => {
       status: MockTxStatus.Confirmed,
       from: mockAccount2,
     })
-  })
-
-  it('Signature to activity - returns undefined if is on chain order', () => {
-    const { formatNumber } = renderHook(() => useFormatter()).result.current
-
-    expect(
-      signatureToActivity(
-        {
-          type: SignatureType.SIGN_UNISWAPX_ORDER,
-          status: UniswapXOrderStatus.FILLED,
-        } as SignatureDetails,
-        {},
-        formatNumber
-      )
-    ).toBeUndefined()
-
-    expect(
-      signatureToActivity(
-        {
-          type: SignatureType.SIGN_UNISWAPX_ORDER,
-          status: UniswapXOrderStatus.CANCELLED,
-        } as SignatureDetails,
-        {},
-        formatNumber
-      )
-    ).toBeUndefined()
   })
 })

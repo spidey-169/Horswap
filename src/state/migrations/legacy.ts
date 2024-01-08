@@ -37,7 +37,6 @@ export const legacyLocalStorageMigration = async () => {
     user: legacyUserMigrations(newUser),
     transactions: legacyTransactionMigrations(newTransactions),
     lists: newLists,
-    signatures: newSignatures,
     _persist: { version: 0, rehydrated: true },
   }
 

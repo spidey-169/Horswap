@@ -8,7 +8,6 @@ import { getApproveInfo } from './gas'
 import {
   ClassicQuoteData,
   ClassicTrade,
-  DutchOrderTrade,
   GetQuickQuoteArgs,
   GetQuoteArgs,
   InterfaceTrade,
@@ -91,10 +90,7 @@ function isVersionedRoute<T extends V2PoolInRoute | V3PoolInRoute>(
   return route.every((pool) => pool.type === type)
 }
 
-// Prepares the currencies used for the actual Swap (either UniswapX or Universal Router)
-// May not match `currencyIn` that the user selected because for ETH inputs in UniswapX, the actual
-// swap will use WETH.
-function getTradeCurrencies(args: GetQuoteArgs | GetQuickQuoteArgs, isUniswapXTrade: boolean): [Currency, Currency] {
+function getTradeCurrencies(args: GetQuoteArgs | GetQuickQuoteArgs): [Currency, Currency] {
   const {
     tokenInAddress,
     tokenInChainId,
@@ -120,12 +116,7 @@ function getTradeCurrencies(args: GetQuoteArgs | GetQuickQuoteArgs, isUniswapXTr
         decimals: tokenOutDecimals,
         symbol: tokenOutSymbol,
       })
-
-  if (!isUniswapXTrade) {
-    return [currencyIn, currencyOut]
-  }
-
-  return [currencyIn.isNative ? currencyIn.wrapped : currencyIn, currencyOut]
+  return [currencyIn, currencyOut]
 }
 
 function getClassicTradeDetails(
@@ -155,15 +146,12 @@ export async function transformRoutesToTrade(
 ): Promise<TradeResult> {
   const { tradeType, account, amount, inputTax, outputTax } = args
 
-  const [currencyIn, currencyOut] = getTradeCurrencies(args, false)
+  const [currencyIn, currencyOut] = getTradeCurrencies(args)
   const { gasUseEstimateUSD, blockNumber, routes, gasUseEstimate } = getClassicTradeDetails(
     currencyIn,
     currencyOut,
     data
   )
-
-  // If the top-level URA quote type is DUTCH_LIMIT, then UniswapX is better for the user
-  const isUniswapXBetter = data.routing === URAQuoteType.DUTCH_LIMIT
 
   // Some sus javascript float math but it's ok because its just an estimate for display purposes
   const usdCostPerGas = gasUseEstimateUSD && gasUseEstimate ? gasUseEstimateUSD / gasUseEstimate : undefined
@@ -201,7 +189,6 @@ export async function transformRoutesToTrade(
     gasUseEstimateUSD,
     approveInfo,
     blockNumber,
-    isUniswapXBetter,
     requestId: data.quote.requestId,
     quoteMethod,
     inputTax,
@@ -252,9 +239,5 @@ export function isPreviewTrade(trade?: InterfaceTrade): trade is PreviewTrade {
 }
 
 export function isSubmittableTrade(trade?: InterfaceTrade): trade is SubmittableTrade {
-  return trade?.fillType === TradeFillType.Classic || trade?.fillType === TradeFillType.UniswapX
-}
-
-export function isUniswapXTrade(trade?: InterfaceTrade): trade is DutchOrderTrade {
-  return trade?.fillType === TradeFillType.UniswapX
+  return trade?.fillType === TradeFillType.Classic
 }

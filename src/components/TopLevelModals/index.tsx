@@ -1,4 +1,3 @@
-import { OffchainActivityModal } from 'components/AccountDrawer/MiniPortfolio/Activity/OffchainActivityModal'
 import AddressClaimModal from 'components/claim/AddressClaimModal'
 import { useModalIsOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/reducer'
@@ -10,7 +9,6 @@ export default function TopLevelModals() {
   return (
     <>
       <AddressClaimModal isOpen={addressClaimOpen} onDismiss={addressClaimToggle} />
-      <OffchainActivityModal />
     </>
   )
 }

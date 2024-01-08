@@ -1,12 +1,10 @@
 import { useWeb3React } from '@web3-react/core'
 import { Gas } from 'components/Icons/Gas'
 import { LoadingOpacityContainer } from 'components/Loader/styled'
-import { UniswapXRouterIcon } from 'components/RouterLabel/UniswapXRouterLabel'
 import Row, { RowFixed } from 'components/Row'
 import { MouseoverTooltip, TooltipSize } from 'components/Tooltip'
 import { SUPPORTED_GAS_ESTIMATE_CHAIN_IDS } from 'constants/chains'
 import { SubmittableTrade } from 'state/routing/types'
-import { isUniswapXTrade } from 'state/routing/utils'
 import styled from 'styled-components'
 import { ThemedText } from 'theme/components'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
@@ -34,7 +32,7 @@ export default function GasEstimateTooltip({ trade, loading }: { trade?: Submitt
     <MouseoverTooltip size={TooltipSize.Small} text={<GasBreakdownTooltip trade={trade} />} placement="right">
       <LoadingOpacityContainer $loading={loading}>
         <RowFixed gap="xs">
-          {isUniswapXTrade(trade) ? <UniswapXRouterIcon testId="gas-estimate-uniswapx-icon" /> : <StyledGasIcon />}
+          <StyledGasIcon />
           <ThemedText.BodySmall color="neutral2">
             <Row gap="xs">
               <div>
@@ -43,16 +41,6 @@ export default function GasEstimateTooltip({ trade, loading }: { trade?: Submitt
                   type: NumberType.FiatGasPrice,
                 })}
               </div>
-              {isUniswapXTrade(trade) && (
-                <div>
-                  <s>
-                    {formatNumber({
-                      input: trade.classicGasUseEstimateUSD,
-                      type: NumberType.FiatGasPrice,
-                    })}
-                  </s>
-                </div>
-              )}
             </Row>
           </ThemedText.BodySmall>
         </RowFixed>

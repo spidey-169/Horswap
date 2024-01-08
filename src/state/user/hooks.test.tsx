@@ -4,7 +4,7 @@ import { USDC_MAINNET } from 'constants/tokens'
 import store from 'state'
 import { renderHook } from 'test-utils/render'
 
-import { deserializeToken, serializeToken, useUserDisabledUniswapX, useUserSlippageTolerance } from './hooks'
+import { deserializeToken, serializeToken, useUserSlippageTolerance } from './hooks'
 import { updateUserSlippageTolerance } from './reducer'
 import { SlippageTolerance } from './types'
 
@@ -61,14 +61,5 @@ describe('useUserSlippageTolerance', () => {
     } = renderHook(() => useUserSlippageTolerance())
     act(() => setSlippage(new Percent(5, 10_000)))
     expect(store.getState().user.userSlippageTolerance).toBe(5)
-  })
-})
-
-describe('useUserDisabledUniswapX', () => {
-  it('returns `false` by default', () => {
-    const {
-      result: { current: disabledUniswapX },
-    } = renderHook(() => useUserDisabledUniswapX())
-    expect(disabledUniswapX).toBe(false)
   })
 })

@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
-import { SwapOrderStatus, TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
-import { UniswapXOrderStatus } from 'lib/hooks/orders/types'
+import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { TransactionType } from 'state/transactions/types'
 
 const TransactionTitleTable: { [key in TransactionType]: { [state in TransactionStatus]: string } } = {
@@ -184,44 +183,4 @@ export function getActivityTitle(type: TransactionType, status: TransactionStatu
     if (alternateTitle !== undefined) return alternateTitle[status]
   }
   return TransactionTitleTable[type][status]
-}
-
-const SwapTitleTable = TransactionTitleTable[TransactionType.SWAP]
-export const OrderTextTable: {
-  [status in UniswapXOrderStatus]: { title: string; status: TransactionStatus; statusMessage?: string }
-} = {
-  [UniswapXOrderStatus.OPEN]: {
-    title: SwapTitleTable.PENDING,
-    status: TransactionStatus.Pending,
-  },
-  [UniswapXOrderStatus.FILLED]: {
-    title: SwapTitleTable.CONFIRMED,
-    status: TransactionStatus.Confirmed,
-  },
-  [UniswapXOrderStatus.EXPIRED]: {
-    title: t`Swap expired`,
-    statusMessage: t`Your swap could not be fulfilled at this time. Please try again.`,
-    status: TransactionStatus.Failed,
-  },
-  [UniswapXOrderStatus.ERROR]: {
-    title: SwapTitleTable.FAILED,
-    status: TransactionStatus.Failed,
-  },
-  [UniswapXOrderStatus.INSUFFICIENT_FUNDS]: {
-    title: SwapTitleTable.FAILED,
-    statusMessage: t`Your account had insufficent funds to complete this swap.`,
-    status: TransactionStatus.Failed,
-  },
-  [UniswapXOrderStatus.CANCELLED]: {
-    title: t`Swap cancelled`,
-    status: TransactionStatus.Failed,
-  },
-}
-
-// Converts GQL backend orderStatus enum to the enum used by the frontend and UniswapX backend
-export const OrderStatusTable: { [key in SwapOrderStatus]: UniswapXOrderStatus } = {
-  [SwapOrderStatus.Open]: UniswapXOrderStatus.OPEN,
-  [SwapOrderStatus.Expired]: UniswapXOrderStatus.EXPIRED,
-  [SwapOrderStatus.Error]: UniswapXOrderStatus.ERROR,
-  [SwapOrderStatus.InsufficientFunds]: UniswapXOrderStatus.INSUFFICIENT_FUNDS,
 }

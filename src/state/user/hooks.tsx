@@ -188,10 +188,6 @@ export function usePairAdder(): (pair: Pair) => void {
   )
 }
 
-export function useUserDisabledUniswapX(): boolean {
-  return useAppSelector((state) => state.user.disabledUniswapX) ?? false
-}
-
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
  * @param tokenA one of the two tokens

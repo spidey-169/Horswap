@@ -13,7 +13,6 @@ import { customCreateMigrate, migrations } from './migrations'
 import mint from './mint/reducer'
 import mintV3 from './mint/v3/reducer'
 import { routingApi } from './routing/slice'
-import signatures from './signatures/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 import wallets from './wallets/reducer'
@@ -21,7 +20,6 @@ import wallets from './wallets/reducer'
 const persistedReducers = {
   user,
   transactions,
-  signatures,
   lists,
 }
 

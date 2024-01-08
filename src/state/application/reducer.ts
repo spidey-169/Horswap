@@ -4,7 +4,6 @@ import { DEFAULT_TXN_DISMISS_MS } from 'constants/misc'
 
 export enum PopupType {
   Transaction = 'transaction',
-  Order = 'order',
   FailedSwitchNetwork = 'failedSwitchNetwork',
 }
 
@@ -12,10 +11,6 @@ export type PopupContent =
   | {
       type: PopupType.Transaction
       hash: string
-    }
-  | {
-      type: PopupType.Order
-      orderHash: string
     }
   | {
       type: PopupType.FailedSwitchNetwork
