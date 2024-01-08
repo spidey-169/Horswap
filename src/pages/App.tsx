@@ -14,7 +14,7 @@ import { RouteDefinition, routes, useRouterConfig } from './RouteDefinitions'
 
 const AppChrome = lazy(() => import('./AppChrome'))
 
-const BodyWrapper = styled.div<{ bannerIsVisible?: boolean }>`
+const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -117,7 +117,7 @@ export default function App() {
       <HeaderWrapper transparent={isHeaderTransparent} scrollY={scrollY}>
         <NavBar blur={isHeaderTransparent} />
       </HeaderWrapper>
-      <BodyWrapper bannerIsVisible={false}>
+      <BodyWrapper>
         <Suspense>
           <AppChrome />
         </Suspense>
