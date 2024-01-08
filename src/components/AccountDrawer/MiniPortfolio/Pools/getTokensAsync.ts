@@ -10,9 +10,9 @@ import { arrayToSlices } from 'utils/arrays'
 import { buildCurrencyKey, CurrencyKey, currencyKey } from 'utils/currencyKey'
 
 type TokenMap = { [address: string]: Token | undefined }
-export type Call = { target: string; callData: string; gasLimit: number }
+type Call = { target: string; callData: string; gasLimit: number }
 type CallResult = { success: boolean; returnData: string }
-export const DEFAULT_GAS_LIMIT = 1_000_000
+const DEFAULT_GAS_LIMIT = 1_000_000
 
 const Erc20 = new Interface(ERC20_ABI) as Erc20Interface
 const Erc20Bytes32 = new Interface(ERC20_ABI) as Erc20Bytes32Interface // Used for tokens that return bytes32 for name/symbol rather than string

@@ -1,6 +1,5 @@
 import Column, { AutoColumn } from 'components/Column'
 import Row from 'components/Row'
-import { LoadingBubble } from 'components/Tokens/loading'
 import styled from 'styled-components'
 
 const PortfolioRowWrapper = styled(Row)<{ onClick?: any }>`

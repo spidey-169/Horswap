@@ -55,48 +55,6 @@ function useContractMultichain<T extends BaseContract>(
   }, [ABI, addressMap, chainIds, networkProviders, walletChainId, walletProvider])
 }
 
-export function useV3ManagerContracts(chainIds: ChainId[]): ContractMap<NonfungiblePositionManager> {
-  return useContractMultichain<NonfungiblePositionManager>(V3NFT_ADDRESSES, NFTPositionManagerJSON.abi, chainIds)
-}
-
 export function useInterfaceMulticallContracts(chainIds: ChainId[]): ContractMap<UniswapInterfaceMulticall> {
   return useContractMultichain<UniswapInterfaceMulticall>(MULTICALL_ADDRESSES, MulticallJSON.abi, chainIds)
-}
-
-type PriceMap = { [key: CurrencyKey]: number | undefined }
-export function usePoolPriceMap(positions: PositionInfo[] | undefined) {
-  const contracts = useMemo(() => {
-    if (!positions || !positions.length) return []
-    // Avoids fetching duplicate tokens by placing in map
-    const contractMap = positions.reduce((acc: { [key: string]: ContractInput }, { pool: { token0, token1 } }) => {
-      acc[currencyKey(token0)] = toContractInput(token0)
-      acc[currencyKey(token1)] = toContractInput(token1)
-      return acc
-    }, {})
-    return Object.values(contractMap)
-  }, [positions])
-
-  const { data, loading } = useUniswapPricesQuery({ variables: { contracts }, skip: !contracts.length })
-
-  const priceMap = useMemo(
-    () =>
-      data?.tokens?.reduce((acc: PriceMap, current) => {
-        if (current) acc[currencyKeyFromGraphQL(current)] = current.project?.markets?.[0]?.price?.value
-        return acc
-      }, {}) ?? {},
-    [data?.tokens]
-  )
-
-  return { priceMap, pricesLoading: loading && !data }
-}
-
-function useFeeValue(token: Token, fee: number | undefined, queriedPrice: number | undefined) {
-  const stablecoinPrice = useStablecoinPrice(!queriedPrice ? token : undefined)
-  return useMemo(() => {
-    // Prefers gql price, as fetching stablecoinPrice will trigger multiple infura calls for each pool position
-    const price = queriedPrice ?? (stablecoinPrice ? parseFloat(stablecoinPrice.toSignificant()) : undefined)
-    const feeValue = fee && price ? fee * price : undefined
-
-    return [price, feeValue]
-  }, [fee, queriedPrice, stablecoinPrice])
 }
