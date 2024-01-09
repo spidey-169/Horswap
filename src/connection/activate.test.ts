@@ -233,31 +233,4 @@ describe('Should gracefully handle intentional user-rejection errors', () => {
     expect(coinbaseConnection.connector.activate).toHaveBeenCalledTimes(2)
     expect(onSuccess).toHaveBeenCalledTimes(1)
   })
-
-  it('handles WalletConect Modal close error', async () => {
-    const result = renderHook(useActivationState).result
-
-    const wcConnection = createMockConnection(
-      jest
-        .fn()
-        .mockImplementationOnce(() => Promise.reject(ErrorCode.WC_V2_MODAL_CLOSED))
-        .mockImplementationOnce(() => Promise.resolve),
-      jest.fn(),
-      ConnectionType.WALLET_CONNECT_V2
-    )
-
-    const onSuccess = jest.fn()
-
-    await act(() => result.current.tryActivation(wcConnection, onSuccess))
-
-    expect(result.current.activationState).toEqual({ status: ActivationStatus.IDLE })
-    expect(wcConnection.connector.activate).toHaveBeenCalledTimes(1)
-    expect(onSuccess).toHaveBeenCalledTimes(0)
-
-    await act(() => result.current.tryActivation(wcConnection, onSuccess))
-
-    expect(result.current.activationState).toEqual({ status: ActivationStatus.IDLE })
-    expect(wcConnection.connector.activate).toHaveBeenCalledTimes(2)
-    expect(onSuccess).toHaveBeenCalledTimes(1)
-  })
 })

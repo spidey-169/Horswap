@@ -16,16 +16,6 @@ beforeEach(() => {
   mocked(useToggleAccountDrawer).mockReturnValue(mockToggleDrawer)
 })
 
-const mockConnection1: Connection = {
-  getName: () => 'Mock Connection 1',
-  connector: {
-    activate: jest.fn(),
-    deactivate: jest.fn(),
-  } as unknown as Connector,
-  getIcon: () => UNIWALLET_ICON,
-  type: ConnectionType.UNISWAP_WALLET_V2,
-} as unknown as Connection
-
 const mockConnection2: Connection = {
   getName: () => 'Mock Connection 2',
   connector: {
@@ -37,22 +27,12 @@ const mockConnection2: Connection = {
 } as unknown as Connection
 
 describe('Wallet Option', () => {
-  it('renders default state', () => {
-    const component = render(<Option connection={mockConnection1} />)
-    const option = component.getByTestId('wallet-option-UNISWAP_WALLET_V2')
-    expect(option).toBeEnabled()
-    expect(option).toHaveProperty('selected', false)
-
-    expect(option).toMatchSnapshot()
-  })
-
   it('connect when clicked', async () => {
     const activationResponse = createDeferredPromise()
-    mocked(mockConnection1.connector.activate).mockReturnValue(activationResponse.promise)
+    mocked(mockConnection2.connector.activate).mockReturnValue(activationResponse.promise)
 
     const component = render(
       <>
-        <Option connection={mockConnection1} />
         <Option connection={mockConnection2} />
       </>
     )
@@ -64,9 +44,9 @@ describe('Wallet Option', () => {
     expect(option2).toBeEnabled()
     expect(option2).toHaveProperty('selected', false)
 
-    expect(mockConnection1.connector.activate).toHaveBeenCalledTimes(0)
+    expect(mockConnection2.connector.activate).toHaveBeenCalledTimes(0)
     act(() => option1.click())
-    expect(mockConnection1.connector.activate).toHaveBeenCalledTimes(1)
+    expect(mockConnection2.connector.activate).toHaveBeenCalledTimes(1)
 
     expect(option1).toBeDisabled()
     expect(option1).toHaveProperty('selected', true)

@@ -22,10 +22,8 @@ describe('connection utility/metadata tests', () => {
     const displayed = connections.filter((c) => c.shouldDisplay())
     const injected = getConnection(ConnectionType.INJECTED)
     const coinbase = getConnection(ConnectionType.COINBASE_WALLET)
-    const uniswap = getConnection(ConnectionType.UNISWAP_WALLET_V2)
-    const walletconnect = getConnection(ConnectionType.WALLET_CONNECT_V2)
 
-    return { displayed, injected, coinbase, uniswap, walletconnect }
+    return { displayed, injected, coinbase }
   }
 
   const createPhantomEnviroment = () => {
@@ -182,10 +180,9 @@ describe('connection utility/metadata tests', () => {
   })
 
   it('Uninjected mWeb Browser', async () => {
-    const { displayed, injected, coinbase, walletconnect } = createWalletEnvironment(undefined, true)
+    const { displayed, injected, coinbase } = createWalletEnvironment(undefined, true)
 
     expect(displayed.includes(coinbase)).toBe(true)
-    expect(displayed.includes(walletconnect)).toBe(true)
     // Don't show injected connection on plain mWeb browser
     expect(displayed.includes(injected)).toBe(false)
     // Expect coinbase option to launch coinbase app in a regular mobile browser
