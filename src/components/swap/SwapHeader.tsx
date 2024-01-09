@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { Percent } from '@uniswap/sdk-core'
-import { InterfaceTrade } from 'state/routing/types'
 import styled from 'styled-components'
 import { ThemedText } from 'theme/components'
 
@@ -17,13 +16,7 @@ const HeaderButtonContainer = styled(RowFixed)`
   gap: 16px;
 `
 
-export default function SwapHeader({
-  autoSlippage,
-  chainId,
-}: {
-  autoSlippage: Percent
-  chainId?: number
-}) {
+export default function SwapHeader({ autoSlippage, chainId }: { autoSlippage: Percent; chainId?: number }) {
   return (
     <StyledSwapHeader>
       <HeaderButtonContainer>
