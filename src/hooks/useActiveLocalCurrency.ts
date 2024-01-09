@@ -4,10 +4,7 @@ import { useMemo } from 'react'
 
 import useParsedQueryString from './useParsedQueryString'
 
-export const activeLocalCurrencyAtom = atomWithStorage<SupportedLocalCurrency>(
-  'activeLocalCurrency',
-  DEFAULT_LOCAL_CURRENCY
-)
+const activeLocalCurrencyAtom = atomWithStorage<SupportedLocalCurrency>('activeLocalCurrency', DEFAULT_LOCAL_CURRENCY)
 
 function useUrlLocalCurrency() {
   const parsed = useParsedQueryString()

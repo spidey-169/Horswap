@@ -3,7 +3,6 @@ import { Header, Menu } from 'components/AccountDrawer/SlideOutMenu'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { LOCALE_LABEL } from 'constants/locales'
-import { useActiveLocalCurrency } from 'hooks/useActiveLocalCurrency'
 import { useActiveLocale } from 'hooks/useActiveLocale'
 import { ReactNode } from 'react'
 import { ChevronRight } from 'react-feather'
@@ -65,15 +64,8 @@ const SettingsButton = ({
   </SettingsButtonWrapper>
 )
 
-export default function SettingsMenu({
-  openLanguageSettings,
-  openLocalCurrencySettings,
-}: {
-  openLanguageSettings: () => void
-  openLocalCurrencySettings: () => void
-}) {
+export default function SettingsMenu({ openLanguageSettings }: { openLanguageSettings: () => void }) {
   const activeLocale = useActiveLocale()
-  const activeLocalCurrency = useActiveLocalCurrency()
 
   return (
     <Menu>
@@ -95,12 +87,6 @@ export default function SettingsMenu({
               currentState={LOCALE_LABEL[activeLocale]}
               onClick={openLanguageSettings}
               testId="language-settings-button"
-            />
-            <SettingsButton
-              title={<Trans>Currency</Trans>}
-              currentState={activeLocalCurrency}
-              onClick={openLocalCurrencySettings}
-              testId="local-currency-settings-button"
             />
           </Column>
         </div>

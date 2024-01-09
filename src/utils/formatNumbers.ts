@@ -5,8 +5,6 @@ import {
   SupportedLocalCurrency,
 } from 'constants/localCurrencies'
 import { DEFAULT_LOCALE, SupportedLocale } from 'constants/locales'
-import { Currency as GqlCurrency } from 'graphql/data/__generated__/types-and-hooks'
-import { useLocalCurrencyConversionRate } from 'graphql/data/ConversionRate'
 import { useActiveLocalCurrency } from 'hooks/useActiveLocalCurrency'
 import { useActiveLocale } from 'hooks/useActiveLocale'
 import usePrevious from 'hooks/usePrevious'
@@ -623,15 +621,13 @@ function handleFallbackCurrency(
 export function useFormatter() {
   const { formatterLocale, formatterLocalCurrency } = useFormatterLocales()
 
-  const formatterLocalCurrencyIsUSD = formatterLocalCurrency === GqlCurrency.Usd
-  const { data: localCurrencyConversionRate, isLoading: localCurrencyConversionRateIsLoading } =
-    useLocalCurrencyConversionRate(formatterLocalCurrency, formatterLocalCurrencyIsUSD)
+  const localCurrencyConversionRate = undefined
 
   const previousSelectedCurrency = usePrevious(formatterLocalCurrency)
-  const previousConversionRate = usePrevious(localCurrencyConversionRate)
+  const previousConversionRate = usePrevious(undefined)
 
-  const shouldFallbackToPrevious = !localCurrencyConversionRate && localCurrencyConversionRateIsLoading
-  const shouldFallbackToUSD = !localCurrencyConversionRate && !localCurrencyConversionRateIsLoading
+  const shouldFallbackToPrevious = !localCurrencyConversionRate
+  const shouldFallbackToUSD = !localCurrencyConversionRate
   const currencyToFormatWith = handleFallbackCurrency(
     formatterLocalCurrency,
     previousSelectedCurrency,

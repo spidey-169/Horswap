@@ -10,7 +10,6 @@ const linguiConfig = {
         '<rootDir>/src/**/*.test.*',
         '<rootDir>/src/types/v3/**',
         '<rootDir>/src/abis/types/**',
-        '<rootDir>/src/graphql/**/__generated__/**',
       ],
     },
   ],

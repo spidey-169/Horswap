@@ -1,5 +1,5 @@
 import { ChainId, Currency } from '@uniswap/sdk-core'
-import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
+import { TransactionStatus } from 'types/types-and-hooks'
 
 export type Activity = {
   hash: string
