@@ -1,16 +1,10 @@
 import type { ExternalProvider, JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
-import type WalletConnectProvider from '@walletconnect/ethereum-provider'
 
 function isWeb3Provider(provider: JsonRpcProvider): provider is Web3Provider {
   return 'provider' in provider
 }
 
-function isWalletConnectProvider(provider: ExternalProvider): provider is WalletConnectProvider {
-  return (provider as WalletConnectProvider).isWalletConnect
-}
-
 export enum WalletType {
-  WALLET_CONNECT = 'WalletConnect',
   INJECTED = 'Injected',
 }
 
@@ -46,15 +40,6 @@ export interface WalletMeta {
   icons?: string[]
 }
 
-function getWalletConnectMeta(provider: WalletConnectProvider): WalletMeta {
-  const metadata = provider.session?.peer.metadata
-  return {
-    type: WalletType.WALLET_CONNECT,
-    agent: metadata ? `${metadata.name} (WalletConnect)` : '(WalletConnect)',
-    ...metadata,
-  }
-}
-
 function getInjectedMeta(provider: ExternalProvider & Record<string, unknown>): WalletMeta {
   const properties = Object.getOwnPropertyNames(provider)
   const names =
@@ -82,10 +67,5 @@ function getInjectedMeta(provider: ExternalProvider & Record<string, unknown>): 
 
 export function getWalletMeta(provider: JsonRpcProvider): WalletMeta | undefined {
   if (!isWeb3Provider(provider)) return undefined
-
-  if (isWalletConnectProvider(provider.provider)) {
-    return getWalletConnectMeta(provider.provider)
-  } else {
-    return getInjectedMeta(provider.provider)
-  }
+  return getInjectedMeta(provider.provider)
 }

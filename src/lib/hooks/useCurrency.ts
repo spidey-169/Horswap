@@ -24,9 +24,6 @@ function parseStringOrBytes32(str: string | undefined, bytes32: string | undefin
     : defaultValue
 }
 
-const UNKNOWN_TOKEN_SYMBOL = 'UNKNOWN'
-const UNKNOWN_TOKEN_NAME = 'Unknown Token'
-
 /**
  * Returns a Token from the tokenAddress.
  * Returns null if token is loading or null was passed.
@@ -54,11 +51,11 @@ function useTokenFromActiveNetwork(tokenAddress: string | undefined): Token | nu
   const parsedDecimals = useMemo(() => decimals?.result?.[0] ?? DEFAULT_ERC20_DECIMALS, [decimals.result])
 
   const parsedSymbol = useMemo(
-    () => parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], UNKNOWN_TOKEN_SYMBOL),
+    () => parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
     [symbol.result, symbolBytes32.result]
   )
   const parsedName = useMemo(
-    () => parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], UNKNOWN_TOKEN_NAME),
+    () => parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token'),
     [tokenName.result, tokenNameBytes32.result]
   )
 

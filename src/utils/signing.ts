@@ -1,26 +1,6 @@
 import type { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import { _TypedDataEncoder } from '@ethersproject/hash'
-import type { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
-import { getWalletMeta, WalletType } from 'utils/walletMeta'
-
-// These are WalletConnect peers which do not implement eth_signTypedData_v4, but *do* implement eth_signTypedData.
-// They are special-cased so that signing will still use EIP-712 (which is safer for the user).
-const WC_PEERS_LACKING_V4_SUPPORT = ['SafePal Wallet', 'Ledger Wallet Connect']
-
-// Assumes v4 support by default, except for known wallets.
-function supportsV4(provider: JsonRpcProvider): boolean {
-  const meta = getWalletMeta(provider)
-  if (meta) {
-    const { type, name } = meta
-    if (name) {
-      if (type === WalletType.WALLET_CONNECT && name && WC_PEERS_LACKING_V4_SUPPORT.includes(name)) {
-        return false
-      }
-    }
-  }
-
-  return true
-}
+import type { JsonRpcSigner } from '@ethersproject/providers'
 
 /**
  * Signs TypedData with EIP-712, if available, or else by falling back to eth_sign.
@@ -41,12 +21,11 @@ export async function signTypedData(
     return signer.provider.resolveName(name) as Promise<string>
   })
 
-  const method = supportsV4(signer.provider) ? 'eth_signTypedData_v4' : 'eth_signTypedData'
   const address = (await signer.getAddress()).toLowerCase()
   const message = JSON.stringify(_TypedDataEncoder.getPayload(populated.domain, types, populated.value))
 
   try {
-    return await signer.provider.send(method, [address, message])
+    return await signer.provider.send('eth_signTypedData_v4', [address, message])
   } catch (error) {
     // If eth_signTypedData is unimplemented, fall back to eth_sign.
     if (
