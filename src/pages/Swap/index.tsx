@@ -575,7 +575,7 @@ function Swap({
         onCancel={handleDismissTokenWarning}
         showCancel={true}
       />
-      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
+      <SwapHeader autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && (
         <ConfirmSwapModal
           trade={trade}

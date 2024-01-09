@@ -20,11 +20,9 @@ const HeaderButtonContainer = styled(RowFixed)`
 export default function SwapHeader({
   autoSlippage,
   chainId,
-  trade,
 }: {
   autoSlippage: Percent
   chainId?: number
-  trade?: InterfaceTrade
 }) {
   return (
     <StyledSwapHeader>
@@ -34,7 +32,7 @@ export default function SwapHeader({
         </ThemedText.SubHeader>
       </HeaderButtonContainer>
       <RowFixed>
-        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} />
+        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} />
       </RowFixed>
     </StyledSwapHeader>
   )
