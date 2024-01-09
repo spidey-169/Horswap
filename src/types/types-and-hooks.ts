@@ -172,27 +172,9 @@ export enum TransactionStatus {
 }
 
 export enum Currency {
-  Aud = 'AUD',
-  Brl = 'BRL',
-  Cad = 'CAD',
-  Cny = 'CNY',
   Eth = 'ETH',
-  Eur = 'EUR',
-  Gbp = 'GBP',
-  Hkd = 'HKD',
-  Idr = 'IDR',
-  Inr = 'INR',
-  Jpy = 'JPY',
   Matic = 'MATIC',
-  Ngn = 'NGN',
-  Pkr = 'PKR',
-  Rub = 'RUB',
-  Sgd = 'SGD',
-  Thb = 'THB',
-  Try = 'TRY',
-  Uah = 'UAH',
   Usd = 'USD',
-  Vnd = 'VND',
 }
 
 export enum Chain {
