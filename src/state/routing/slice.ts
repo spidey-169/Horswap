@@ -5,11 +5,6 @@ import ms from 'ms'
 import { GetQuoteArgs, QuoteMethod, QuoteState, TradeResult } from './types'
 import { transformRoutesToTrade } from './utils'
 
-const UNISWAP_API_URL = process.env.REACT_APP_UNISWAP_API_URL
-if (UNISWAP_API_URL === undefined) {
-  throw new Error(`UNISWAP_API_URL must be a defined environment variable`)
-}
-
 const CLIENT_PARAMS = {
   protocols: [Protocol.V2, Protocol.V3, Protocol.MIXED],
 }
@@ -21,9 +16,7 @@ function getQuoteLatencyMeasure(mark: PerformanceMark): PerformanceMeasure {
 
 export const routingApi = createApi({
   reducerPath: 'routingApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: UNISWAP_API_URL,
-  }),
+  baseQuery: fetchBaseQuery({}),
   endpoints: (build) => ({
     getQuote: build.query<TradeResult, GetQuoteArgs>({
       async onQueryStarted(_args: GetQuoteArgs, { queryFulfilled }) {
