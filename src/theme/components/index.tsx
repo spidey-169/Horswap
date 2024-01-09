@@ -115,16 +115,6 @@ const CopyIcon = styled(Copy)`
   stroke: ${({ theme }) => theme.accent1};
 `
 
-const rotateImg = keyframes`
-  0% {
-    transform: perspective(1000px) rotateY(0deg);
-  }
-
-  100% {
-    transform: perspective(1000px) rotateY(360deg);
-  }
-`
-
 function handleClickExternalLink(event: React.MouseEvent<HTMLAnchorElement>) {
   const { target } = event.currentTarget
 
