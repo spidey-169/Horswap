@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 import AuthenticatedHeader from './AuthenticatedHeader'
 import LanguageMenu from './LanguageMenu'
-import LocalCurrencyMenu from './LocalCurrencyMenu'
 import SettingsMenu from './SettingsMenu'
 
 const DefaultMenuWrap = styled(Column)`
@@ -17,7 +16,6 @@ const DefaultMenuWrap = styled(Column)`
 enum MenuState {
   DEFAULT,
   LANGUAGE_SETTINGS,
-  LOCAL_CURRENCY_SETTINGS,
 }
 
 function DefaultMenu({ drawerOpen }: { drawerOpen: boolean }) {
@@ -27,7 +25,6 @@ function DefaultMenu({ drawerOpen }: { drawerOpen: boolean }) {
   const [menu, setMenu] = useState<MenuState>(MenuState.DEFAULT)
   const closeSettings = useCallback(() => setMenu(MenuState.DEFAULT), [])
   const openLanguageSettings = useCallback(() => setMenu(MenuState.LANGUAGE_SETTINGS), [])
-  const openLocalCurrencySettings = useCallback(() => setMenu(MenuState.LOCAL_CURRENCY_SETTINGS), [])
 
   useEffect(() => {
     if (!drawerOpen && menu !== MenuState.DEFAULT) {
@@ -46,18 +43,13 @@ function DefaultMenu({ drawerOpen }: { drawerOpen: boolean }) {
         return (
           <>
             {isAuthenticated ? <AuthenticatedHeader account={account} /> : <WalletModal />}
-            <SettingsMenu
-              openLanguageSettings={openLanguageSettings}
-              openLocalCurrencySettings={openLocalCurrencySettings}
-            />
+            <SettingsMenu openLanguageSettings={openLanguageSettings} />
           </>
         )
       case MenuState.LANGUAGE_SETTINGS:
         return <LanguageMenu onClose={closeSettings} />
-      case MenuState.LOCAL_CURRENCY_SETTINGS:
-        return <LocalCurrencyMenu onClose={closeSettings} />
     }
-  }, [account, closeSettings, isAuthenticated, menu, openLanguageSettings, openLocalCurrencySettings])
+  }, [account, closeSettings, isAuthenticated, menu, openLanguageSettings])
 
   return <DefaultMenuWrap>{SubMenu}</DefaultMenuWrap>
 }

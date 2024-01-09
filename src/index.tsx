@@ -3,8 +3,6 @@ import 'inter-ui'
 import 'polyfills'
 import 'connection/eagerlyConnect'
 
-import { ApolloProvider } from '@apollo/client'
-import { apolloClient } from 'graphql/data/apollo'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import { MulticallUpdater } from 'lib/state/multicall'
 import { StrictMode } from 'react'
@@ -59,7 +57,6 @@ createRoot(container).render(
         <Router>
           <LanguageProvider>
             <Web3Provider>
-              <ApolloProvider client={apolloClient}>
                 <BlockNumberProvider>
                   <Updaters />
                   <ThemeProvider>
@@ -67,7 +64,6 @@ createRoot(container).render(
                     <App />
                   </ThemeProvider>
                 </BlockNumberProvider>
-              </ApolloProvider>
             </Web3Provider>
           </LanguageProvider>
         </Router>
