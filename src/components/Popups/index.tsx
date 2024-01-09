@@ -4,7 +4,6 @@ import { Z_INDEX } from 'theme/zIndex'
 
 import { useAccountDrawer } from '../AccountDrawer'
 import { AutoColumn } from '../Column'
-import ClaimPopup from './ClaimPopup'
 import PopupItem from './PopupItem'
 
 const MobilePopupWrapper = styled.div`
@@ -58,7 +57,6 @@ export default function Popups() {
   return (
     <>
       <FixedPopupColumn gap="20px" drawerOpen={isAccountDrawerOpen} data-testid="popups">
-        <ClaimPopup />
         {activePopups.map((item) => (
           <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
         ))}
