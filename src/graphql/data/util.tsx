@@ -2,9 +2,8 @@ import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { nativeOnChain } from 'constants/tokens'
 import ms from 'ms'
-import { getNativeTokenDBAddress } from 'utils/nativeTokens'
 
-import { Chain, ContractInput, TokenStandard } from './__generated__/types-and-hooks'
+import { Chain, TokenStandard } from './__generated__/types-and-hooks'
 
 export enum PollingInterval {
   Slow = ms(`5m`),
@@ -57,10 +56,6 @@ type GqlChainsType = (typeof GQL_CHAINS)[number]
 
 export function isGqlSupportedChain(chainId: number | undefined): chainId is GqlChainsType {
   return !!chainId && GQL_CHAINS.includes(chainId)
-}
-export function toContractInput(currency: Currency): ContractInput {
-  const chain = chainIdToBackendName(currency.chainId)
-  return { chain, address: currency.isToken ? currency.address : getNativeTokenDBAddress(chain) }
 }
 
 export function gqlToCurrency(token: {
