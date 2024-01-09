@@ -10,7 +10,6 @@ jest.mock('hooks/useActiveLocale')
 jest.mock('hooks/useActiveLocalCurrency')
 
 describe('formatNumber', () => {
-
   it('formats token reference numbers correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 

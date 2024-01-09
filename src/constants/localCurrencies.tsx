@@ -1,4 +1,4 @@
-import { Currency } from 'graphql/data/__generated__/types-and-hooks'
+import { Currency } from 'types/types-and-hooks'
 
 export const SUPPORTED_LOCAL_CURRENCIES = [Currency.Usd] as const
 

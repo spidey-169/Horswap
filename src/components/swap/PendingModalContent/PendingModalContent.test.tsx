@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { TradeFillType } from 'state/routing/types'
 import { useSwapTransactionStatus } from 'state/transactions/hooks'
 import { TEST_TRADE_EXACT_INPUT } from 'test-utils/constants'
 import { mocked } from 'test-utils/mocked'
 import { render, screen } from 'test-utils/render'
+import { TransactionStatus } from 'types/types-and-hooks'
 
 import { ConfirmModalState } from '../ConfirmSwapModal'
 import { PendingModalContent } from '.'
