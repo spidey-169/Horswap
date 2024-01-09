@@ -1,9 +1,8 @@
 import { useWeb3React } from '@web3-react/core'
 import { Power } from 'components/Icons/Power'
-import { Settings } from 'components/Icons/Settings'
 import { getConnection } from 'connection'
 import useENSName from 'hooks/useENSName'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import styled from 'styled-components'
@@ -11,7 +10,7 @@ import { CopyHelper, ThemedText } from 'theme/components'
 import { shortenAddress } from 'utils'
 
 import StatusIcon from '../Identicon/StatusIcon'
-import IconButton, { IconHoverText, IconWithConfirmTextButton } from './IconButton'
+import { IconHoverText, IconWithConfirmTextButton } from './IconButton'
 
 const AuthenticatedHeaderWrapper = styled.div`
   padding: 20px 16px;
@@ -66,7 +65,7 @@ const CopyText = styled(CopyHelper).attrs({
   iconPosition: 'right',
 })``
 
-export default function AuthenticatedHeader({ account, openSettings }: { account: string; openSettings: () => void }) {
+export default function AuthenticatedHeader({ account }: { account: string }) {
   const { connector } = useWeb3React()
   const { ENSName } = useENSName(account)
   const dispatch = useAppDispatch()
@@ -79,8 +78,6 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
     connector.resetState()
     dispatch(updateSelectedWallet({ wallet: undefined }))
   }, [connector, dispatch])
-
-  const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false)
 
   return (
     <AuthenticatedHeaderWrapper>
@@ -102,16 +99,9 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
           )}
         </StatusWrapper>
         <IconContainer>
-          <IconButton
-            hideHorizontal={showDisconnectConfirm}
-            data-testid="wallet-settings"
-            onClick={openSettings}
-            Icon={Settings}
-          />
           <IconWithConfirmTextButton
             data-testid="wallet-disconnect"
             onConfirm={disconnect}
-            onShowConfirm={setShowDisconnectConfirm}
             Icon={Power}
             text="Disconnect"
             dismissOnHoverOut

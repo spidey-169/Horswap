@@ -4,7 +4,7 @@ import { ArrowLeft } from 'react-feather'
 import styled from 'styled-components'
 import { ClickableStyle, ThemedText } from 'theme/components'
 
-const Menu = styled(Column)`
+export const Menu = styled(Column)`
   width: 100%;
   overflow: auto;
   margin-top: 4px;
@@ -26,7 +26,7 @@ const StyledArrow = styled(ArrowLeft)`
   ${ClickableStyle}
 `
 
-const Header = styled.div`
+export const Header = styled.div`
   color: ${({ theme }) => theme.neutral1};
 
   display: flex;
