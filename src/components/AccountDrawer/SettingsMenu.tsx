@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Header, Menu, Title } from 'components/AccountDrawer/SlideOutMenu'
+import { Header, Menu } from 'components/AccountDrawer/SlideOutMenu'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { LOCALE_LABEL } from 'constants/locales'
@@ -77,8 +77,7 @@ export default function SettingsMenu({
 
   return (
     <Menu>
-      <Header>
-      </Header>
+      <Header></Header>
 
       <Container>
         <div>

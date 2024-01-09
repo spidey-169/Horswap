@@ -89,14 +89,6 @@ const IconBlock = forwardRef<HTMLAnchorElement | HTMLDivElement, IconBlockProps>
   return <IconBlockButton ref={ref} {...props} />
 })
 
-const IconButton = ({ Icon, ...rest }: IconButtonProps | IconLinkProps) => (
-  <IconBlock {...rest}>
-    <IconWrapper>
-      <Icon size={24} />
-    </IconWrapper>
-  </IconBlock>
-)
-
 type IconWithTextProps = (IconButtonProps | IconLinkProps) & {
   text: string
   onConfirm?: () => void
@@ -256,5 +248,3 @@ export const IconWithConfirmTextButton = ({
     </IconBlock>
   )
 }
-
-export default IconButton
