@@ -1,13 +1,6 @@
 import { createStore, Store } from 'redux'
 
-import reducer, {
-  addPopup,
-  ApplicationModal,
-  ApplicationState,
-  removePopup,
-  setOpenModal,
-  updateChainId,
-} from './reducer'
+import reducer, { addPopup, ApplicationState, removePopup, updateChainId } from './reducer'
 
 describe('application reducer', () => {
   let store: Store<ApplicationState>
@@ -68,15 +61,6 @@ describe('application reducer', () => {
           },
         ])
       })
-    })
-  })
-
-  describe('setOpenModal', () => {
-    it('should correctly set the open modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.CLAIM_POPUP))
-      expect(store.getState().openModal).toEqual(ApplicationModal.CLAIM_POPUP)
-      store.dispatch(setOpenModal(null))
-      expect(store.getState().openModal).toEqual(null)
     })
   })
 
