@@ -15,7 +15,7 @@ export const Menu = styled(Column)`
   }
 `
 
-export const Title = styled.span`
+const Title = styled.span`
   position: absolute;
   left: 50%;
   top: 50%;
