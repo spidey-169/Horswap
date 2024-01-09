@@ -44,10 +44,6 @@ export interface UserState {
 
   timestamp: number
   hideBaseWalletBanner: boolean
-  // legacy field indicating the user disabled UniswapX during the opt-in period, or dismissed the UniswapX opt-in modal.
-  disabledUniswapX?: boolean
-  // temporary field indicating the user disabled UniswapX during the transition to the opt-out model
-  optedOutOfUniswapX?: boolean
   // undefined means has not gone through A/B split yet
   showSurveyPopup?: boolean
 
@@ -103,9 +99,6 @@ const userSlice = createSlice({
     updateHideBaseWalletBanner(state, action) {
       state.hideBaseWalletBanner = action.payload.hideBaseWalletBanner
     },
-    updateDisabledUniswapX(state, action) {
-      state.disabledUniswapX = action.payload.disabledUniswapX
-    },
     addSerializedToken(state, { payload: { serializedToken } }) {
       if (!state.tokens) {
         state.tokens = {}
@@ -137,6 +130,5 @@ export const {
   updateUserLocale,
   updateUserSlippageTolerance,
   updateHideBaseWalletBanner,
-  updateDisabledUniswapX,
 } = userSlice.actions
 export default userSlice.reducer

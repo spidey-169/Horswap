@@ -11,7 +11,6 @@ import { NumberType, useFormatter } from 'utils/formatNumbers'
 import getRoutingDiagramEntries from 'utils/getRoutingDiagramEntries'
 
 import RouterLabel from '../RouterLabel'
-import { UniswapXDescription } from './GasBreakdownTooltip'
 
 // TODO(WEB-2022)
 // Can `trade.gasUseEstimateUSD` be defined when `chainId` is not in `SUPPORTED_GAS_ESTIMATE_CHAIN_IDS`?
@@ -55,7 +54,6 @@ export function RoutingTooltip({ trade }: { trade: SubmittableTrade }) {
     <Column gap="md">
       <RouteLabel trade={trade} />
       <Separator />
-      <UniswapXDescription />
     </Column>
   )
 }

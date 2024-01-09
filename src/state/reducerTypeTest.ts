@@ -19,7 +19,6 @@ import { Field as FieldV3 } from './mint/v3/actions'
 import { FullRange, MintState as MintV3State } from './mint/v3/reducer'
 import { AppState } from './reducer'
 import { routingApi } from './routing/slice'
-import { SignatureState } from './signatures/reducer'
 import { TransactionState } from './transactions/reducer'
 import { TransactionDetails } from './transactions/types'
 import { UserState } from './user/reducer'
@@ -49,7 +48,6 @@ import { Wallet } from './wallets/types'
 type ExpectedAppState = CombinedState<{
   user: UserState
   transactions: TransactionState
-  signatures: SignatureState
   lists: ListsState
   application: ApplicationState
   wallets: WalletState
@@ -85,8 +83,6 @@ interface ExpectedUserState {
   timestamp: number
   hideBaseWalletBanner: boolean
   showSurveyPopup?: boolean
-  disabledUniswapX?: boolean
-  optedOutOfUniswapX?: boolean
   originCountry?: string
 }
 

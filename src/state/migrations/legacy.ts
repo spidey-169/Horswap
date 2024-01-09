@@ -26,18 +26,15 @@ export const legacyLocalStorageMigration = async () => {
   const oldTransactions = localStorage.getItem('redux_localstorage_simple_transactions')
   const oldUser = localStorage.getItem('redux_localstorage_simple_user')
   const oldLists = localStorage.getItem('redux_localstorage_simple_lists')
-  const oldSignatures = localStorage.getItem('redux_localstorage_simple_signatures')
 
   const newTransactions = tryParseOldState(oldTransactions, initialTransactionsState)
   const newUser = tryParseOldState(oldUser, initialUserState)
   const newLists = tryParseOldState(oldLists, initialListsState)
-  const newSignatures = tryParseOldState(oldSignatures, {})
 
   const result = {
     user: legacyUserMigrations(newUser),
     transactions: legacyTransactionMigrations(newTransactions),
     lists: newLists,
-    signatures: newSignatures,
     _persist: { version: 0, rehydrated: true },
   }
 

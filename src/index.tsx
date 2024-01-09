@@ -23,7 +23,6 @@ import store from './state'
 import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
 import LogsUpdater from './state/logs/updater'
-import OrderUpdater from './state/signatures/updater'
 import TransactionUpdater from './state/transactions/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
 import RadialGradientByChainUpdater from './theme/components/RadialGradientByChainUpdater'
@@ -41,7 +40,6 @@ function Updaters() {
       <ThemeColorMetaUpdater />
       <ApplicationUpdater />
       <TransactionUpdater />
-      <OrderUpdater />
       <MulticallUpdater />
       <LogsUpdater />
     </>

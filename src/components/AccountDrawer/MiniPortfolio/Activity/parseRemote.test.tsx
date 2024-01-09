@@ -1,80 +1,11 @@
 import { act, renderHook } from '@testing-library/react'
 import ms from 'ms'
 
-import {
-  MockClosedUniswapXOrder,
-  MockNFTApproval,
-  MockNFTApprovalForAll,
-  MockNFTReceive,
-  MockNFTTransfer,
-  MockOpenUniswapXOrder,
-  MockRemoveLiquidity,
-  MockSwapOrder,
-  MockTokenApproval,
-  MockTokenReceive,
-  MockTokenSend,
-  MockTokenTransfer,
-  MockWrap,
-} from './fixtures/activity'
-import { parseRemoteActivities, useTimeSince } from './parseRemote'
+import { useTimeSince } from './parseRemote'
 
 describe('parseRemote', () => {
   beforeEach(() => {
     jest.useFakeTimers()
-  })
-  describe('parseRemoteActivities', () => {
-    it('should not parse open UniswapX order', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockOpenUniswapXOrder])
-      expect(result).toEqual({})
-    })
-    it('should parse closed UniswapX order', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockClosedUniswapXOrder])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse NFT approval', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockNFTApproval])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse NFT approval for all', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockNFTApprovalForAll])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse NFT transfer', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockNFTTransfer])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse swap', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue('100'), [MockTokenTransfer])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse token approval', () => {
-      const result = parseRemoteActivities(jest.fn(), [MockTokenApproval])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse send', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue(100), [MockTokenSend])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse receive', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue(100), [MockTokenReceive])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse NFT receive', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue(100), [MockNFTReceive])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse remove liquidity', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue(100), [MockRemoveLiquidity])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse swap order', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue('100'), [MockSwapOrder])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
-    it('should parse eth wrap', () => {
-      const result = parseRemoteActivities(jest.fn().mockReturnValue('100'), [MockWrap])
-      expect(result?.['someHash']).toMatchSnapshot()
-    })
   })
 
   describe('useTimeSince', () => {

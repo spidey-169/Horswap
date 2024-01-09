@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { ChainId } from '@uniswap/sdk-core'
-import { useOpenOffchainActivityModal } from 'components/AccountDrawer/MiniPortfolio/Activity/OffchainActivityModal'
-import { signatureToActivity, transactionToActivity } from 'components/AccountDrawer/MiniPortfolio/Activity/parseLocal'
+import { transactionToActivity } from 'components/AccountDrawer/MiniPortfolio/Activity/parseLocal'
 import { Activity } from 'components/AccountDrawer/MiniPortfolio/Activity/types'
 import { PortfolioLogo } from 'components/AccountDrawer/MiniPortfolio/PortfolioLogo'
 import PortfolioRow from 'components/AccountDrawer/MiniPortfolio/PortfolioRow'
@@ -13,7 +12,6 @@ import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { useAllTokensMultichain } from 'hooks/Tokens'
 import useENSName from 'hooks/useENSName'
 import { X } from 'react-feather'
-import { useOrder } from 'state/signatures/hooks'
 import { useTransaction } from 'state/transactions/hooks'
 import styled from 'styled-components'
 import { EllipsisStyle, ThemedText } from 'theme/components'
@@ -147,22 +145,6 @@ export function TransactionPopupContent({
 
   const onClick = () =>
     window.open(getExplorerLink(activity.chainId, activity.hash, ExplorerDataType.TRANSACTION), '_blank')
-
-  return <ActivityPopupContent activity={activity} onClose={onClose} onClick={onClick} />
-}
-
-export function UniswapXOrderPopupContent({ orderHash, onClose }: { orderHash: string; onClose: () => void }) {
-  const order = useOrder(orderHash)
-  const tokens = useAllTokensMultichain()
-  const openOffchainActivityModal = useOpenOffchainActivityModal()
-  const { formatNumber } = useFormatter()
-  if (!order) return null
-
-  const activity = signatureToActivity(order, tokens, formatNumber)
-
-  if (!activity) return null
-
-  const onClick = () => openOffchainActivityModal({ orderHash, status: order.status })
 
   return <ActivityPopupContent activity={activity} onClose={onClose} onClick={onClick} />
 }

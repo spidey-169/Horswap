@@ -12,7 +12,7 @@ import { isPendingTx } from './hooks'
 import { checkedTransaction, finalizeTransaction } from './reducer'
 import { SerializableTransactionReceipt, TransactionDetails } from './types'
 
-export function toSerializableReceipt(receipt: TransactionReceipt): SerializableTransactionReceipt {
+function toSerializableReceipt(receipt: TransactionReceipt): SerializableTransactionReceipt {
   return {
     blockHash: receipt.blockHash,
     blockNumber: receipt.blockNumber,

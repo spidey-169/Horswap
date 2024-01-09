@@ -2,7 +2,6 @@ import { InterfaceTrade } from 'state/routing/types'
 import {
   PREVIEW_EXACT_IN_TRADE,
   TEST_ALLOWED_SLIPPAGE,
-  TEST_DUTCH_TRADE_ETH_INPUT,
   TEST_TRADE_EXACT_INPUT,
   TEST_TRADE_EXACT_INPUT_API,
   TEST_TRADE_EXACT_OUTPUT,
@@ -60,9 +59,6 @@ describe('SwapLineItem.tsx', () => {
   })
   it('exact input api', () => {
     testTradeLineItems(TEST_TRADE_EXACT_INPUT_API)
-  })
-  it('dutch order eth input', () => {
-    testTradeLineItems(TEST_DUTCH_TRADE_ETH_INPUT)
   })
   it('syncing', () => {
     testTradeLineItems(TEST_TRADE_EXACT_INPUT, { syncing: true })

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { Percent } from '@uniswap/sdk-core'
-import { InterfaceTrade } from 'state/routing/types'
 import styled from 'styled-components'
 import { ThemedText } from 'theme/components'
 
@@ -17,15 +16,7 @@ const HeaderButtonContainer = styled(RowFixed)`
   gap: 16px;
 `
 
-export default function SwapHeader({
-  autoSlippage,
-  chainId,
-  trade,
-}: {
-  autoSlippage: Percent
-  chainId?: number
-  trade?: InterfaceTrade
-}) {
+export default function SwapHeader({ autoSlippage, chainId }: { autoSlippage: Percent; chainId?: number }) {
   return (
     <StyledSwapHeader>
       <HeaderButtonContainer>
@@ -34,7 +25,7 @@ export default function SwapHeader({
         </ThemedText.SubHeader>
       </HeaderButtonContainer>
       <RowFixed>
-        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} />
+        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} />
       </RowFixed>
     </StyledSwapHeader>
   )

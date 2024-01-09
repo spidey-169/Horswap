@@ -51,10 +51,8 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeRealizedPriceImpact, warningSeverity } from 'utils/prices'
 import { didUserReject } from 'utils/swapErrorToUserReadableMessage'
 
-import { useScreenSize } from '../../hooks/useScreenSize'
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
 import { OutputTaxTooltipBody } from './TaxTooltipBody'
-import { UniswapXOptIn } from './UniswapXOptIn'
 
 export const ArrowContainer = styled.div`
   display: inline-flex;
@@ -565,7 +563,6 @@ function Swap({
   const inputCurrency = currencies[Field.INPUT] ?? undefined
   const switchChain = useSwitchChain()
   const switchingChain = useAppSelector((state) => state.wallets.switchingChain)
-  const showOptInSmall = !useScreenSize().navSearchInputVisible
   const isDark = useIsDarkMode()
 
   const swapElement = (
@@ -578,7 +575,7 @@ function Swap({
         onCancel={handleDismissTokenWarning}
         showCancel={true}
       />
-      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
+      <SwapHeader autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && (
         <ConfirmSwapModal
           trade={trade}
@@ -768,14 +765,8 @@ function Swap({
           )}
         </div>
       </AutoColumn>
-      {!showOptInSmall && <UniswapXOptIn isSmall={false} swapInfo={swapInfo} />}
     </SwapWrapper>
   )
 
-  return (
-    <>
-      {swapElement}
-      {showOptInSmall && <UniswapXOptIn isSmall swapInfo={swapInfo} />}
-    </>
-  )
+  return <>{swapElement}</>
 }

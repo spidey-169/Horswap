@@ -1,18 +1,14 @@
 import { t, Trans } from '@lingui/macro'
 import { ChainId, Currency } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { OrderContent } from 'components/AccountDrawer/MiniPortfolio/Activity/OffchainActivityModal'
 import { ColumnCenter } from 'components/Column'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { SwapResult } from 'hooks/useSwapCallback'
 import { useUnmountingAnimation } from 'hooks/useUnmountingAnimation'
-import { UniswapXOrderStatus } from 'lib/hooks/orders/types'
 import { ReactNode, useMemo, useRef } from 'react'
 import { InterfaceTrade, TradeFillType } from 'state/routing/types'
-import { useOrder } from 'state/signatures/hooks'
-import { UniswapXOrderDetails } from 'state/signatures/types'
 import { useIsTransactionConfirmed, useSwapTransactionStatus } from 'state/transactions/hooks'
 import styled, { css } from 'styled-components'
 import { ExternalLink } from 'theme/components'
@@ -109,7 +105,6 @@ interface PendingModalContentProps {
   tokenApprovalPending?: boolean
   revocationPending?: boolean
   swapError?: Error | string
-  onRetryUniswapXSignature?: () => void
 }
 
 interface ContentArgs {
@@ -122,9 +117,7 @@ interface ContentArgs {
   revocationPending: boolean
   swapResult?: SwapResult
   chainId?: number
-  order?: UniswapXOrderDetails
   swapError?: Error | string
-  onRetryUniswapXSignature?: () => void
 }
 
 function getPendingConfirmationContent({
@@ -134,24 +127,13 @@ function getPendingConfirmationContent({
   chainId,
   swapResult,
   swapError,
-  onRetryUniswapXSignature,
 }: Pick<
   ContentArgs,
-  'swapConfirmed' | 'swapPending' | 'trade' | 'chainId' | 'swapResult' | 'swapError' | 'onRetryUniswapXSignature'
+  'swapConfirmed' | 'swapPending' | 'trade' | 'chainId' | 'swapResult' | 'swapError'
 >): PendingModalStep {
   const title = swapPending ? t`Swap submitted` : swapConfirmed ? t`Swap success!` : t`Confirm Swap`
   const tradeSummary = trade ? <TradeSummary trade={trade} /> : null
-  if (swapPending && trade?.fillType === TradeFillType.UniswapX) {
-    return {
-      title,
-      subtitle: tradeSummary,
-      bottomLabel: (
-        <ExternalLink href="https://support.uniswap.org/hc/en-us/articles/17515415311501" color="neutral2">
-          <Trans>Learn more about swapping with UniswapX</Trans>
-        </ExternalLink>
-      ),
-    }
-  } else if ((swapPending || swapConfirmed) && chainId && swapResult?.type === TradeFillType.Classic) {
+  if ((swapPending || swapConfirmed) && chainId && swapResult?.type === TradeFillType.Classic) {
     const explorerLink = (
       <ExternalLink
         href={getExplorerLink(chainId, swapResult.response.hash, ExplorerDataType.TRANSACTION)}
@@ -181,7 +163,6 @@ function getPendingConfirmationContent({
           key={swapError.id}
           initialText={<Trans>Time expired</Trans>}
           transitionText={<Trans>Retry confirmation</Trans>}
-          onTransition={onRetryUniswapXSignature}
         />
       ),
       subtitle: tradeSummary,
@@ -208,7 +189,6 @@ function useStepContents(args: ContentArgs): Record<PendingConfirmModalState, Pe
     swapResult,
     chainId,
     swapError,
-    onRetryUniswapXSignature,
   } = args
 
   return useMemo(
@@ -252,7 +232,6 @@ function useStepContents(args: ContentArgs): Record<PendingConfirmModalState, Pe
         swapResult,
         trade,
         swapError,
-        onRetryUniswapXSignature,
       }),
     }),
     [
@@ -266,7 +245,6 @@ function useStepContents(args: ContentArgs): Record<PendingConfirmModalState, Pe
       trade,
       wrapPending,
       swapError,
-      onRetryUniswapXSignature,
     ]
   )
 }
@@ -281,14 +259,12 @@ export function PendingModalContent({
   tokenApprovalPending = false,
   revocationPending = false,
   swapError,
-  onRetryUniswapXSignature,
 }: PendingModalContentProps) {
   const { chainId } = useWeb3React()
 
   const swapStatus = useSwapTransactionStatus(swapResult)
-  const order = useOrder(swapResult?.type === TradeFillType.UniswapX ? swapResult.response.orderHash : '')
 
-  const swapConfirmed = swapStatus === TransactionStatus.Confirmed || order?.status === UniswapXOrderStatus.FILLED
+  const swapConfirmed = swapStatus === TransactionStatus.Confirmed
   const wrapConfirmed = useIsTransactionConfirmed(wrapTxHash)
 
   const swapPending = swapResult !== undefined && !swapConfirmed
@@ -305,7 +281,6 @@ export function PendingModalContent({
     trade,
     chainId,
     swapError,
-    onRetryUniswapXSignature,
   })
 
   const currentStepContainerRef = useRef<HTMLDivElement>(null)
@@ -313,11 +288,6 @@ export function PendingModalContent({
 
   if (steps.length === 0) {
     return null
-  }
-
-  // Return finalized-order-specifc content if available
-  if (order && order.status !== UniswapXOrderStatus.OPEN) {
-    return <OrderContent order={{ status: order.status, orderHash: order.orderHash, details: order }} />
   }
 
   // On mainnet, we show a different icon when the transaction is submitted but pending confirmation.
