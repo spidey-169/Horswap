@@ -16,7 +16,6 @@ const DefaultMenuWrap = styled(Column)`
 
 enum MenuState {
   DEFAULT,
-  SETTINGS,
   LANGUAGE_SETTINGS,
   LOCAL_CURRENCY_SETTINGS,
 }
@@ -26,7 +25,6 @@ function DefaultMenu({ drawerOpen }: { drawerOpen: boolean }) {
   const isAuthenticated = !!account
 
   const [menu, setMenu] = useState<MenuState>(MenuState.DEFAULT)
-  const openSettings = useCallback(() => setMenu(MenuState.SETTINGS), [])
   const closeSettings = useCallback(() => setMenu(MenuState.DEFAULT), [])
   const openLanguageSettings = useCallback(() => setMenu(MenuState.LANGUAGE_SETTINGS), [])
   const openLocalCurrencySettings = useCallback(() => setMenu(MenuState.LOCAL_CURRENCY_SETTINGS), [])
@@ -45,25 +43,21 @@ function DefaultMenu({ drawerOpen }: { drawerOpen: boolean }) {
   const SubMenu = useMemo(() => {
     switch (menu) {
       case MenuState.DEFAULT:
-        return isAuthenticated ? (
-          <AuthenticatedHeader account={account} openSettings={openSettings} />
-        ) : (
-          <WalletModal openSettings={openSettings} />
-        )
-      case MenuState.SETTINGS:
         return (
-          <SettingsMenu
-            onClose={closeSettings}
-            openLanguageSettings={openLanguageSettings}
-            openLocalCurrencySettings={openLocalCurrencySettings}
-          />
+          <>
+            {isAuthenticated ? <AuthenticatedHeader account={account} /> : <WalletModal />}
+            <SettingsMenu
+              openLanguageSettings={openLanguageSettings}
+              openLocalCurrencySettings={openLocalCurrencySettings}
+            />
+          </>
         )
       case MenuState.LANGUAGE_SETTINGS:
-        return <LanguageMenu onClose={openSettings} />
+        return <LanguageMenu onClose={closeSettings} />
       case MenuState.LOCAL_CURRENCY_SETTINGS:
-        return <LocalCurrencyMenu onClose={openSettings} />
+        return <LocalCurrencyMenu onClose={closeSettings} />
     }
-  }, [account, closeSettings, isAuthenticated, menu, openLanguageSettings, openLocalCurrencySettings, openSettings])
+  }, [account, closeSettings, isAuthenticated, menu, openLanguageSettings, openLocalCurrencySettings])
 
   return <DefaultMenuWrap>{SubMenu}</DefaultMenuWrap>
 }

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { Header, Menu, Title } from 'components/AccountDrawer/SlideOutMenu'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { LOCALE_LABEL } from 'constants/locales'
@@ -11,7 +12,6 @@ import { ClickableStyle, ThemedText } from 'theme/components'
 import ThemeToggle from 'theme/components/ThemeToggle'
 
 import { GitVersionRow } from './GitVersionRow'
-import { SlideOutMenu } from './SlideOutMenu'
 import { SmallBalanceToggle } from './SmallBalanceToggle'
 import { TestnetsToggle } from './TestnetsToggle'
 
@@ -66,11 +66,9 @@ const SettingsButton = ({
 )
 
 export default function SettingsMenu({
-  onClose,
   openLanguageSettings,
   openLocalCurrencySettings,
 }: {
-  onClose: () => void
   openLanguageSettings: () => void
   openLocalCurrencySettings: () => void
 }) {
@@ -78,7 +76,10 @@ export default function SettingsMenu({
   const activeLocalCurrency = useActiveLocalCurrency()
 
   return (
-    <SlideOutMenu title={<Trans>Settings</Trans>} onClose={onClose}>
+    <Menu>
+      <Header>
+      </Header>
+
       <Container>
         <div>
           <SectionTitle data-testid="wallet-header">
@@ -106,6 +107,6 @@ export default function SettingsMenu({
         </div>
         <GitVersionRow />
       </Container>
-    </SlideOutMenu>
+    </Menu>
   )
 }
