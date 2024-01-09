@@ -200,7 +200,7 @@ exports[`SwapLineItem.tsx exact input 1`] = `
               src="ethereum-logo.png"
               width="16"
             />
-            $1.00
+            1.00 USDC
           </div>
         </div>
       </div>
@@ -1416,7 +1416,7 @@ exports[`SwapLineItem.tsx exact input 1`] = `
             <div
               class="c9 css-obwv3p"
             >
-              Best price route costs ~$1.00 in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
+              Best price route costs ~1.00 USDC in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
             </div>
           </div>
         </div>
@@ -1630,7 +1630,7 @@ exports[`SwapLineItem.tsx exact input api 1`] = `
               src="ethereum-logo.png"
               width="16"
             />
-            $1.00
+            1.00 USDC
           </div>
         </div>
       </div>
@@ -2846,7 +2846,7 @@ exports[`SwapLineItem.tsx exact input api 1`] = `
             <div
               class="c9 css-obwv3p"
             >
-              Best price route costs ~$1.00 in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
+              Best price route costs ~1.00 USDC in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
             </div>
           </div>
         </div>
@@ -4490,7 +4490,7 @@ exports[`SwapLineItem.tsx fee on buy 1`] = `
               src="ethereum-logo.png"
               width="16"
             />
-            $1.00
+            1.00 USDC
           </div>
         </div>
       </div>
@@ -5912,7 +5912,7 @@ exports[`SwapLineItem.tsx fee on buy 1`] = `
             <div
               class="c9 css-obwv3p"
             >
-              Best price route costs ~$1.00 in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
+              Best price route costs ~1.00 USDC in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
             </div>
           </div>
         </div>
@@ -6126,7 +6126,7 @@ exports[`SwapLineItem.tsx fee on sell 1`] = `
               src="ethereum-logo.png"
               width="16"
             />
-            $1.00
+            1.00 USDC
           </div>
         </div>
       </div>
@@ -7548,7 +7548,7 @@ exports[`SwapLineItem.tsx fee on sell 1`] = `
             <div
               class="c9 css-obwv3p"
             >
-              Best price route costs ~$1.00 in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
+              Best price route costs ~1.00 USDC in gas. This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step.
             </div>
           </div>
         </div>

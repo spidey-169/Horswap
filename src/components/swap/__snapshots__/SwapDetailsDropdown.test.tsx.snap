@@ -290,7 +290,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
                     class="c2 c10"
                   >
                     <div>
-                      $1.00
+                      1.00 USDC
                     </div>
                   </div>
                 </div>
@@ -405,7 +405,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
                       src="ethereum-logo.png"
                       width="16"
                     />
-                    $1.00
+                    1.00 USDC
                   </div>
                 </div>
               </div>

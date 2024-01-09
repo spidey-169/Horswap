@@ -81,62 +81,62 @@ describe('formatNumber', () => {
   it('formats fiat estimates on token details pages correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenDetails })).toBe('$1.23M')
-    expect(formatNumber({ input: 1234.5678, type: NumberType.FiatTokenDetails })).toBe('$1,234.57')
-    expect(formatNumber({ input: 1.048942, type: NumberType.FiatTokenDetails })).toBe('$1.049')
+    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenDetails })).toBe('1.23M USDC')
+    expect(formatNumber({ input: 1234.5678, type: NumberType.FiatTokenDetails })).toBe('1,234.57 USDC')
+    expect(formatNumber({ input: 1.048942, type: NumberType.FiatTokenDetails })).toBe('1.049 USDC')
 
-    expect(formatNumber({ input: 0.001231, type: NumberType.FiatTokenDetails })).toBe('$0.00123')
-    expect(formatNumber({ input: 0.00001231, type: NumberType.FiatTokenDetails })).toBe('$0.0000123')
+    expect(formatNumber({ input: 0.001231, type: NumberType.FiatTokenDetails })).toBe('0.00123 USDC')
+    expect(formatNumber({ input: 0.00001231, type: NumberType.FiatTokenDetails })).toBe('0.0000123 USDC')
 
-    expect(formatNumber({ input: 0.0000001234, type: NumberType.FiatTokenDetails })).toBe('$0.000000123')
-    expect(formatNumber({ input: 0.000000009876, type: NumberType.FiatTokenDetails })).toBe('<$0.00000001')
+    expect(formatNumber({ input: 0.0000001234, type: NumberType.FiatTokenDetails })).toBe('0.000000123 USDC')
+    expect(formatNumber({ input: 0.000000009876, type: NumberType.FiatTokenDetails })).toBe('<0.00000001 USDC')
   })
 
   it('formats fiat estimates for tokens correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenPrice })).toBe('$1.23M')
-    expect(formatNumber({ input: 1234.5678, type: NumberType.FiatTokenPrice })).toBe('$1,234.57')
+    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenPrice })).toBe('1.23M USDC')
+    expect(formatNumber({ input: 1234.5678, type: NumberType.FiatTokenPrice })).toBe('1,234.57 USDC')
 
-    expect(formatNumber({ input: 0.010235, type: NumberType.FiatTokenPrice })).toBe('$0.0102')
-    expect(formatNumber({ input: 0.001231, type: NumberType.FiatTokenPrice })).toBe('$0.00123')
-    expect(formatNumber({ input: 0.00001231, type: NumberType.FiatTokenPrice })).toBe('$0.0000123')
+    expect(formatNumber({ input: 0.010235, type: NumberType.FiatTokenPrice })).toBe('0.0102 USDC')
+    expect(formatNumber({ input: 0.001231, type: NumberType.FiatTokenPrice })).toBe('0.00123 USDC')
+    expect(formatNumber({ input: 0.00001231, type: NumberType.FiatTokenPrice })).toBe('0.0000123 USDC')
 
-    expect(formatNumber({ input: 0.0000001234, type: NumberType.FiatTokenPrice })).toBe('$0.000000123')
-    expect(formatNumber({ input: 0.000000009876, type: NumberType.FiatTokenPrice })).toBe('<$0.00000001')
+    expect(formatNumber({ input: 0.0000001234, type: NumberType.FiatTokenPrice })).toBe('0.000000123 USDC')
+    expect(formatNumber({ input: 0.000000009876, type: NumberType.FiatTokenPrice })).toBe('<0.00000001 USDC')
     expect(formatNumber({ input: 10000000000000000000000000000000, type: NumberType.FiatTokenPrice })).toBe(
-      '$1.000000E31'
+      '1.000000E31 USDC'
     )
   })
 
   it('formats fiat estimates for token stats correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234576, type: NumberType.FiatTokenStats })).toBe('$1.2M')
-    expect(formatNumber({ input: 234567, type: NumberType.FiatTokenStats })).toBe('$234.6K')
-    expect(formatNumber({ input: 123.456, type: NumberType.FiatTokenStats })).toBe('$123.46')
-    expect(formatNumber({ input: 1.23, type: NumberType.FiatTokenStats })).toBe('$1.23')
-    expect(formatNumber({ input: 0.123, type: NumberType.FiatTokenStats })).toBe('$0.12')
-    expect(formatNumber({ input: 0.00123, type: NumberType.FiatTokenStats })).toBe('<$0.01')
+    expect(formatNumber({ input: 1234576, type: NumberType.FiatTokenStats })).toBe('1.2M USDC')
+    expect(formatNumber({ input: 234567, type: NumberType.FiatTokenStats })).toBe('234.6K USDC')
+    expect(formatNumber({ input: 123.456, type: NumberType.FiatTokenStats })).toBe('123.46 USDC')
+    expect(formatNumber({ input: 1.23, type: NumberType.FiatTokenStats })).toBe('1.23 USDC')
+    expect(formatNumber({ input: 0.123, type: NumberType.FiatTokenStats })).toBe('0.12 USDC')
+    expect(formatNumber({ input: 0.00123, type: NumberType.FiatTokenStats })).toBe('<0.01 USDC')
     expect(formatNumber({ input: 0, type: NumberType.FiatTokenStats })).toBe('-')
   })
 
   it('formats gas USD prices correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatGasPrice })).toBe('$1.23M')
-    expect(formatNumber({ input: 18.448, type: NumberType.FiatGasPrice })).toBe('$18.45')
-    expect(formatNumber({ input: 0.0099, type: NumberType.FiatGasPrice })).toBe('<$0.01')
-    expect(formatNumber({ input: 0, type: NumberType.FiatGasPrice })).toBe('$0.00')
+    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatGasPrice })).toBe('1.23M USDC')
+    expect(formatNumber({ input: 18.448, type: NumberType.FiatGasPrice })).toBe('18.45 USDC')
+    expect(formatNumber({ input: 0.0099, type: NumberType.FiatGasPrice })).toBe('<0.01 USDC')
+    expect(formatNumber({ input: 0, type: NumberType.FiatGasPrice })).toBe('0.00 USDC')
   })
 
   it('formats USD token quantities prices correctly', () => {
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenQuantity })).toBe('$1.23M')
-    expect(formatNumber({ input: 18.448, type: NumberType.FiatTokenQuantity })).toBe('$18.45')
-    expect(formatNumber({ input: 0.0099, type: NumberType.FiatTokenQuantity })).toBe('<$0.01')
-    expect(formatNumber({ input: 0, type: NumberType.FiatTokenQuantity })).toBe('$0.00')
+    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenQuantity })).toBe('1.23M USDC')
+    expect(formatNumber({ input: 18.448, type: NumberType.FiatTokenQuantity })).toBe('18.45 USDC')
+    expect(formatNumber({ input: 0.0099, type: NumberType.FiatTokenQuantity })).toBe('<0.01 USDC')
+    expect(formatNumber({ input: 0, type: NumberType.FiatTokenQuantity })).toBe('0.00 USDC')
   })
 
   it('formats Swap text input/output numbers correctly', () => {
@@ -211,17 +211,17 @@ describe('formatUSDPrice', () => {
   it('format fiat price correctly', () => {
     const { formatFiatPrice } = renderHook(() => useFormatter()).result.current
 
-    expect(formatFiatPrice({ price: 0.000000009876 })).toBe('<$0.00000001')
-    expect(formatFiatPrice({ price: 0.00001231 })).toBe('$0.0000123')
-    expect(formatFiatPrice({ price: 0.001231 })).toBe('$0.00123')
-    expect(formatFiatPrice({ price: 0.0 })).toBe('$0.00')
-    expect(formatFiatPrice({ price: 0 })).toBe('$0.00')
-    expect(formatFiatPrice({ price: 1.048942 })).toBe('$1.05')
-    expect(formatFiatPrice({ price: 0.10235 })).toBe('$0.102')
-    expect(formatFiatPrice({ price: 1_234.5678 })).toBe('$1,234.57')
-    expect(formatFiatPrice({ price: 1_234_567.891 })).toBe('$1.23M')
-    expect(formatFiatPrice({ price: 1_000_000_000_000 })).toBe('$1.00T')
-    expect(formatFiatPrice({ price: 1_000_000_000_000_000 })).toBe('$1000.00T')
+    expect(formatFiatPrice({ price: 0.000000009876 })).toBe('<0.00000001 USDC')
+    expect(formatFiatPrice({ price: 0.00001231 })).toBe('0.0000123 USDC')
+    expect(formatFiatPrice({ price: 0.001231 })).toBe('0.00123 USDC')
+    expect(formatFiatPrice({ price: 0.0 })).toBe('0.00 USDC')
+    expect(formatFiatPrice({ price: 0 })).toBe('0.00 USDC')
+    expect(formatFiatPrice({ price: 1.048942 })).toBe('1.05 USDC')
+    expect(formatFiatPrice({ price: 0.10235 })).toBe('0.102 USDC')
+    expect(formatFiatPrice({ price: 1_234.5678 })).toBe('1,234.57 USDC')
+    expect(formatFiatPrice({ price: 1_234_567.891 })).toBe('1.23M USDC')
+    expect(formatFiatPrice({ price: 1_000_000_000_000 })).toBe('1.00T USDC')
+    expect(formatFiatPrice({ price: 1_000_000_000_000_000 })).toBe('1000.00T USDC')
   })
 })
 

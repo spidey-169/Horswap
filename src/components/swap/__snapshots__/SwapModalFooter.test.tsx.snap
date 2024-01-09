@@ -287,7 +287,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
                 src="ethereum-logo.png"
                 width="16"
               />
-              $1.00
+              1.00 USDC
             </div>
           </div>
         </div>

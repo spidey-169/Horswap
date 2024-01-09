@@ -395,6 +395,8 @@ interface FormatNumberOptions {
   conversionRate?: number
 }
 
+const replaceDollarsToUsdc = (amount: string) => (amount.includes('$') ? `${amount.replace('$', '')} USDC` : amount)
+
 function formatNumber({
   input,
   type = NumberType.TokenNonTx,
@@ -416,7 +418,7 @@ function formatNumber({
   }
 
   if (!hardCodedInput) {
-    return new Intl.NumberFormat(locale, formatterOptions).format(input)
+    return replaceDollarsToUsdc(new Intl.NumberFormat(locale, formatterOptions).format(input))
   }
 
   if (hardCodedInput.hardcodedOutput) {
@@ -425,7 +427,9 @@ function formatNumber({
 
   const { input: hardCodedInputValue, prefix } = hardCodedInput
   if (hardCodedInputValue === undefined) return placeholder
-  return (prefix ?? '') + new Intl.NumberFormat(locale, formatterOptions).format(hardCodedInputValue)
+  return (
+    (prefix ?? '') + replaceDollarsToUsdc(new Intl.NumberFormat(locale, formatterOptions).format(hardCodedInputValue))
+  )
 }
 
 interface FormatCurrencyAmountOptions {
