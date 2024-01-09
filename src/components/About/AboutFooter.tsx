@@ -105,7 +105,7 @@ const LogoSectionContent = () => {
   const isDarkMode = useIsDarkMode()
   return (
     <>
-      <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Uniswap Logo" />
+      <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Horswap Logo" />
       <SocialLinks>
         <SocialLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />

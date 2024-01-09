@@ -1,4 +1,3 @@
-import { isAppUniswapOrg, isAppUniswapStagingOrg } from 'utils/env'
 import { RouteHandlerCallbackOptions, RouteMatchCallbackOptions } from 'workbox-core'
 import { getCacheKeyForURL, matchPrecache } from 'workbox-precaching'
 import { Route } from 'workbox-routing'
@@ -12,7 +11,7 @@ const DOCUMENT = process.env.PUBLIC_URL + '/index.html'
  * Matches with App Shell-style routing, so that navigation requests are fulfilled with an index.html shell.
  * See https://developers.google.com/web/fundamentals/architecture/app-shell
  */
-export function matchDocument({ request, url }: RouteMatchCallbackOptions) {
+function matchDocument({ request, url }: RouteMatchCallbackOptions) {
   // If this isn't a navigation, skip.
   if (request.mode !== 'navigate') {
     return false
@@ -25,7 +24,7 @@ export function matchDocument({ request, url }: RouteMatchCallbackOptions) {
 
   // If this isn't app.uniswap.org (or a local build), skip.
   // IPFS gateways may not have domain separation, so they cannot use document caching.
-  if (!(isDevelopment() || isAppUniswapStagingOrg(url) || isAppUniswapOrg(url))) {
+  if (!isDevelopment()) {
     return false
   }
 

@@ -1,7 +1,7 @@
-import { RouteHandlerCallbackOptions, RouteMatchCallbackOptions } from 'workbox-core'
+import { RouteHandlerCallbackOptions } from 'workbox-core'
 import { getCacheKeyForURL as getCacheKeyForURLMock, matchPrecache as matchPrecacheMock } from 'workbox-precaching'
 
-import { CachedDocument, handleDocument, matchDocument } from './document'
+import { CachedDocument, handleDocument } from './document'
 
 jest.mock('workbox-navigation-preload', () => ({ enable: jest.fn() }))
 jest.mock('workbox-precaching', () => ({
@@ -11,30 +11,6 @@ jest.mock('workbox-precaching', () => ({
 jest.mock('workbox-routing', () => ({ Route: class {} }))
 
 describe('document', () => {
-  describe('matchDocument', () => {
-    const TEST_DOCUMENTS = [
-      [{ request: {}, url: { hostname: 'example.com', pathname: '' } }, false],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'example.com', pathname: '' } }, false],
-      [{ request: {}, url: { hostname: 'app.uniswap.org', pathname: '' } }, false],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.uniswap.org', pathname: '' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.uniswap.org', pathname: '/swap' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.uniswap.org', pathname: '/asset.gif' } }, false],
-      [{ request: {}, url: { hostname: 'app.corn-staging.com', pathname: '' } }, false],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.corn-staging.com', pathname: '' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.corn-staging.com', pathname: '/swap' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'app.corn-staging.com', pathname: '/asset.gif' } }, false],
-      [{ request: {}, url: { hostname: 'localhost', pathname: '' } }, false],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'localhost', pathname: '' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'localhost', pathname: '/swap' } }, true],
-      [{ request: { mode: 'navigate' }, url: { hostname: 'localhost', pathname: '/asset.gif' } }, false],
-    ] as [RouteMatchCallbackOptions, boolean][]
-
-    it.each(TEST_DOCUMENTS)('%j', (document: RouteMatchCallbackOptions, expected: boolean) => {
-      jest.spyOn(window, 'location', 'get').mockReturnValue({ hostname: document.url.hostname } as Location)
-      expect(matchDocument(document)).toBe(expected)
-    })
-  })
-
   describe('handleDocument', () => {
     const requestUrl = 'request_url'
 
