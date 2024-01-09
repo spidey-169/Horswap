@@ -29,15 +29,13 @@ export const routingApi = createApi({
         }
       },
       async queryFn(args) {
-        const fellBack = false
         const quoteStartMark = performance.mark(`quote-fetch-start-${Date.now()}`)
         try {
-          const method = fellBack ? QuoteMethod.CLIENT_SIDE_FALLBACK : QuoteMethod.CLIENT_SIDE
           const { getRouter, getClientSideQuote } = await import('lib/hooks/routing/clientSideSmartOrderRouter')
           const router = getRouter(args.tokenInChainId)
           const quoteResult = await getClientSideQuote(args, router, CLIENT_PARAMS)
           if (quoteResult.state === QuoteState.SUCCESS) {
-            const trade = await transformRoutesToTrade(args, quoteResult.data, method)
+            const trade = await transformRoutesToTrade(args, quoteResult.data, QuoteMethod.CLIENT_SIDE)
             return {
               data: { ...trade, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration },
             }
