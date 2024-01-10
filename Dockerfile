@@ -12,7 +12,6 @@ COPY ./scripts/ /source/scripts/
 COPY ./public/ /source/public/
 COPY ./.git /source/.git
 COPY ./src/ /source/src/
-
 copy ./.eslintrc.js /source/.eslintrc.js
 copy ./.swcrc /source/.swcrc
 
