@@ -1,8 +1,8 @@
-name: 4 | Deploy prod
+name: IPFS deploy
 on:
   push:
     branches:
-      - 'releases/prod'
+      - releases/prod
 
 jobs:
   deploy-to-prod:
