@@ -1,8 +1,8 @@
 name: IPFS deploy
 on:
   push:
-    branches:
-      - releases/prod
+    tags:
+      - 'v\d+\.\d+\.\d+'
 
 jobs:
   deploy-to-prod:
