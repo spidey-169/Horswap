@@ -1,28 +1,24 @@
 FROM node:18.19.0-alpine3.18@sha256:c0a5f02df6e631b75ee3037bd4389ac1f91e591c5c1e30a0007a7d0babcd4cd3 as builder
 
-# Install app dependencies
-#COPY ./ /source/
-COPY ./package.json /source/package.json
-COPY ./yarn.lock /source/yarn.lock
-COPY ./craco.config.cjs /source/craco.config.cjs
-COPY ./scripts/terser-loader.js /source/scripts/terser-loader.js
-COPY ./tsconfig.json /source/tsconfig.json
-COPY ./lingui.config.ts /source/lingui.config.ts
-COPY ./scripts/ /source/scripts/
-COPY ./public/ /source/public/
-COPY ./.git /source/.git
-COPY ./src/ /source/src/
-copy ./.eslintrc.js /source/.eslintrc.js
-copy ./.swcrc /source/.swcrc
-
-WORKDIR /source
-RUN yarn install --frozen-lockfile
-
-# get git
+# Get git
 RUN apk add --no-cache git
 
+# Installaton
+WORKDIR /source
+COPY ./scripts/ /source/scripts/
+COPY ./src/ /source/src/
+COPY ./lingui.config.ts /source/lingui.config.ts
+COPY ./package.json /source/package.json
+COPY ./yarn.lock /source/yarn.lock
+RUN yarn install --frozen-lockfile
+
 # Build the app
-COPY ./src/utils/__generated__/ /source/src/utils/__generated__/
+COPY ./craco.config.cjs /source/craco.config.cjs
+COPY ./tsconfig.json /source/tsconfig.json
+COPY ./public/ /source/public/
+COPY ./.git /source/.git
+COPY ./.eslintrc.js /source/.eslintrc.js
+COPY ./.swcrc /source/.swcrc
 RUN yarn run build
 
 # Cache the kubo image
