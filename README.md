@@ -11,7 +11,7 @@ ipfs://bafybeifldxm7db2slsnyvu4lruzh5zbuq2jmqzwztmeq7efs6kes7helim
 Horswap is a fork of Uniswap Interface v4.266.2. The version v4.266.2 is the last version without added UI fees and that would still allow users to do local routing. Horswap has then significantly improved the interface's censorship resistance and privacy.
 
 Here are the significant changes:
-- Removed Uniswap branding to Horswap branding
+- Changed Uniswap branding to Horswap branding
 - Removed Uniswap privacy policy
 - Removed all analytics queries (Uniswap interface is really noisy in reporting everything you do to their analytics system)
 - Remove support for wallet connect wallets (Unfortunately these require centralized server to function)
