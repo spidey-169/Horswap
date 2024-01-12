@@ -22,7 +22,7 @@ Here are the significant changes:
 - Removed Moonpay (a centralized fiat payment processsor)
 - Removed NFT related features (unfortunately these only function by using centralized services)
 - Removed Subgraph (unfortunately this is also a centralized service)
-- Remove pages that require subgraph (mini portfolio, portfolio, NFTs, token pages, pool details, search bar etc)
+- Removed pages that require subgraph (mini portfolio, portfolio, NFTs, token pages, pool details, search bar etc)
 - Fiat currency selector has been removed (requires subgraph)
 - Remove external routing, all routing is done using the default RPC or users wallet RPC
 - Removed UniswapX (UniswapX depends on centralized servers)
