@@ -27,7 +27,7 @@ Here are the significant changes:
 - Remove external routing, all routing is done using the default RPC or users wallet RPC
 - Removed UniswapX (UniswapX depends on centralized servers)
 - Settings have been moved to where the mini portfolio used to be
-- Token pricing is retrieved via simulating a swap to USDC, and it is shown to users that this is in USDC (not in dollars)
+- Changed token pricing to be from a simulated swap with USDC, and it is shown to users that this is in USDC (not in dollars)
 - Remove claim UNI tokens popup
 - Add docker and deploy to IPFS
 
