@@ -5,8 +5,8 @@ import { lightTheme } from 'theme/colors'
 import darkArrowImgSrc from './images/aboutArrowDark.png'
 import lightArrowImgSrc from './images/aboutArrowLight.png'
 import darkTerminalImgSrc from './images/aboutTerminalDark.png'
-import swapCardImgSrc from './images/swapCard.png'
 import hors from './images/hors.png'
+import swapCardImgSrc from './images/swapCard.png'
 
 export const MAIN_CARDS = [
   {

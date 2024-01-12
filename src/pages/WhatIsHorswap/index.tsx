@@ -41,10 +41,10 @@ export default function WhatIsHorswap() {
           <Title>What is Horswap?</Title>
         </Container>
       </Header>
-			<AutoColumn gap="md">
-			<MarkDownWrapper>
-				<ReactMarkdown
-					source={`# Horswap is an improved Uniswap Interface
+      <AutoColumn gap="md">
+        <MarkDownWrapper>
+          <ReactMarkdown
+            source={`# Horswap is an improved Uniswap Interface
 Horswap is a fork of [Uniswap Interface v4.266.2](https://github.com/Uniswap/interface/releases/tag/v4.266.2). The version v4.266.2 is the last version without added UI fees and that would still allow users to do local routing. Horswap has then significantly improved the interface's censorship resistance and privacy.
 
 Here are the significant changes:
@@ -70,9 +70,9 @@ Here are the significant changes:
 
 You can see all the changes by [comparing Horseswap to Uniswap Interface V4.266.2](https://github.com/Uniswap/interface/compare/v4.266.2...DarkFlorist:Horswap:main). You can also find the whole codebase in [GitHub](https://github.com/DarkFlorist/Horswap/).
 					`.replace(/[\n\r]/g, '\n')}
-				/>
-			</MarkDownWrapper>
-			</AutoColumn>
+          />
+        </MarkDownWrapper>
+      </AutoColumn>
       <SmallButtonPrimary as={Link} to="/">
         <Trans>Back to swapping!</Trans>
       </SmallButtonPrimary>

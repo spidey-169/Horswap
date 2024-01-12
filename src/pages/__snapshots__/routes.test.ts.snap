@@ -83,6 +83,12 @@ Array [
   Object {
     "enabled": [Function],
     "getElement": [Function],
+    "nestedPaths": Array [],
+    "path": "/whatishorswap",
+  },
+  Object {
+    "enabled": [Function],
+    "getElement": [Function],
     "nestedPaths": Array [
       ":currencyIdA",
       ":currencyIdA/:currencyIdB",
