@@ -16,7 +16,7 @@ Here are the significant changes:
 - Removed all analytics queries (Uniswap interface is really noisy in reporting everything you do to their analytics system)
 - Removed support for wallet connect wallets (Unfortunately these require centralized server to function)
 - Changed socials to point to dark.florist equivalents
-- Remove copyrights for Uniswap
+- Removed copyright notices for Uniswap
 - Remove blacklisted tokens and user addresses
 - Replace the default RPC with Keydonix node
 - Remove Moonpay (a fiat payment processsor)
