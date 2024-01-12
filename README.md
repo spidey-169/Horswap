@@ -28,7 +28,7 @@ Here are the significant changes:
 - Removed UniswapX (UniswapX depends on centralized servers)
 - Settings have been moved to where the mini portfolio used to be
 - Changed token pricing to be from a simulated swap with USDC, and it is shown to users that this is in USDC (not in dollars)
-- Remove claim UNI tokens popup
+- Removed claim UNI tokens popup
 - Add docker and deploy to IPFS
 
 # Socials
