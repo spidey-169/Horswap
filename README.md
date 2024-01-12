@@ -20,7 +20,7 @@ Here are the significant changes:
 - Removed blacklisted tokens and user addresses
 - Replaced the default RPC (Infura, which censors) with Keydonix (does not censor)
 - Removed Moonpay (a centralized fiat payment processsor)
-- Remove NFT related features (unfortunately these only function by using centralized services)
+- Removed NFT related features (unfortunately these only function by using centralized services)
 - Remove Subgraph (unfortunately this is also a centralized service)
 - Remove pages that require subgraph (mini portfolio, portfolio, NFTs, token pages, pool details, search bar etc)
 - Fiat currency selector has been removed (requires subgraph)
