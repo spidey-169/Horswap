@@ -17,7 +17,7 @@ Here are the significant changes:
 - Removed support for wallet connect wallets (Unfortunately these require centralized server to function)
 - Changed socials to point to dark.florist equivalents
 - Removed copyright notices for Uniswap
-- Remove blacklisted tokens and user addresses
+- Removed blacklisted tokens and user addresses
 - Replace the default RPC with Keydonix node
 - Remove Moonpay (a fiat payment processsor)
 - Remove NFT related features (unfortunately these only function by using centralized services)
