@@ -18,7 +18,7 @@ Here are the significant changes:
 - Changed socials to point to dark.florist equivalents
 - Removed copyright notices for Uniswap
 - Removed blacklisted tokens and user addresses
-- Replace the default RPC with Keydonix node
+- Replaced the default RPC (Infura, which censors) with Keydonix (does not censor)
 - Remove Moonpay (a fiat payment processsor)
 - Remove NFT related features (unfortunately these only function by using centralized services)
 - Remove Subgraph (unfortunately this is also a centralized service)
