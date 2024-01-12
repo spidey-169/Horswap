@@ -6,6 +6,7 @@ import darkArrowImgSrc from './images/aboutArrowDark.png'
 import lightArrowImgSrc from './images/aboutArrowLight.png'
 import darkTerminalImgSrc from './images/aboutTerminalDark.png'
 import swapCardImgSrc from './images/swapCard.png'
+import hors from './images/hors.png'
 
 export const MAIN_CARDS = [
   {
@@ -30,8 +31,8 @@ export const MORE_CARDS = [
     to: '/whatishorswap',
     title: 'What is Horswap?',
     description: 'Read more about censorship resistant and privacy protective Uniswap Interface',
-    lightIcon: <StyledCardLogo src={lightArrowImgSrc} alt="What is Horswap?" />,
-    darkIcon: <StyledCardLogo src={darkArrowImgSrc} alt="What is Horswap?" />,
+    lightIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
+    darkIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
     cta: 'Explanation on what is Horswap',
   },
   {
