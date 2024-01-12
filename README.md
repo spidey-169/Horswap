@@ -8,7 +8,7 @@ Horswap is accessible via IPFS at:
 ipfs://bafybeifldxm7db2slsnyvu4lruzh5zbuq2jmqzwztmeq7efs6kes7helim
 
 # Horswap is an improved Uniswap Interface
-Horswap is a fork of Uniswap Interface v4.266.2. The version v4.266.2 is the last version without added UI fees and that would still allow users to do local routing. Horswap has then significantly improved the interface's censorship resistance and privacy.
+Horswap is a fork of [Uniswap Interface v4.266.2](https://github.com/Uniswap/interface/releases/tag/v4.266.2). The version v4.266.2 is the last version without added UI fees and that would still allow users to do local routing. Horswap has then significantly improved the interface's censorship resistance and privacy.
 
 Here are the significant changes:
 - Changed Uniswap branding to Horswap branding
@@ -30,6 +30,8 @@ Here are the significant changes:
 - Changed token pricing to be from a simulated swap with USDC, and it is shown to users that this is in USDC (not in dollars)
 - Removed claim UNI tokens popup
 - Added docker building and deployment to IPFS
+
+You can see all the changes by [comparing Horseswap to Uniswap Interface V4.266.2](https://github.com/Uniswap/interface/compare/v4.266.2...DarkFlorist:Horswap:main)
 
 # Socials
 - Website: [dark.florist](https://www.dark.florist/)
