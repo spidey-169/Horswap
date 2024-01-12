@@ -26,7 +26,7 @@ Here are the significant changes:
 - Fiat currency selector has been removed (requires subgraph)
 - Remove external routing, all routing is done using the default RPC or users wallet RPC
 - Removed UniswapX (UniswapX depends on centralized servers)
-- Settings have been moved on place of mini portfolio
+- Settings have been moved to where the mini portfolio used to be
 - Token pricing is retrieved via simulating a swap to USDC, and it is shown to users that this is in USDC (not in dollars)
 - Remove claim UNI tokens popup
 - Add docker and deploy to IPFS
