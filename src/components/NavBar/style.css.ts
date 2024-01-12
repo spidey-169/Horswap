@@ -67,7 +67,6 @@ const baseMenuItem = style([
     marginX: { sm: '4', md: '0' },
     transition: '250',
     height: 'min',
-    width: 'full',
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',

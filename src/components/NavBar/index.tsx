@@ -54,11 +54,12 @@ export const PageTabs = () => {
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
         <Trans>Swap</Trans>
       </MenuItem>
-      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
-        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-          <Trans>Pools</Trans>
-        </MenuItem>
-      </Box>
+      <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+        <Trans>Pools</Trans>
+      </MenuItem>
+      <MenuItem href="/whatishorswap">
+        <Trans>What is Horswap?</Trans>
+      </MenuItem>
       <Box marginY="4">
         <MenuDropdown />
       </Box>
