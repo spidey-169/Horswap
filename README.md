@@ -14,7 +14,7 @@ Here are the significant changes:
 - Changed Uniswap branding to Horswap branding
 - Removed Uniswap privacy policy
 - Removed all analytics queries (Uniswap interface is really noisy in reporting everything you do to their analytics system)
-- Remove support for wallet connect wallets (Unfortunately these require centralized server to function)
+- Removed support for wallet connect wallets (Unfortunately these require centralized server to function)
 - Changed socials to point to dark.florist equivalents
 - Remove copyrights for Uniswap
 - Remove blacklisted tokens and user addresses
