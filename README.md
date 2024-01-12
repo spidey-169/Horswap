@@ -24,7 +24,7 @@ Here are the significant changes:
 - Removed Subgraph (unfortunately this is also a centralized service)
 - Removed pages that require subgraph (mini portfolio, portfolio, NFTs, token pages, pool details, search bar etc)
 - Removed fiat currency selector (requires subgraph)
-- Remove external routing, all routing is done using the default RPC or users wallet RPC
+- Removed external routing, all routing is done using the default RPC or users wallet RPC
 - Removed UniswapX (UniswapX depends on centralized servers)
 - Settings have been moved to where the mini portfolio used to be
 - Changed token pricing to be from a simulated swap with USDC, and it is shown to users that this is in USDC (not in dollars)
