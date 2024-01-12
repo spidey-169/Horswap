@@ -29,7 +29,7 @@ Here are the significant changes:
 - Settings have been moved to where the mini portfolio used to be
 - Changed token pricing to be from a simulated swap with USDC, and it is shown to users that this is in USDC (not in dollars)
 - Removed claim UNI tokens popup
-- Add docker and deploy to IPFS
+- Added docker building and deployment to IPFS
 
 # Socials
 - Website: [dark.florist](https://www.dark.florist/)
