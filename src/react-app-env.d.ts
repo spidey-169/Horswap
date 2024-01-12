@@ -18,8 +18,6 @@ interface Window {
     isMetaMask?: true
     // set by the Rabby browser extension
     isRabby?: true
-    // set by the Trust Wallet browser extension
-    isTrust?: true
     // set by the Ledger Extension Web 3 browser extension
     isLedgerConnect?: true
     autoRefreshOnNetworkChange?: boolean

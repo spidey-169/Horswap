@@ -72,16 +72,6 @@ describe('connection utility/metadata tests', () => {
     expect(displayed.length).toEqual(2)
   })
 
-  it('Trust Wallet Injected Desktop', async () => {
-    const { displayed, injected } = createWalletEnvironment({ isTrust: true })
-
-    expect(displayed.includes(injected)).toBe(true)
-    expect(injected.getName()).toBe('Trust Wallet')
-    expect(injected.overrideActivate?.()).toBeFalsy()
-
-    expect(displayed.length).toEqual(2)
-  })
-
   it('Rabby Wallet Injected Desktop', async () => {
     const { displayed, injected } = createWalletEnvironment({ isRabby: true, isMetaMask: true }) // Rabby sets isMetaMask to true
 
