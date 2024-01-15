@@ -5,6 +5,7 @@ import { lightTheme } from 'theme/colors'
 import darkArrowImgSrc from './images/aboutArrowDark.png'
 import lightArrowImgSrc from './images/aboutArrowLight.png'
 import darkTerminalImgSrc from './images/aboutTerminalDark.png'
+import hors from './images/hors.png'
 import swapCardImgSrc from './images/swapCard.png'
 
 export const MAIN_CARDS = [
@@ -26,6 +27,14 @@ const StyledCardLogo = styled.img`
 `
 
 export const MORE_CARDS = [
+  {
+    to: '/whatishorswap',
+    title: 'What is Horswap?',
+    description: 'Read more about this censorship resistant and privacy protecting Uniswap Interface',
+    lightIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
+    darkIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
+    cta: 'Explanation on what is Horswap',
+  },
   {
     to: '/pools',
     title: 'Earn',
