@@ -30,7 +30,7 @@ export const MORE_CARDS = [
   {
     to: '/whatishorswap',
     title: 'What is Horswap?',
-    description: 'Read more about censorship resistant and privacy protective Uniswap Interface',
+    description: 'Read more about this censorship resistant and privacy protecting Uniswap Interface',
     lightIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
     darkIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
     cta: 'Explanation on what is Horswap',
