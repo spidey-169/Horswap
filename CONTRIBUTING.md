@@ -20,17 +20,23 @@ The interface should automatically open. If it does not, navigate to [http://loc
 
 ## Creating a production build
 
+Build horswap docker
 ```
-yarn build
-```
-
-To serve the production build:
-
-```
-yarn serve
+docker build -f Dockerfile . -t horswap
 ```
 
-Then, navigate to [http://localhost:3000] to see it.
+Deploy to IPFS (requires running local IPFS node)
+
+```
+docker container run --rm -it horswap
+```
+
+The last line of the output should say:
+```
+added bafyb... export
+```
+
+You can then, navigate to [bafyb....ipfs.localhost:8081] to interact with Horswap, given that you are hosting IPFS gateway at localhost:8081.
 
 ## Running unit tests
 
