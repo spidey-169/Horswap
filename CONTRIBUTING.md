@@ -25,7 +25,7 @@ Build horswap docker
 docker build -f Dockerfile . -t horswap
 ```
 
-Deploy to IPFS (requires running local IPFS node)
+Deploy to IPFS (requires running local IPFS node with the API exposed on default port, IPFS Desktop is sufficient)
 ```
 docker container run --rm -it horswap
 ```
