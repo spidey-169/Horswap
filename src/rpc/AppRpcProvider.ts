@@ -114,8 +114,8 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
         performance.callCount++
         try {
           return method === 'eth_feeHistory'
-              ? await provider.send(method, params as any[])
-              : await provider.perform(method, params)
+            ? await provider.send(method, params as any[])
+            : await provider.perform(method, params)
         } catch (error) {
           performance.failureCount++
           console.warn('rpc action failed', error)

@@ -43,7 +43,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
         : [otherCurrency, amountSpecified?.currency],
     [amountSpecified, otherCurrency, tradeType]
   )
-	const [result, setResult] = useState<RoutingAPITradeReturn>({ state: TradeState.LOADING })
+  const [result, setResult] = useState<RoutingAPITradeReturn>({ state: TradeState.LOADING })
   const timerIdRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const { provider } = useWeb3React()
   const queryArgs = useRoutingAPIArguments({
@@ -58,7 +58,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   })
   useEffect(() => {
     async function updateResults() {
-			const walletProvider = provider
+      const walletProvider = provider
       const makePriceQuery = async () => {
         if (queryArgs === skipToken) return { state: TradeState.INVALID }
         const {
