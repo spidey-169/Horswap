@@ -60,7 +60,7 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
     })
     checkNetworks(providers.map((p) => p.network))
 
-    super(chainId, providers[0].connection.url)
+    super(chainId, 'invalid')
     this.providerEvaluations = providers.map((provider) => ({
       provider,
       performance: {
@@ -74,6 +74,7 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
     this.evaluationIntervalMs = evaluationIntervalMs
   }
 
+  send = async (method: string, params: Array<any>) => await this.perform(method, params)
   /**
    * Perform a JSON-RPC request.
    * Throws an error if all providers fail to perform the operation.
@@ -89,7 +90,6 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
     })
 
     this.providerEvaluations = AppRpcProvider.sortProviders(this.providerEvaluations.slice())
-
     // Always broadcast "sendTransaction" to all backends
     if (method === 'sendTransaction') {
       const results: Array<string | Error> = await Promise.all(
@@ -113,7 +113,9 @@ export default class AppRpcProvider extends AppStaticJsonRpcProvider {
       for (const { provider, performance } of this.providerEvaluations) {
         performance.callCount++
         try {
-          return await provider.perform(method, params)
+          return method === 'eth_feeHistory'
+              ? await provider.send(method, params as any[])
+              : await provider.perform(method, params)
         } catch (error) {
           performance.failureCount++
           console.warn('rpc action failed', error)

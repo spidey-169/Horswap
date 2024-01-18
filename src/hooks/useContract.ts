@@ -61,22 +61,21 @@ export function useContract<T extends Contract = Contract>(
 }
 
 function useMainnetContract<T extends Contract = Contract>(address: string | undefined, ABI: any): T | null {
-  const { chainId } = useWeb3React()
+  const { chainId, provider } = useWeb3React()
   const isMainnet = chainId === ChainId.MAINNET
   const contract = useContract(isMainnet ? address : undefined, ABI, false)
-  const providers = RPC_PROVIDERS
+  const providerToUse = provider === undefined ? RPC_PROVIDERS[ChainId.MAINNET] : provider
 
   return useMemo(() => {
     if (isMainnet) return contract
     if (!address) return null
-    const provider = providers[ChainId.MAINNET]
     try {
-      return getContract(address, ABI, provider)
+      return getContract(address, ABI, providerToUse)
     } catch (error) {
       console.error('Failed to get mainnet contract', error)
       return null
     }
-  }, [isMainnet, contract, address, providers, ABI]) as T
+  }, [isMainnet, contract, address, providerToUse, ABI]) as T
 }
 
 export function useV2MigratorContract() {

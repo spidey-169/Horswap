@@ -1,7 +1,7 @@
 import { Connector } from '@web3-react/types'
 import { useSyncExternalStore } from 'react'
 
-import { deprecatedNetworkConnection, getConnection, gnosisSafeConnection } from './index'
+import { getConnection, gnosisSafeConnection, networkConnection } from './index'
 import { deletePersistedConnectionMeta, getPersistedConnectionMeta } from './meta'
 import { ConnectionType } from './types'
 
@@ -43,27 +43,26 @@ async function connect(connector: Connector, type: ConnectionType) {
 if (window !== window.parent) {
   connect(gnosisSafeConnection.connector, ConnectionType.GNOSIS_SAFE)
 }
-connect(deprecatedNetworkConnection.connector, ConnectionType.DEPRECATED_NETWORK)
+
+connect(networkConnection.connector, ConnectionType.NETWORK)
 
 // Get the persisted wallet type from the last session.
 const meta = getPersistedConnectionMeta()
-if (meta?.type) {
-  const selectedConnection = getConnection(meta.type)
-  if (selectedConnection) {
-    connectionReady = connect(selectedConnection.connector, meta.type)
-      .then((connected) => {
-        if (!connected) throw new FailedToConnect()
-      })
-      .catch((error) => {
-        // Clear the persisted wallet type if it failed to connect.
-        deletePersistedConnectionMeta()
-        // Log it if it threw an unknown error.
-        if (!(error instanceof FailedToConnect)) {
-          console.error(error)
-        }
-      })
-      .finally(() => {
-        connectionReady = true
-      })
-  }
+const selectedConnection = meta?.type ? getConnection(meta.type) : undefined
+if (selectedConnection && meta?.type) {
+  connectionReady = connect(selectedConnection.connector, meta.type)
+    .then((connected) => {
+      if (!connected) throw new FailedToConnect()
+    })
+    .catch((error) => {
+      // Clear the persisted wallet type if it failed to connect.
+      deletePersistedConnectionMeta()
+      // Log it if it threw an unknown error.
+      if (!(error instanceof FailedToConnect)) {
+        console.error(error)
+      }
+    })
+    .finally(() => {
+      connectionReady = true
+    })
 }

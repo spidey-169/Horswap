@@ -18,7 +18,6 @@ import { MintState } from './mint/reducer'
 import { Field as FieldV3 } from './mint/v3/actions'
 import { FullRange, MintState as MintV3State } from './mint/v3/reducer'
 import { AppState } from './reducer'
-import { routingApi } from './routing/slice'
 import { TransactionState } from './transactions/reducer'
 import { TransactionDetails } from './transactions/types'
 import { UserState } from './user/reducer'
@@ -57,7 +56,6 @@ type ExpectedAppState = CombinedState<{
   burnV3: BurnV3State
   multicall: ReturnType<typeof multicall.reducer>
   logs: LogsState
-  [routingApi.reducerPath]: ReturnType<typeof routingApi.reducer>
 }>
 
 assert<Equals<AppState, ExpectedAppState>>()

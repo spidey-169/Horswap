@@ -1,61 +1,82 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { Web3Provider } from '@ethersproject/providers'
 import { Protocol } from '@uniswap/router-sdk'
-import ms from 'ms'
+import { getClientSideQuote, getRouter } from 'lib/hooks/routing/clientSideSmartOrderRouter'
 
-import { GetQuoteArgs, QuoteMethod, QuoteState, TradeResult } from './types'
+import { ClassicTrade, GetQuoteArgs, QuoteMethod, QuoteResult, QuoteState, TradeResult } from './types'
 import { transformRoutesToTrade } from './utils'
 
 const CLIENT_PARAMS = {
   protocols: [Protocol.V2, Protocol.V3, Protocol.MIXED],
 }
 
-function getQuoteLatencyMeasure(mark: PerformanceMark): PerformanceMeasure {
-  performance.mark('quote-fetch-end')
-  return performance.measure('quote-fetch-latency', mark.name, 'quote-fetch-end')
+type RoutingAPITradeQuoteReturn = {
+  isError: boolean
+  data?: {
+    trade?: ClassicTrade
+    state?: QuoteResult
+  }
+  currentData?: TradeResult
+  error?: { status: string; error: any }
 }
 
-export const routingApi = createApi({
-  reducerPath: 'routingApi',
-  baseQuery: fetchBaseQuery({}),
-  endpoints: (build) => ({
-    getQuote: build.query<TradeResult, GetQuoteArgs>({
-      async onQueryStarted(_args: GetQuoteArgs, { queryFulfilled }) {
-        try {
-          await queryFulfilled
-        } catch (error: unknown) {
-          if (!(error && typeof error === 'object' && 'error' in error)) {
-            throw error
-          }
-        }
-      },
-      async queryFn(args) {
-        const quoteStartMark = performance.mark(`quote-fetch-start-${Date.now()}`)
-        try {
-          const { getRouter, getClientSideQuote } = await import('lib/hooks/routing/clientSideSmartOrderRouter')
-          const router = getRouter(args.tokenInChainId)
-          const quoteResult = await getClientSideQuote(args, router, CLIENT_PARAMS)
-          if (quoteResult.state === QuoteState.SUCCESS) {
-            const trade = await transformRoutesToTrade(args, quoteResult.data, QuoteMethod.CLIENT_SIDE)
-            return {
-              data: { ...trade, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration },
-            }
-          } else {
-            return { data: { ...quoteResult, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration } }
-          }
-        } catch (error: any) {
-          console.warn(`GetQuote failed on client: ${error}`)
-          return {
-            error: { status: 'CUSTOM_ERROR', error: error?.detail ?? error?.message ?? error },
-          }
-        }
-      },
-      keepUnusedDataFor: ms(`10s`),
-      extraOptions: {
-        maxRetries: 0,
-      },
-    }),
-  }),
-})
+type QueryState = { returnValue: Promise<RoutingAPITradeQuoteReturn>; lastPolled: number }
 
-export const { useGetQuoteQuery } = routingApi
-export const useGetQuoteQueryState = routingApi.endpoints.getQuote.useQueryState
+const CACHE_SIZE = 1000
+class QuoteCache {
+  private data = new Map<string, QueryState>()
+  public get = (key: string) => this.data.get(key)?.returnValue
+  public set = (dataReturn: QueryState, key: string) => {
+    if (this.data.size > CACHE_SIZE) {
+      const keysIter = this.data.keys()
+      this.data.delete(keysIter.next().value)
+    }
+    this.data.set(key, dataReturn)
+    return dataReturn.returnValue
+  }
+  public clearIfNeeded = (key: string, pollingInterval: number) => {
+    const time = Date.now()
+    const value = this.data.get(key)
+    if (time - (value?.lastPolled ?? 0) > pollingInterval) this.data.delete(key)
+  }
+}
+
+const quoteCache = new QuoteCache()
+
+export const getRoutingApiQuote = async (
+  args: GetQuoteArgs,
+  web3Provider: Web3Provider | undefined,
+  pollingInterval: number
+): Promise<RoutingAPITradeQuoteReturn> => {
+  const getQuote = async (): Promise<RoutingAPITradeQuoteReturn> => {
+    try {
+      const router = getRouter(args.tokenInChainId, web3Provider)
+      const quoteResult = await getClientSideQuote(args, router.router, CLIENT_PARAMS)
+      if (quoteResult.state === QuoteState.SUCCESS) {
+        const trade = await transformRoutesToTrade(args, quoteResult.data, QuoteMethod.CLIENT_SIDE, router.provider)
+        return {
+          isError: false,
+          data: { trade: trade.trade },
+          currentData: { ...trade },
+        }
+      } else {
+        return {
+          isError: false,
+          data: { state: quoteResult },
+          currentData: undefined,
+        }
+      }
+    } catch (error: any) {
+      console.warn(`GetQuote failed on client: ${error}`)
+      return {
+        isError: true,
+        error: { status: 'CUSTOM_ERROR', error: error?.detail ?? error?.message ?? error },
+        currentData: undefined,
+      }
+    }
+  }
+  const key = args.amount + args.tokenInAddress + args.tokenOutAddress + args.tradeType + args.tokenInChainId
+  quoteCache.clearIfNeeded(key, pollingInterval)
+  const returnValue = quoteCache.get(key)
+  if (returnValue !== undefined) return await returnValue
+  return await quoteCache.set({ lastPolled: Date.now(), returnValue: getQuote() }, key)
+}

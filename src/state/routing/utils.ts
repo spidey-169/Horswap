@@ -1,3 +1,4 @@
+import type { JsonRpcProvider } from '@ethersproject/providers'
 import { MixedRouteSDK } from '@uniswap/router-sdk'
 import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { Pair, Route as V2Route } from '@uniswap/v2-sdk'
@@ -142,7 +143,8 @@ function getClassicTradeDetails(
 export async function transformRoutesToTrade(
   args: GetQuoteArgs,
   data: URAQuoteResponse,
-  quoteMethod: QuoteMethod
+  quoteMethod: QuoteMethod,
+  provider: JsonRpcProvider
 ): Promise<TradeResult> {
   const { tradeType, account, amount, inputTax, outputTax } = args
 
@@ -156,7 +158,7 @@ export async function transformRoutesToTrade(
   // Some sus javascript float math but it's ok because its just an estimate for display purposes
   const usdCostPerGas = gasUseEstimateUSD && gasUseEstimate ? gasUseEstimateUSD / gasUseEstimate : undefined
 
-  const approveInfo = await getApproveInfo(account, currencyIn, amount, usdCostPerGas)
+  const approveInfo = await getApproveInfo(account, currencyIn, amount, provider, usdCostPerGas)
 
   const classicTrade = new ClassicTrade({
     v2Routes:
