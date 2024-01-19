@@ -8,9 +8,17 @@ import ms from 'ms'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getRoutingApiQuote } from './slice'
-import { INTERNAL_ROUTER_PREFERENCE_PRICE, QuoteMethod, RouterPreference, SubmittableTrade, TradeState } from './types'
+import {
+  GetQuoteArgs,
+  INTERNAL_ROUTER_PREFERENCE_PRICE,
+  QuoteMethod,
+  RouterPreference,
+  SubmittableTrade,
+  TradeState,
+} from './types'
 
 const TRADE_LOADING = { state: TradeState.LOADING, trade: undefined, currentData: undefined } as const
+//export const TRADE_NOT_FOUND = { state: TradeState.NO_ROUTE_FOUND, trade: undefined, currentData: undefined } as const
 
 type RoutingAPITradeReturn = {
   state: TradeState
@@ -57,21 +65,24 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
     outputTax,
   })
   useEffect(() => {
-    async function updateResults() {
+    const args = queryArgs
+    if (skipFetch) return
+    if (args === skipToken) return setResult({ state: TradeState.INVALID })
+    async function updateResults(args: GetQuoteArgs) {
+      if (document.hidden) return
       const walletProvider = provider
       const makePriceQuery = async () => {
-        if (queryArgs === skipToken) return { state: TradeState.INVALID }
         const {
           isError,
           data: tradeResult,
           error,
           currentData,
         } = await getRoutingApiQuote(
-          queryArgs,
+          args,
           walletProvider,
-          queryArgs.routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : AVERAGE_L1_BLOCK_TIME
+          args.routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : AVERAGE_L1_BLOCK_TIME
         )
-        if (!queryArgs.amount || isError) {
+        if (!args.amount || isError) {
           return {
             state: TradeState.INVALID,
             trade: undefined,
@@ -92,10 +103,9 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
       if (!active || queryArgs === skipToken) return
       setResult(res)
     }
-    if (skipFetch) return
     let active = true
-    updateResults()
-    timerIdRef.current = setInterval(updateResults, AVERAGE_L1_BLOCK_TIME)
+    updateResults(args)
+    timerIdRef.current = setInterval(() => updateResults(args), AVERAGE_L1_BLOCK_TIME)
     return () => {
       active = false
       if (timerIdRef.current) clearInterval(timerIdRef.current)
