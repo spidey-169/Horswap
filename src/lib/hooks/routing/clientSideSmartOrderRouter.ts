@@ -18,7 +18,6 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
   const providerChainId = web3Provider?.network.chainId
   if (
     cachedProviderRouter !== undefined &&
-    cachedProviderRouter.chainId === providerChainId &&
     chainId === providerChainId &&
     web3Provider === cachedProviderRouter.routerProvider.provider
   ) {
