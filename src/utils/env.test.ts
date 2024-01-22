@@ -1,4 +1,4 @@
-import { isDevelopmentEnv, isProductionEnv, isStagingEnv, isTestEnv } from './env'
+import { isProductionEnv, isStagingEnv, isTestEnv } from './env'
 
 describe('env', () => {
   const ENV = process.env
@@ -13,11 +13,6 @@ describe('env', () => {
       ...env,
     }
   }
-
-  it('isDevelopmentEnv is true if NODE_ENV=development', () => {
-    setEnv({ NODE_ENV: 'development' })
-    expect(isDevelopmentEnv()).toBe(true)
-  })
 
   it('isTestEnv is true if NODE_ENV=test', () => {
     setEnv({ NODE_ENV: 'test' })

@@ -2,7 +2,6 @@ import { combineReducers } from '@reduxjs/toolkit'
 import multicall from 'lib/state/multicall'
 import localForage from 'localforage'
 import { PersistConfig, persistReducer } from 'redux-persist'
-import { isDevelopmentEnv } from 'utils/env'
 
 import application from './application/reducer'
 import burn from './burn/reducer'
@@ -50,7 +49,6 @@ const persistConfig: PersistConfig<AppState> = {
   // We need unserialized storage for inspectable db entries for debugging.
   // @ts-ignore
   deserialize: false,
-  debug: isDevelopmentEnv(),
 }
 
 const persistedReducer = persistReducer(persistConfig, appReducer)

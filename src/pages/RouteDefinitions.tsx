@@ -1,9 +1,6 @@
-import { useAtom } from 'jotai'
 import { lazy, ReactNode, Suspense, useMemo } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import { SpinnerSVG } from 'theme/components'
-import { isBrowserRouterEnabled } from 'utils/env'
 
 // High-traffic pages (index and /swap) should not be lazy-loaded.
 import Landing from './Landing'
@@ -39,25 +36,19 @@ const LazyLoadSpinner = () => (
 )
 
 interface RouterConfig {
-  browserRouterEnabled?: boolean
   hash?: string
-  shouldDisableNFTRoutes?: boolean
 }
 
 /**
  * Convenience hook which organizes the router configuration into a single object.
  */
 export function useRouterConfig(): RouterConfig {
-  const browserRouterEnabled = isBrowserRouterEnabled()
   const { hash } = useLocation()
-  const [shouldDisableNFTRoutes] = useAtom(shouldDisableNFTRoutesAtom)
   return useMemo(
     () => ({
-      browserRouterEnabled,
       hash,
-      shouldDisableNFTRoutes: Boolean(shouldDisableNFTRoutes),
     }),
-    [browserRouterEnabled, hash, shouldDisableNFTRoutes]
+    [hash]
   )
 }
 
@@ -84,7 +75,7 @@ export const routes: RouteDefinition[] = [
   createRouteDefinition({
     path: '/',
     getElement: (args) => {
-      return args.browserRouterEnabled && args.hash ? <Navigate to={args.hash.replace('#', '')} replace /> : <Landing />
+      return args.hash ? <Navigate to={args.hash.replace('#', '')} replace /> : <Landing />
     },
   }),
   createRouteDefinition({

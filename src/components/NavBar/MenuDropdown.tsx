@@ -15,7 +15,6 @@ import { themeVars } from 'nft/css/sprinkles.css'
 import { ReactNode, useReducer, useRef } from 'react'
 import { NavLink, NavLinkProps } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components'
-import { isDevelopmentEnv, isStagingEnv } from 'utils/env'
 
 import * as styles from './MenuDropdown.css'
 import { NavDropdown } from './NavDropdown'
@@ -163,15 +162,6 @@ export const MenuDropdown = () => {
                 <SecondaryLinkedText href="https://docs.uniswap.org/">
                   <Trans>Documentation</Trans> ↗
                 </SecondaryLinkedText>
-                {(isDevelopmentEnv() || isStagingEnv()) && (
-                  <SecondaryLinkedText
-                    onClick={() => {
-                      toggleOpen()
-                    }}
-                  >
-                    <Trans>Feature Flags</Trans>
-                  </SecondaryLinkedText>
-                )}
               </Box>
               <IconRow>
                 <Icon href="https://discord.com/invite/aCSKcvf5VW">
