@@ -412,7 +412,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5 {
-  background-color: #75ff72;
+  background-color: #3dad5d;
   font-size: 20px;
   font-weight: 535;
   padding: 16px;
@@ -420,17 +420,17 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5:focus {
-  box-shadow: 0 0 0 1pt #5cff58;
-  background-color: #5cff58;
+  box-shadow: 0 0 0 1pt #369a53;
+  background-color: #369a53;
 }
 
 .c5:hover {
-  background-color: #5cff58;
+  background-color: #369a53;
 }
 
 .c5:active {
-  box-shadow: 0 0 0 1pt #43ff3f;
-  background-color: #43ff3f;
+  box-shadow: 0 0 0 1pt #308749;
+  background-color: #308749;
 }
 
 .c5:disabled {
@@ -921,7 +921,7 @@ exports[`SwapModalFooter.tsx renders a preview trade while disabling submission 
 }
 
 .c5 {
-  background-color: #75ff72;
+  background-color: #3dad5d;
   font-size: 20px;
   font-weight: 535;
   padding: 16px;
@@ -929,17 +929,17 @@ exports[`SwapModalFooter.tsx renders a preview trade while disabling submission 
 }
 
 .c5:focus {
-  box-shadow: 0 0 0 1pt #5cff58;
-  background-color: #5cff58;
+  box-shadow: 0 0 0 1pt #369a53;
+  background-color: #369a53;
 }
 
 .c5:hover {
-  background-color: #5cff58;
+  background-color: #369a53;
 }
 
 .c5:active {
-  box-shadow: 0 0 0 1pt #43ff3f;
-  background-color: #43ff3f;
+  box-shadow: 0 0 0 1pt #308749;
+  background-color: #308749;
 }
 
 .c5:disabled {

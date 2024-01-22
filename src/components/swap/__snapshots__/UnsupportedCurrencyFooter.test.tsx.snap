@@ -27,7 +27,7 @@ exports[`UnsupportedCurrencyFooter.tsx with unsupported tokens renders 1`] = `
 }
 
 .c5 {
-  color: #75ff72;
+  color: #3dad5d;
 }
 
 .c2 {
@@ -89,7 +89,7 @@ exports[`UnsupportedCurrencyFooter.tsx with unsupported tokens renders 1`] = `
 
 .c3 {
   background-color: transparent;
-  color: #75ff72;
+  color: #3dad5d;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

@@ -315,7 +315,6 @@ const breakpoints = {
   xxxl: 1920,
 }
 
-
 const layoutStyles = defineProperties({
   conditions: {
     sm: {},

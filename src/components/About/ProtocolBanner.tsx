@@ -25,7 +25,10 @@ const Banner = styled.div<{ isDarkMode: boolean }>`
   background: ${({ isDarkMode, theme }) =>
     isDarkMode
       ? `url(${meshSrc}), linear-gradient(90deg, ${colors.blueVibrant} 0%, ${colors.purple300} 100%)`
-      : `url(${meshSrc}), linear-gradient(90deg, ${darken(0.1, theme.accent1)} 0%, ${lighten(0.25, theme.accent1)} 100%);`};
+      : `url(${meshSrc}), linear-gradient(90deg, ${darken(0.1, theme.accent1)} 0%, ${lighten(
+          0.25,
+          theme.accent1
+        )} 100%);`};
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     height: 140px;
