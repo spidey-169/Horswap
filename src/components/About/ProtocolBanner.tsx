@@ -1,11 +1,11 @@
 import { ButtonEmpty } from 'components/Button'
+import { darken, lighten } from 'polished'
 import styled from 'styled-components'
 import { BREAKPOINTS } from 'theme'
+import { colors } from 'theme/colors'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
 
 import meshSrc from './images/Mesh.png'
-
-const DARK_MODE_GRADIENT = 'radial-gradient(101.8% 4091.31% at 0% 0%, #4673FA 0%, #9646FA 100%)'
 
 const Banner = styled.div<{ isDarkMode: boolean }>`
   height: 340px;
@@ -22,10 +22,13 @@ const Banner = styled.div<{ isDarkMode: boolean }>`
 
   box-shadow: 0px 10px 24px rgba(51, 53, 72, 0.04);
 
-  background: ${({ isDarkMode }) =>
+  background: ${({ isDarkMode, theme }) =>
     isDarkMode
-      ? `url(${meshSrc}), ${DARK_MODE_GRADIENT}`
-      : `url(${meshSrc}), linear-gradient(93.06deg, #00ff38 2.66%, #9fffa3 98.99%);`};
+      ? `url(${meshSrc}), linear-gradient(90deg, ${colors.blueVibrant} 0%, ${colors.purple300} 100%)`
+      : `url(${meshSrc}), linear-gradient(90deg, ${darken(0.1, theme.accent1)} 0%, ${lighten(
+          0.25,
+          theme.accent1
+        )} 100%);`};
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     height: 140px;
