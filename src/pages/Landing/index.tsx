@@ -6,7 +6,7 @@ import ProtocolBanner from 'components/About/ProtocolBanner'
 import { useAccountDrawer } from 'components/AccountDrawer'
 import { BaseButton } from 'components/Button'
 import Swap from 'pages/Swap'
-import { lighten } from 'polished'
+import { adjustHue, lighten } from 'polished'
 import { parse } from 'qs'
 import { useEffect, useRef } from 'react'
 import { ArrowDownCircle } from 'react-feather'
@@ -41,12 +41,8 @@ const Gradient = styled.div<{ isDarkMode: boolean }>`
   min-height: 550px;
   ${({ isDarkMode }) =>
     isDarkMode
-      ? css`
-          background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8 10 24 / 100%) 45%);
-        `
-      : css`
-          background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255 255 255 /100%) 45%);
-        `};
+      ? css`background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8 10 24 / 100%) 45%);`
+      : css`background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255 255 255 /100%) 45%);`};
   z-index: ${Z_INDEX.under_dropdown};
   pointer-events: none;
   height: ${({ theme }) => `calc(100vh - ${theme.mobileBottomBarHeight}px)`};
@@ -110,12 +106,9 @@ const TitleText = styled.h1<{ isDarkMode: boolean; $visible: boolean }>`
   margin: 0 0 24px;
   ${({ isDarkMode }) =>
     isDarkMode
-      ? css`
-          background: linear-gradient(20deg, rgba(255, 244, 207, 1) 10%, rgba(51, 255, 102, 1) 100%);
-        `
-      : css`
-          background: linear-gradient(10deg, rgba(79, 255, 150, 1) 0%, rgba(159, 255, 163, 1) 100%);
-        `};
+      ? css`background: linear-gradient(20deg, ${({ theme }) => lighten(0.5, adjustHue(290, theme.accent1))} 10%, ${({ theme }) => theme.accent1} 100%);`
+      : css`background: linear-gradient(20deg, ${({ theme }) => theme.accent1} 10%, ${({ theme }) => lighten(0.4, adjustHue(300, theme.accent1))} 100%);`
+  };
   background-clip: text;
   -webkit-background-clip: text;
 
@@ -170,7 +163,7 @@ const LandingButton = styled(BaseButton)`
 `
 
 const ButtonCTA = styled(LandingButton)`
-  background: linear-gradient(93.06deg, ${({ theme }) => theme.accent1} 2.66%, ${({ theme }) => lighten(0.5, theme.accent1)} 98.99%);
+  background: linear-gradient(93.06deg, ${({ theme }) => theme.accent1} 2.66%, ${({ theme }) => lighten(0.3, theme.accent1)} 98.99%);
   border: none;
   color: ${({ theme }) => theme.white};
   transition: ${({ theme }) => `all ${theme.transition.duration.medium} ${theme.transition.timing.ease}`};
@@ -254,18 +247,18 @@ const CardGrid = styled.div<{ cols: number }>`
   @media screen and (min-width: ${BREAKPOINTS.sm}px) {
     // At this screen size, we show up to 2 columns.
     grid-template-columns: ${({ cols }) =>
-      Array.from(Array(cols === 2 ? 2 : 1))
-        .map(() => '1fr')
-        .join(' ')};
+    Array.from(Array(cols === 2 ? 2 : 1))
+      .map(() => '1fr')
+      .join(' ')};
     gap: 32px;
   }
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     // at this screen size, always show the max number of columns
     grid-template-columns: ${({ cols }) =>
-      Array.from(Array(cols))
-        .map(() => '1fr')
-        .join(' ')};
+    Array.from(Array(cols))
+      .map(() => '1fr')
+      .join(' ')};
     gap: 32px;
   }
 `
