@@ -16,11 +16,6 @@ describe('Token Warning Colors', () => {
       const { result } = renderHook(() => useTokenWarningColor(WARNING_LEVEL.UNKNOWN))
       expect(result.current).toEqual(lightDeprecatedTheme.deprecated_accentFailureSoft)
     })
-
-    it('blocked', () => {
-      const { result } = renderHook(() => useTokenWarningColor(WARNING_LEVEL.BLOCKED))
-      expect(result.current).toEqual(lightTheme.surface3)
-    })
   })
 
   describe('useTokenWarningTextColor', () => {
@@ -32,11 +27,6 @@ describe('Token Warning Colors', () => {
     it('strong', () => {
       const { result } = renderHook(() => useTokenWarningTextColor(WARNING_LEVEL.UNKNOWN))
       expect(result.current).toEqual(lightTheme.critical)
-    })
-
-    it('blocked', () => {
-      const { result } = renderHook(() => useTokenWarningTextColor(WARNING_LEVEL.BLOCKED))
-      expect(result.current).toEqual(lightTheme.neutral2)
     })
   })
 })

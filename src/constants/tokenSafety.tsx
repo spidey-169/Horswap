@@ -9,7 +9,6 @@ export const TOKEN_SAFETY_ARTICLE = 'https://support.uniswap.org/hc/en-us/articl
 export enum WARNING_LEVEL {
   MEDIUM,
   UNKNOWN,
-  BLOCKED,
 }
 
 export function getWarningCopy(warning: Warning | null, plural = false) {
@@ -37,15 +36,6 @@ export function getWarningCopy(warning: Warning | null, plural = false) {
         )
         description = <Trans>Always conduct your own research before trading.</Trans>
         break
-      case WARNING_LEVEL.BLOCKED:
-        description = (
-          <Plural
-            value={plural ? 2 : 1}
-            _1="You can't trade this token using the Uniswap App."
-            other="You can't trade these tokens using the Uniswap App."
-          />
-        )
-        break
     }
   }
   return { heading, description }
@@ -70,12 +60,6 @@ const StrongWarning: Warning = {
   canProceed: true,
 }
 
-const BlockedWarning: Warning = {
-  level: WARNING_LEVEL.BLOCKED,
-  message: <Trans>Not available</Trans>,
-  canProceed: false,
-}
-
 export const NotFoundWarning: Warning = {
   level: WARNING_LEVEL.UNKNOWN,
   message: <Trans>Token not found</Trans>,
@@ -93,10 +77,8 @@ export function checkWarning(tokenAddress: string, chainId?: number | null) {
       return MediumWarning
     case TOKEN_LIST_TYPES.UNKNOWN:
       return StrongWarning
-    case TOKEN_LIST_TYPES.BLOCKED:
-      return BlockedWarning
     case TOKEN_LIST_TYPES.BROKEN:
-      return BlockedWarning
+      return StrongWarning
   }
 }
 
