@@ -46,8 +46,6 @@ export interface UserState {
   hideBaseWalletBanner: boolean
   // undefined means has not gone through A/B split yet
   showSurveyPopup?: boolean
-
-  originCountry?: string
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -66,7 +64,6 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   hideBaseWalletBanner: false,
   showSurveyPopup: undefined,
-  originCountry: undefined,
 }
 
 const userSlice = createSlice({

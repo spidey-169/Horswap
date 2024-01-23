@@ -4,7 +4,7 @@ describe('translations', () => {
   it('loads locale from the query param', () => {
     cy.visit('/?lng=fr-FR')
     cy.contains('Échanger')
-    cy.contains('Uniswap disponible en : English')
+    cy.contains('Horswap disponible en : English')
   })
 
   it('loads locale from menu', () => {
@@ -14,6 +14,6 @@ describe('translations', () => {
     cy.get(getTestSelector('wallet-language-item')).contains('français').click({ force: true })
     cy.location('search').should('match', /\?lng=fr-FR$/)
     cy.contains('Échanger')
-    cy.contains('Uniswap disponible en : English')
+    cy.contains('Horswap disponible en : English')
   })
 })

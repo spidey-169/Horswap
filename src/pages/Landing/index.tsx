@@ -13,7 +13,6 @@ import { ArrowDownCircle } from 'react-feather'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Link as NativeLink } from 'react-router-dom'
 import { useAppSelector } from 'state/hooks'
-import { AppState } from 'state/reducer'
 import styled, { css } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
@@ -327,7 +326,6 @@ export default function Landing() {
   const isDarkMode = useIsDarkMode()
   const cardsRef = useRef<HTMLDivElement>(null)
   const selectedWallet = useAppSelector((state) => state.user.selectedWallet)
-  const originCountry = useAppSelector((state: AppState) => state.user.originCountry)
   const cards = MAIN_CARDS
   const extraCards = MORE_CARDS
 
@@ -360,10 +358,10 @@ export default function Landing() {
         <Glow />
       </GlowContainer>
       <ContentContainer isDarkMode={isDarkMode}>
-        <TitleText isDarkMode={isDarkMode} $visible={!!originCountry}>
+        <TitleText isDarkMode={isDarkMode} $visible={true}>
           <Trans>Trade crypto with confidence</Trans>
         </TitleText>
-        <SubTextContainer $visible={!!originCountry}>
+        <SubTextContainer $visible={true}>
           <SubText>
             <Trans>Buy, sell, and explore tokens</Trans>
           </SubText>
