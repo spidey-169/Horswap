@@ -1,10 +1,8 @@
 import ErrorBoundary from 'components/ErrorBoundary'
 import Loader from 'components/Icons/LoadingSpinner'
 import NavBar, { PageTabs } from 'components/NavBar'
-import { useAtom } from 'jotai'
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
-import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import DarkModeQueryParamReader from 'theme/components/DarkModeQueryParamReader'
 import { flexRowNoWrap } from 'theme/styles'
@@ -73,8 +71,6 @@ const HeaderWrapper = styled.div<{ transparent?: boolean; scrollY: number }>`
 `
 
 export default function App() {
-  const [, setShouldDisableNFTRoutes] = useAtom(shouldDisableNFTRoutesAtom)
-
   const location = useLocation()
   const { pathname } = location
   const [scrollY, setScrollY] = useState(0)
@@ -85,15 +81,6 @@ export default function App() {
     window.scrollTo(0, 0)
     setScrollY(0)
   }, [pathname])
-
-  const [searchParams] = useSearchParams()
-  useEffect(() => {
-    if (searchParams.get('disableNFTs') === 'true') {
-      setShouldDisableNFTRoutes(true)
-    } else if (searchParams.get('disableNFTs') === 'false') {
-      setShouldDisableNFTRoutes(false)
-    }
-  }, [searchParams, setShouldDisableNFTRoutes])
 
   useEffect(() => {
     const scrollListener = () => {

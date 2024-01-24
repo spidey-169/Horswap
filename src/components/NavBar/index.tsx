@@ -4,7 +4,7 @@ import Web3Status from 'components/Web3Status'
 import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
+import { HorIcon } from 'nft/components/icons'
 import { ReactNode, useCallback } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -73,7 +73,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
 
   const [accountDrawerOpen, toggleAccountDrawer] = useAccountDrawer()
 
-  const handleUniIconClick = useCallback(() => {
+  const handleHorIconClick = useCallback(() => {
     if (accountDrawerOpen) {
       toggleAccountDrawer()
     }
@@ -90,18 +90,18 @@ const Navbar = ({ blur }: { blur: boolean }) => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
-              <UniIcon
+              <HorIcon
                 width="48"
                 height="48"
-                data-testid="uniswap-logo"
+                data-testid="horswap-logo"
                 className={styles.logo}
-                onClick={handleUniIconClick}
+                onClick={handleHorIconClick}
               />
             </Box>
             <Box display={{ sm: 'flex', lg: 'none' }}>
               <ChainSelector leftAlign={true} />
             </Box>
-            <Row display={{ sm: 'none', lg: 'flex' }}>
+            <Row>
               <PageTabs />
             </Row>
           </Box>

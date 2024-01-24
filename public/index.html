@@ -5,13 +5,22 @@
 
     <title>Horswap</title>
 
+    <!-- support hosting from a subpath such as ipfs -->
+    <script>
+      const subPath = window.location.pathname.replace('index.html', '').replace(/\/$/, '')
+      if (subPath) {
+        const baseElement = document.createElement('base')
+        baseElement.setAttribute('href', `${subPath}/`)
+        document.head.appendChild(baseElement)
+      }
+    </script>
+
     <!--
-      %PUBLIC_URL% will be replaced with the URL of the `public` folder during build.
       Only files inside the `public` folder can be referenced from the HTML.
     -->
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="%PUBLIC_URL%/images/192x192_App_Icon.png" />
-    <link rel="apple-touch-icon" sizes="512x512" href="%PUBLIC_URL%/images/512x512_App_Icon.png" />
+    <link rel="shortcut icon" type="image/png" href="./favicon.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="./images/192x192_App_Icon.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="./images/512x512_App_Icon.png" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#fff" />
@@ -28,10 +37,10 @@
       manifest.json provides metadata used when the app is installed as a PWA.
       See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
 
-    <link rel="preload" href="%PUBLIC_URL%/fonts/Basel-Book.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="%PUBLIC_URL%/fonts/Basel-Medium.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="./fonts/Basel-Book.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="./fonts/Basel-Medium.woff" as="font" type="font/woff" crossorigin />
 
    
     <style>
@@ -50,7 +59,7 @@
         font-display: block;
         font-named-instance: 'Book';
         src: 
-          url(%PUBLIC_URL%/fonts/Basel-Medium.woff) format('woff');
+          url(./fonts/Basel-Medium.woff) format('woff');
       }
 
       @font-face {
@@ -60,7 +69,7 @@
         font-display: block;
         font-named-instance: 'Book';
         src: 
-          url(%PUBLIC_URL%/fonts/Basel-Book.woff) format('woff');
+          url(./fonts/Basel-Book.woff) format('woff');
       }
 
       @supports (font-variation-settings: normal) {
