@@ -73,7 +73,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
 
   const [accountDrawerOpen, toggleAccountDrawer] = useAccountDrawer()
 
-  const handleHorsIconClick = useCallback(() => {
+  const handleHorIconClick = useCallback(() => {
     if (accountDrawerOpen) {
       toggleAccountDrawer()
     }
