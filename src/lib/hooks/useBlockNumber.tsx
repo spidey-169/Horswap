@@ -1,6 +1,6 @@
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { DEPRECATED_RPC_PROVIDERS } from 'constants/providers'
+import { RPC_PROVIDERS } from 'constants/providers'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
@@ -92,11 +92,9 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
     return void 0
   }, [activeChainId, provider, windowVisible, onChainBlock])
 
-  const networkProviders = DEPRECATED_RPC_PROVIDERS
-
   useEffect(() => {
-    if (mainnetBlock === undefined) {
-      networkProviders[ChainId.MAINNET]
+    if (mainnetBlock === undefined && provider === undefined) {
+      RPC_PROVIDERS[ChainId.MAINNET]
         .getBlockNumber()
         .then((block) => {
           onChainBlock(ChainId.MAINNET, block)
@@ -104,7 +102,7 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
         // swallow errors - it's ok if this fails, as we'll try again if we activate mainnet
         .catch(() => undefined)
     }
-  }, [mainnetBlock, networkProviders, onChainBlock])
+  }, [mainnetBlock, onChainBlock, provider])
 
   const value = useMemo(
     () => ({

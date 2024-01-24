@@ -11,7 +11,7 @@ import COINBASE_ICON from 'assets/wallets/coinbase-icon.svg'
 import { isMobile } from 'utils/userAgent'
 
 import { RPC_URLS } from '../constants/networks'
-import { DEPRECATED_RPC_PROVIDERS, RPC_PROVIDERS } from '../constants/providers'
+import { RPC_PROVIDERS } from '../constants/providers'
 import { Connection, ConnectionType } from './types'
 import { getInjection, getIsCoinbaseWallet, getIsInjected, getIsMetaMaskWallet } from './utils'
 
@@ -26,17 +26,6 @@ export const networkConnection: Connection = {
   getName: () => 'Network',
   connector: web3Network,
   hooks: web3NetworkHooks,
-  type: ConnectionType.NETWORK,
-  shouldDisplay: () => false,
-}
-
-const [deprecatedWeb3Network, deprecatedWeb3NetworkHooks] = initializeConnector<Network>(
-  (actions) => new Network({ actions, urlMap: DEPRECATED_RPC_PROVIDERS, defaultChainId: 1 })
-)
-export const deprecatedNetworkConnection: Connection = {
-  getName: () => 'Network',
-  connector: deprecatedWeb3Network,
-  hooks: deprecatedWeb3NetworkHooks,
   type: ConnectionType.NETWORK,
   shouldDisplay: () => false,
 }
@@ -108,13 +97,7 @@ const coinbaseWalletConnection: Connection = {
   },
 }
 
-export const connections = [
-  gnosisSafeConnection,
-  injectedConnection,
-  coinbaseWalletConnection,
-  networkConnection,
-  deprecatedNetworkConnection,
-]
+export const connections = [gnosisSafeConnection, injectedConnection, coinbaseWalletConnection, networkConnection]
 
 export function getConnection(c: Connector | ConnectionType) {
   if (c instanceof Connector) {
@@ -131,8 +114,6 @@ export function getConnection(c: Connector | ConnectionType) {
         return coinbaseWalletConnection
       case ConnectionType.NETWORK:
         return networkConnection
-      case ConnectionType.DEPRECATED_NETWORK:
-        return deprecatedNetworkConnection
       case ConnectionType.GNOSIS_SAFE:
         return gnosisSafeConnection
     }

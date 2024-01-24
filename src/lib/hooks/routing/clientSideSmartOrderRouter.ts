@@ -1,25 +1,46 @@
+import type { Web3Provider } from '@ethersproject/providers'
 import { BigintIsh, ChainId, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
 // This file is lazy-loaded, so the import of smart-order-router is intentional.
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { AlphaRouter, AlphaRouterConfig } from '@uniswap/smart-order-router'
 import { asSupportedChain } from 'constants/chains'
-import { DEPRECATED_RPC_PROVIDERS } from 'constants/providers'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { nativeOnChain } from 'constants/tokens'
 import JSBI from 'jsbi'
+import AppStaticJsonRpcProvider from 'rpc/StaticJsonRpcProvider'
 import { GetQuoteArgs, QuoteResult, QuoteState, SwapRouterNativeAssets } from 'state/routing/types'
 import { transformSwapRouteToGetQuoteResult } from 'utils/transformSwapRouteToGetQuoteResult'
 
-const routers = new Map<ChainId, AlphaRouter>()
-export function getRouter(chainId: ChainId): AlphaRouter {
+type RouterAndProvider = { router: AlphaRouter; provider: AppStaticJsonRpcProvider | Web3Provider }
+let cachedProviderRouter: { chainId: number; routerProvider: RouterAndProvider } | undefined = undefined
+const routers = new Map<ChainId, RouterAndProvider>()
+export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefined): RouterAndProvider {
+  const providerChainId = web3Provider?.network.chainId
+  if (
+    cachedProviderRouter !== undefined &&
+    chainId === providerChainId &&
+    web3Provider === cachedProviderRouter.routerProvider.provider
+  ) {
+    return cachedProviderRouter.routerProvider
+  } else {
+    cachedProviderRouter = undefined
+  }
+  if (providerChainId !== undefined && chainId === providerChainId && web3Provider !== undefined) {
+    cachedProviderRouter = {
+      chainId,
+      routerProvider: { router: new AlphaRouter({ chainId, provider: web3Provider }), provider: web3Provider },
+    }
+    return cachedProviderRouter?.routerProvider
+  }
   const router = routers.get(chainId)
   if (router) return router
 
   const supportedChainId = asSupportedChain(chainId)
   if (supportedChainId) {
-    const provider = DEPRECATED_RPC_PROVIDERS[supportedChainId]
-    const router = new AlphaRouter({ chainId, provider })
-    routers.set(chainId, router)
-    return router
+    const provider = RPC_PROVIDERS[supportedChainId]
+    const routerProvider = { router: new AlphaRouter({ chainId, provider }), provider }
+    routers.set(chainId, routerProvider)
+    return routerProvider
   }
 
   throw new Error(`Router does not support this chain (chainId: ${chainId}).`)

@@ -8,6 +8,7 @@ import type { createPopper } from '@popperjs/core'
 import { useWeb3React } from '@web3-react/core'
 import failOnConsole from 'jest-fail-on-console'
 import { disableNetConnect, restore as restoreNetConnect } from 'nock'
+import { TradeState } from 'state/routing/types'
 import { Readable } from 'stream'
 import { toBeVisible } from 'test-utils/matchers'
 import { mocked } from 'test-utils/mocked'
@@ -80,12 +81,21 @@ jest.mock('connection/eagerlyConnect', () => {
   }
 })
 
+jest.mock('state/routing/useRoutingAPITrade', () => {
+  const useRoutingAPITrade = jest.requireActual('state/routing/useRoutingAPITrade')
+  return {
+    ...useRoutingAPITrade,
+    // Prevents unit tests from logging errors from failed getQuote queries
+    useRoutingAPITrade: () => ({ state: TradeState.NO_ROUTE_FOUND, trade: undefined, currentData: undefined }),
+  }
+})
+
 jest.mock('state/routing/slice', () => {
   const routingSlice = jest.requireActual('state/routing/slice')
   return {
     ...routingSlice,
     // Prevents unit tests from logging errors from failed getQuote queries
-    useGetQuoteQuery: () => ({
+    getRoutingApiQuote: () => ({
       isError: false,
       data: undefined,
       error: undefined,

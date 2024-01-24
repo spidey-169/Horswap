@@ -1,9 +1,8 @@
+import type { JsonRpcProvider } from '@ethersproject/providers'
 import { MaxUint256, PERMIT2_ADDRESS } from '@uniswap/permit2-sdk'
 import { Currency } from '@uniswap/sdk-core'
 import ERC20_ABI from 'abis/erc20.json'
 import { Erc20 } from 'abis/types'
-import { SupportedInterfaceChain } from 'constants/chains'
-import { DEPRECATED_RPC_PROVIDERS } from 'constants/providers'
 import { getContract } from 'utils'
 
 import { ApproveInfo } from './types'
@@ -14,6 +13,7 @@ export async function getApproveInfo(
   account: string | undefined,
   currency: Currency,
   amount: string,
+  provider: JsonRpcProvider,
   usdCostPerGas?: number
 ): Promise<ApproveInfo> {
   // native currencies do not need token approvals
@@ -22,7 +22,6 @@ export async function getApproveInfo(
   // If any of these arguments aren't provided, then we cannot generate approval cost info
   if (!account || !usdCostPerGas) return { needsApprove: false }
 
-  const provider = DEPRECATED_RPC_PROVIDERS[currency.chainId as SupportedInterfaceChain]
   const tokenContract = getContract(currency.address, ERC20_ABI, provider) as Erc20
 
   let approveGasUseEstimate

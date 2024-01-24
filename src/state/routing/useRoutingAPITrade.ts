@@ -1,54 +1,30 @@
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { Currency, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount, TradeType } from '@uniswap/sdk-core'
+import { useWeb3React } from '@web3-react/core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { ZERO_PERCENT } from 'constants/misc'
 import { useRoutingAPIArguments } from 'lib/hooks/routing/useRoutingAPIArguments'
 import ms from 'ms'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { useGetQuoteQuery, useGetQuoteQueryState } from './slice'
+import { getRoutingApiQuote } from './slice'
 import {
-  ClassicTrade,
+  GetQuoteArgs,
   INTERNAL_ROUTER_PREFERENCE_PRICE,
   QuoteMethod,
-  QuoteState,
   RouterPreference,
   SubmittableTrade,
   TradeState,
 } from './types'
 
-const TRADE_NOT_FOUND = { state: TradeState.NO_ROUTE_FOUND, trade: undefined, currentData: undefined } as const
 const TRADE_LOADING = { state: TradeState.LOADING, trade: undefined, currentData: undefined } as const
+//export const TRADE_NOT_FOUND = { state: TradeState.NO_ROUTE_FOUND, trade: undefined, currentData: undefined } as const
 
-export function useRoutingAPITrade<TTradeType extends TradeType>(
-  skipFetch: boolean,
-  tradeType: TTradeType,
-  amountSpecified: CurrencyAmount<Currency> | undefined,
-  otherCurrency: Currency | undefined,
-  routerPreference: typeof INTERNAL_ROUTER_PREFERENCE_PRICE,
-  account?: string,
-  inputTax?: Percent,
-  outputTax?: Percent
-): {
-  state: TradeState
-  trade?: ClassicTrade
-  currentTrade?: ClassicTrade
-  swapQuoteLatency?: number
-}
-
-export function useRoutingAPITrade<TTradeType extends TradeType>(
-  skipFetch: boolean,
-  tradeType: TTradeType,
-  amountSpecified: CurrencyAmount<Currency> | undefined,
-  otherCurrency: Currency | undefined,
-  routerPreference: RouterPreference,
-  account?: string,
-  inputTax?: Percent,
-  outputTax?: Percent
-): {
+type RoutingAPITradeReturn = {
   state: TradeState
   trade?: SubmittableTrade
   currentTrade?: SubmittableTrade
+  method?: QuoteMethod
   swapQuoteLatency?: number
 }
 
@@ -59,7 +35,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
  * @param otherCurrency the desired output/payment currency
  */
 export function useRoutingAPITrade<TTradeType extends TradeType>(
-  skipFetch = false,
+  skipFetch: boolean,
   tradeType: TTradeType,
   amountSpecified: CurrencyAmount<Currency> | undefined,
   otherCurrency: Currency | undefined,
@@ -67,13 +43,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   account?: string,
   inputTax = ZERO_PERCENT,
   outputTax = ZERO_PERCENT
-): {
-  state: TradeState
-  trade?: SubmittableTrade
-  currentTrade?: SubmittableTrade
-  method?: QuoteMethod
-  swapQuoteLatency?: number
-} {
+): RoutingAPITradeReturn {
   const [currencyIn, currencyOut]: [Currency | undefined, Currency | undefined] = useMemo(
     () =>
       tradeType === TradeType.EXACT_INPUT
@@ -81,7 +51,9 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
         : [otherCurrency, amountSpecified?.currency],
     [amountSpecified, otherCurrency, tradeType]
   )
-
+  const [result, setResult] = useState<RoutingAPITradeReturn>({ state: TradeState.LOADING })
+  const timerIdRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const { provider } = useWeb3React()
   const queryArgs = useRoutingAPIArguments({
     account,
     tokenIn: currencyIn,
@@ -92,54 +64,52 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
     inputTax,
     outputTax,
   })
-
-  const { isError, data: tradeResult, error, currentData } = useGetQuoteQueryState(queryArgs)
-  useGetQuoteQuery(skipFetch ? skipToken : queryArgs, {
-    // Price-fetching is informational and costly, so it's done less frequently.
-    pollingInterval: routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : AVERAGE_L1_BLOCK_TIME,
-    // If latest quote from cache was fetched > 2m ago, instantly repoll for another instead of waiting for next poll period
-    refetchOnMountOrArgChange: 2 * 60,
-  })
-
-  const isFetching = currentData !== tradeResult || !currentData
-
-  return useMemo(() => {
-    if (amountSpecified && otherCurrency && queryArgs === skipToken) {
-      return {
-        state: TradeState.STALE,
-        trade: tradeResult?.trade,
-        currentTrade: currentData?.trade,
-        swapQuoteLatency: tradeResult?.latencyMs,
+  useEffect(() => {
+    const args = queryArgs
+    if (skipFetch) return
+    if (args === skipToken) return setResult({ state: TradeState.INVALID })
+    async function updateResults(args: GetQuoteArgs) {
+      if (document.hidden) return
+      const walletProvider = provider
+      const makePriceQuery = async () => {
+        const {
+          isError,
+          data: tradeResult,
+          error,
+          currentData,
+        } = await getRoutingApiQuote(
+          args,
+          walletProvider,
+          args.routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : AVERAGE_L1_BLOCK_TIME
+        )
+        if (!args.amount || isError) {
+          return {
+            state: TradeState.INVALID,
+            trade: undefined,
+            currentTrade: currentData?.trade,
+            error: JSON.stringify(error),
+          }
+        } else if (!tradeResult?.trade) {
+          return TRADE_LOADING
+        } else {
+          return {
+            state: TradeState.VALID,
+            trade: tradeResult?.trade,
+            currentTrade: currentData?.trade,
+          }
+        }
       }
-    } else if (!amountSpecified || isError || queryArgs === skipToken) {
-      return {
-        state: TradeState.INVALID,
-        trade: undefined,
-        currentTrade: currentData?.trade,
-        error: JSON.stringify(error),
-      }
-    } else if (tradeResult?.state === QuoteState.NOT_FOUND && !isFetching) {
-      return TRADE_NOT_FOUND
-    } else if (!tradeResult?.trade) {
-      return TRADE_LOADING
-    } else {
-      return {
-        state: isFetching ? TradeState.LOADING : TradeState.VALID,
-        trade: tradeResult?.trade,
-        currentTrade: currentData?.trade,
-        swapQuoteLatency: tradeResult?.latencyMs,
-      }
+      const res = await makePriceQuery()
+      if (!active || queryArgs === skipToken) return
+      setResult(res)
     }
-  }, [
-    amountSpecified,
-    error,
-    isError,
-    isFetching,
-    queryArgs,
-    tradeResult?.latencyMs,
-    tradeResult?.state,
-    tradeResult?.trade,
-    currentData?.trade,
-    otherCurrency,
-  ])
+    let active = true
+    updateResults(args)
+    timerIdRef.current = setInterval(() => updateResults(args), AVERAGE_L1_BLOCK_TIME)
+    return () => {
+      active = false
+      if (timerIdRef.current) clearInterval(timerIdRef.current)
+    }
+  }, [queryArgs, provider, skipFetch])
+  return result
 }
