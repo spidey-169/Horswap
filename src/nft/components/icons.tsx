@@ -10,7 +10,7 @@ type SVGProps = React.SVGProps<SVGSVGElement> & {
   gradientId?: string
 }
 
-export const HorsIcon = (props: SVGProps) => (
+export const HorIcon = (props: SVGProps) => (
   <svg {...props} fill="none" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
