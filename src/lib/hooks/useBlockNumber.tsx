@@ -93,8 +93,9 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
   }, [activeChainId, provider, windowVisible, onChainBlock])
 
   useEffect(() => {
-    if (mainnetBlock === undefined && provider === undefined) {
-      RPC_PROVIDERS[ChainId.MAINNET]
+    if (mainnetBlock === undefined) {
+      const mainnetProvider = chainId === ChainId.MAINNET && provider ? provider : RPC_PROVIDERS[ChainId.MAINNET]
+      mainnetProvider
         .getBlockNumber()
         .then((block) => {
           onChainBlock(ChainId.MAINNET, block)
@@ -102,7 +103,7 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
         // swallow errors - it's ok if this fails, as we'll try again if we activate mainnet
         .catch(() => undefined)
     }
-  }, [mainnetBlock, onChainBlock, provider])
+  }, [mainnetBlock, onChainBlock, provider, chainId])
 
   const value = useMemo(
     () => ({
