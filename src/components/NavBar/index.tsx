@@ -95,7 +95,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 height="48"
                 data-testid="horswap-logo"
                 className={styles.logo}
-                onClick={handleHorsIconClick}
+                onClick={handleHorIconClick}
               />
             </Box>
             <Box display={{ sm: 'flex', lg: 'none' }}>
