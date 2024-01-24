@@ -68,7 +68,7 @@ Here are the significant changes:
 - Removed claim UNI tokens popup
 - Added docker building and deployment to IPFS
 
-You can see all the changes by [comparing Horseswap to Uniswap Interface V4.266.2](https://github.com/Uniswap/interface/compare/v4.266.2...DarkFlorist:Horswap:main). You can also find the whole codebase in [GitHub](https://github.com/DarkFlorist/Horswap/).
+You can see all the changes by [comparing Horswap to Uniswap Interface V4.266.2](https://github.com/Uniswap/interface/compare/v4.266.2...DarkFlorist:Horswap:main). You can also find the whole codebase in [GitHub](https://github.com/DarkFlorist/Horswap/).
 					`.replace(/[\n\r]/g, '\n')}
           />
         </MarkDownWrapper>

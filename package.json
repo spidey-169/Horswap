@@ -1,6 +1,6 @@
 {
-  "name": "@uniswap/interface",
-  "version": "1.1.0",
+  "name": "@darkflorist/horswap",
+  "version": "1.0.0",
   "description": "Horswap Interface",
   "license": "GPL-3.0-or-later",
   "scripts": {

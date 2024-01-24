@@ -1,6 +1,5 @@
 import tokenLogoLookup from 'constants/tokenLogoLookup'
 import { isCelo, nativeOnChain } from 'constants/tokens'
-import { checkWarning, WARNING_LEVEL } from 'constants/tokenSafety'
 import { chainIdToNetworkName, getNativeLogoURI } from 'lib/hooks/useCurrencyLogoURIs'
 import uriToHttp from 'lib/utils/uriToHttp'
 import { useCallback, useEffect, useState } from 'react'
@@ -66,17 +65,13 @@ export default function useAssetLogoSource(
   isNative?: boolean,
   backupImg?: string | null
 ): [string | undefined, () => void] {
-  const hideLogo = Boolean(address && checkWarning(address, chainId)?.level === WARNING_LEVEL.BLOCKED)
-  const [current, setCurrent] = useState<string | undefined>(
-    hideLogo ? undefined : getInitialUrl(address, chainId, isNative, backupImg)
-  )
+  const [current, setCurrent] = useState<string | undefined>(getInitialUrl(address, chainId, isNative, backupImg))
   const [fallbackSrcs, setFallbackSrcs] = useState<string[] | undefined>(undefined)
 
   useEffect(() => {
-    if (hideLogo) return
     setCurrent(getInitialUrl(address, chainId, isNative))
     setFallbackSrcs(undefined)
-  }, [address, chainId, hideLogo, isNative])
+  }, [address, chainId, isNative])
 
   const nextSrc = useCallback(() => {
     if (current) {

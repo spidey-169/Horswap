@@ -6,13 +6,13 @@ import ProtocolBanner from 'components/About/ProtocolBanner'
 import { useAccountDrawer } from 'components/AccountDrawer'
 import { BaseButton } from 'components/Button'
 import Swap from 'pages/Swap'
+import { adjustHue, lighten } from 'polished'
 import { parse } from 'qs'
 import { useEffect, useRef } from 'react'
 import { ArrowDownCircle } from 'react-feather'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Link as NativeLink } from 'react-router-dom'
 import { useAppSelector } from 'state/hooks'
-import { AppState } from 'state/reducer'
 import styled, { css } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
@@ -20,8 +20,6 @@ import { textFadeIn, TRANSITION_DURATIONS } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 
 const PageContainer = styled.div`
-  position: absolute;
-  top: 0;
   padding: ${({ theme }) => theme.navHeight}px 0px 0px 0px;
   width: 100%;
   display: flex;
@@ -75,7 +73,11 @@ const Glow = styled.div`
   position: absolute;
   top: 68px;
   bottom: 0;
-  background: radial-gradient(72.04% 72.04% at 50% 3.99%, #33ff99 0%, rgba(166, 151, 255, 0) 100%);
+  background: radial-gradient(
+    75% 75% at 50% 0%,
+    ${({ theme }) => theme.accent1} 0%,
+    ${({ theme }) => theme.accent2} 100%
+  );
   filter: blur(72px);
   border-radius: 24px;
   max-width: 480px;
@@ -112,10 +114,18 @@ const TitleText = styled.h1<{ isDarkMode: boolean; $visible: boolean }>`
   ${({ isDarkMode }) =>
     isDarkMode
       ? css`
-          background: linear-gradient(20deg, rgba(255, 244, 207, 1) 10%, rgba(51, 255, 102, 1) 100%);
+          background: linear-gradient(
+            20deg,
+            ${({ theme }) => lighten(0.5, adjustHue(290, theme.accent1))} 10%,
+            ${({ theme }) => theme.accent1} 100%
+          );
         `
       : css`
-          background: linear-gradient(10deg, rgba(79, 255, 150, 1) 0%, rgba(159, 255, 163, 1) 100%);
+          background: linear-gradient(
+            20deg,
+            ${({ theme }) => theme.accent1} 10%,
+            ${({ theme }) => lighten(0.4, adjustHue(300, theme.accent1))} 100%
+          );
         `};
   background-clip: text;
   -webkit-background-clip: text;
@@ -171,7 +181,11 @@ const LandingButton = styled(BaseButton)`
 `
 
 const ButtonCTA = styled(LandingButton)`
-  background: linear-gradient(93.06deg, #00ff38 2.66%, #9fffa3 98.99%);
+  background: linear-gradient(
+    93.06deg,
+    ${({ theme }) => theme.accent1} 2.66%,
+    ${({ theme }) => lighten(0.3, theme.accent1)} 98.99%
+  );
   border: none;
   color: ${({ theme }) => theme.white};
   transition: ${({ theme }) => `all ${theme.transition.duration.medium} ${theme.transition.timing.ease}`};
@@ -312,7 +326,6 @@ export default function Landing() {
   const isDarkMode = useIsDarkMode()
   const cardsRef = useRef<HTMLDivElement>(null)
   const selectedWallet = useAppSelector((state) => state.user.selectedWallet)
-  const originCountry = useAppSelector((state: AppState) => state.user.originCountry)
   const cards = MAIN_CARDS
   const extraCards = MORE_CARDS
 
@@ -345,10 +358,10 @@ export default function Landing() {
         <Glow />
       </GlowContainer>
       <ContentContainer isDarkMode={isDarkMode}>
-        <TitleText isDarkMode={isDarkMode} $visible={!!originCountry}>
+        <TitleText isDarkMode={isDarkMode} $visible={true}>
           <Trans>Trade crypto with confidence</Trans>
         </TitleText>
-        <SubTextContainer $visible={!!originCountry}>
+        <SubTextContainer $visible={true}>
           <SubText>
             <Trans>Buy, sell, and explore tokens</Trans>
           </SubText>

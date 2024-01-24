@@ -81,7 +81,6 @@ interface ExpectedUserState {
   timestamp: number
   hideBaseWalletBanner: boolean
   showSurveyPopup?: boolean
-  originCountry?: string
 }
 
 assert<Equals<UserState, ExpectedUserState>>()
