@@ -90,7 +90,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
-              <HorsIcon
+              <HorIcon
                 width="48"
                 height="48"
                 data-testid="horswap-logo"
