@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { useLocationLinkProps } from 'hooks/useLocationLinkProps'
 import { useMemo } from 'react'
 import styled from 'styled-components'
