@@ -37,22 +37,6 @@ export function useToggleSettingsMenu(): () => void {
   return useToggleModal(ApplicationModal.SETTINGS)
 }
 
-export function useToggleDelegateModal(): () => void {
-  return useToggleModal(ApplicationModal.DELEGATE)
-}
-
-export function useToggleVoteModal(): () => void {
-  return useToggleModal(ApplicationModal.VOTE)
-}
-
-export function useToggleQueueModal(): () => void {
-  return useToggleModal(ApplicationModal.QUEUE)
-}
-
-export function useToggleExecuteModal(): () => void {
-  return useToggleModal(ApplicationModal.EXECUTE)
-}
-
 // returns a function that allows adding a popup
 export function useAddPopup(): (content: PopupContent, key?: string, removeAfterMs?: number) => void {
   const dispatch = useAppDispatch()

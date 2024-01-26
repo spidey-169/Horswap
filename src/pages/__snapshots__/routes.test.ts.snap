@@ -12,18 +12,6 @@ Array [
     "enabled": [Function],
     "getElement": [Function],
     "nestedPaths": Array [],
-    "path": "/vote/*",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
-    "path": "/create-proposal",
-  },
-  Object {
-    "enabled": [Function],
-    "getElement": [Function],
-    "nestedPaths": Array [],
     "path": "/send",
   },
   Object {

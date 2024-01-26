@@ -30,7 +30,6 @@ const defaultState = {
   burnV3: {
     percent: 0,
   },
-  logs: {},
   mint: {
     independentField: 'CURRENCY_A',
     leftRangeTypedValue: '',

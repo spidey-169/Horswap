@@ -4,8 +4,8 @@ import { ExternalLink, StyledRouterLink } from 'theme/components'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
 
 import { DiscordIcon, GithubIcon, TwitterIcon } from './Icons'
-import darkUnicornImgSrc from './images/unicornEmbossDark.png'
-import lightUnicornImgSrc from './images/unicornEmbossLight.png'
+import darkHorsImgSrc from './images/horsEmbossDark.png'
+import lightHorsImgSrc from './images/horsEmbossLight.png'
 
 const Footer = styled.div`
   display: flex;
@@ -105,7 +105,7 @@ const LogoSectionContent = () => {
   const isDarkMode = useIsDarkMode()
   return (
     <>
-      <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Horswap Logo" />
+      <StyledLogo src={isDarkMode ? darkHorsImgSrc : lightHorsImgSrc} alt="Horswap Logo" />
       <SocialLinks>
         <SocialLink href="https://discord.com/invite/aCSKcvf5VW" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />
