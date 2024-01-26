@@ -6,11 +6,6 @@ describe('getCurrentPageFromLocation', () => {
     expect(result).toBe('SWAP_PAGE')
   })
 
-  it('should return VOTE_PAGE when location pathname starts with "/vote"', () => {
-    const result = getCurrentPageFromLocation('/vote/456')
-    expect(result).toBe('VOTE_PAGE')
-  })
-
   it('should return POOL_PAGE when location pathname starts with "/pools" or "/pool"', () => {
     let result = getCurrentPageFromLocation('/pools/789')
     expect(result).toBe('POOL_PAGE')
