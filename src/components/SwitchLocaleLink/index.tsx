@@ -38,12 +38,12 @@ export function SwitchLocaleLink() {
 
   return (
     <Container>
-      <Trans>
+      <p>
         Horswap available in:{' '}
         <StyledInternalLink onClick={onClick} to={to}>
           {LOCALE_LABEL[targetLocale]}
         </StyledInternalLink>
-      </Trans>
+      </p>
     </Container>
   )
 }

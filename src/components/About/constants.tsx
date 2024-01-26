@@ -29,11 +29,11 @@ const StyledCardLogo = styled.img`
 export const MORE_CARDS = [
   {
     to: '/whatishorswap',
-    title: 'What is Horswap?',
-    description: 'Read more about this censorship resistant and privacy protecting Uniswap Interface',
+    title: 'Horswap?',
+    description: 'Read more about this censorship resistant and privacy protecting Uniswap Interface.',
     lightIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
     darkIcon: <StyledCardLogo src={hors} alt="What is Horswap?" />,
-    cta: 'Explanation on what is Horswap',
+    cta: 'Read more',
   },
   {
     to: '/pools',
