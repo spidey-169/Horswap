@@ -11,8 +11,6 @@ import { Field as BurnField } from './burn/actions'
 import { BurnState } from './burn/reducer'
 import { BurnV3State } from './burn/v3/reducer'
 import { ListsState } from './lists/reducer'
-import { LogsState } from './logs/slice'
-import { Log } from './logs/utils'
 import { Field } from './mint/actions'
 import { MintState } from './mint/reducer'
 import { Field as FieldV3 } from './mint/v3/actions'
@@ -55,7 +53,6 @@ type ExpectedAppState = CombinedState<{
   burn: BurnState
   burnV3: BurnV3State
   multicall: ReturnType<typeof multicall.reducer>
-  logs: LogsState
 }>
 
 assert<Equals<AppState, ExpectedAppState>>()
@@ -156,25 +153,3 @@ interface ExpectedBurnV3State {
 }
 
 assert<Equals<BurnV3State, ExpectedBurnV3State>>()
-
-interface ExpectedLogsState {
-  [chainId: number]: {
-    [filterKey: string]: {
-      listeners: number
-      fetchingBlockNumber?: number
-      results?:
-        | {
-            blockNumber: number
-            logs: Log[]
-            error?: undefined
-          }
-        | {
-            blockNumber: number
-            logs?: undefined
-            error: true
-          }
-    }
-  }
-}
-
-assert<Equals<LogsState, ExpectedLogsState>>()
