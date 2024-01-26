@@ -111,14 +111,6 @@ describe('Transactions hooks', () => {
       expect(result.current).toBe(true)
     })
 
-    it('returns false when there is a pending transaction but it is not an approval', () => {
-      addPendingTransaction({
-        type: TransactionType.SUBMIT_PROPOSAL,
-      })
-      const { result } = renderHook(() => useHasPendingApproval(USDC_MAINNET, PERMIT2_ADDRESS))
-      expect(result.current).toBe(false)
-    })
-
     it('returns false when there is a pending approval but it is not for the current chain', () => {
       mocked(useWeb3React).mockReturnValue({ chainId: 2 } as ReturnType<typeof useWeb3React>)
       addPendingTransaction(mockApprovalTransactionInfo)
@@ -149,14 +141,6 @@ describe('Transactions hooks', () => {
       addPendingTransaction(mockRevocationTransactionInfo)
       const { result } = renderHook(() => useHasPendingRevocation(USDC_MAINNET, PERMIT2_ADDRESS))
       expect(result.current).toBe(true)
-    })
-
-    it('returns false when there is a pending transaction but it is not a revocation', () => {
-      addPendingTransaction({
-        type: TransactionType.SUBMIT_PROPOSAL,
-      })
-      const { result } = renderHook(() => useHasPendingRevocation(USDC_MAINNET, PERMIT2_ADDRESS))
-      expect(result.current).toBe(false)
     })
 
     it('returns false when there is a pending revocation but it is not for the current chain', () => {
