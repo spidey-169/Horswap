@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { useLocationLinkProps } from 'hooks/useLocationLinkProps'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -38,12 +37,12 @@ export function SwitchLocaleLink() {
 
   return (
     <Container>
-      <Trans>
+      <p>
         Horswap available in:{' '}
         <StyledInternalLink onClick={onClick} to={to}>
           {LOCALE_LABEL[targetLocale]}
         </StyledInternalLink>
-      </Trans>
+      </p>
     </Container>
   )
 }
