@@ -2,12 +2,12 @@ import { t, Trans } from '@lingui/macro'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
-import { DiscordIconMenu, EllipsisIcon, GithubIconMenu, PoolIcon, TwitterIconMenu } from 'nft/components/icons'
+import { DiscordIconMenu, EllipsisIcon, GithubIconMenu, TwitterIconMenu } from 'nft/components/icons'
 import { body, bodySmall } from 'nft/css/common.css'
 import { themeVars } from 'nft/css/sprinkles.css'
 import { ReactNode, useReducer, useRef } from 'react'
 import { NavLink, NavLinkProps } from 'react-router-dom'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import * as styles from './MenuDropdown.css'
 import { NavDropdown } from './NavDropdown'
@@ -74,10 +74,6 @@ const SecondaryLinkedText = ({
   )
 }
 
-const Separator = () => {
-  return <Box className={styles.Separator} />
-}
-
 const IconRow = ({ children }: { children: ReactNode }) => {
   return <Row className={styles.IconRow}>{children}</Row>
 }
@@ -106,7 +102,6 @@ const Icon = ({ href, children }: { href?: string; children: ReactNode }) => {
 }
 
 export const MenuDropdown = () => {
-  const theme = useTheme()
   const [isOpen, toggleOpen] = useReducer((s) => !s, false)
   const ref = useRef<HTMLDivElement>(null)
   useOnClickOutside(ref, isOpen ? toggleOpen : undefined)
@@ -119,21 +114,12 @@ export const MenuDropdown = () => {
         </NavIcon>
 
         {isOpen && (
-          <NavDropdown top={{ sm: 'unset', lg: '56' }} bottom={{ sm: '50', lg: 'unset' }} right="0">
+          <NavDropdown
+            top={{ sm: 'unset', md: '56', lg: '56' }}
+            bottom={{ sm: '50', md: 'unset', lg: 'unset' }}
+            right="0"
+          >
             <Column gap="16">
-              <Column paddingX="8" gap="4">
-                <Box display={{ sm: 'none', lg: 'flex', xxl: 'none' }}>
-                  <PrimaryMenuRow to="/pool" close={toggleOpen}>
-                    <Icon>
-                      <PoolIcon width={24} height={24} fill={theme.neutral1} />
-                    </Icon>
-                    <PrimaryMenuRow.Text>
-                      <Trans>Pool</Trans>
-                    </PrimaryMenuRow.Text>
-                  </PrimaryMenuRow>
-                </Box>
-              </Column>
-              <Separator />
               <Box
                 display="flex"
                 flexDirection={{ sm: 'row', md: 'column' }}
