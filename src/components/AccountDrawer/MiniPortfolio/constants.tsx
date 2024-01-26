@@ -68,21 +68,6 @@ const TransactionTitleTable: { [key in TransactionType]: { [state in Transaction
     [TransactionStatus.Confirmed]: t`Burned`,
     [TransactionStatus.Failed]: t`Burn failed`,
   },
-  [TransactionType.VOTE]: {
-    [TransactionStatus.Pending]: t`Voting`,
-    [TransactionStatus.Confirmed]: t`Voted`,
-    [TransactionStatus.Failed]: t`Vote failed`,
-  },
-  [TransactionType.QUEUE]: {
-    [TransactionStatus.Pending]: t`Queuing`,
-    [TransactionStatus.Confirmed]: t`Queued`,
-    [TransactionStatus.Failed]: t`Queue failed`,
-  },
-  [TransactionType.EXECUTE]: {
-    [TransactionStatus.Pending]: t`Executing`,
-    [TransactionStatus.Confirmed]: t`Executed`,
-    [TransactionStatus.Failed]: t`Execute failed`,
-  },
   [TransactionType.BORROW]: {
     [TransactionStatus.Pending]: t`Borrowing`,
     [TransactionStatus.Confirmed]: t`Borrowed`,
@@ -102,11 +87,6 @@ const TransactionTitleTable: { [key in TransactionType]: { [state in Transaction
     [TransactionStatus.Pending]: t`Cancelling`,
     [TransactionStatus.Confirmed]: t`Cancelled`,
     [TransactionStatus.Failed]: t`Cancel failed`,
-  },
-  [TransactionType.DELEGATE]: {
-    [TransactionStatus.Pending]: t`Delegating`,
-    [TransactionStatus.Confirmed]: t`Delegated`,
-    [TransactionStatus.Failed]: t`Delegate failed`,
   },
   [TransactionType.DEPOSIT_LIQUIDITY_STAKING]: {
     [TransactionStatus.Pending]: t`Depositing`,
@@ -128,11 +108,6 @@ const TransactionTitleTable: { [key in TransactionType]: { [state in Transaction
     [TransactionStatus.Confirmed]: t`Migrated liquidity`,
     [TransactionStatus.Failed]: t`Migrate liquidity failed`,
   },
-  [TransactionType.SUBMIT_PROPOSAL]: {
-    [TransactionStatus.Pending]: t`Submitting proposal`,
-    [TransactionStatus.Confirmed]: t`Submitted proposal`,
-    [TransactionStatus.Failed]: t`Submit proposal failed`,
-  },
 }
 
 export const CancelledTransactionTitleTable: { [key in TransactionType]: string } = {
@@ -149,19 +124,14 @@ export const CancelledTransactionTitleTable: { [key in TransactionType]: string 
   [TransactionType.RECEIVE]: t`Receive cancelled`,
   [TransactionType.MINT]: t`Mint cancelled`,
   [TransactionType.BURN]: t`Burn cancelled`,
-  [TransactionType.VOTE]: t`Vote cancelled`,
-  [TransactionType.QUEUE]: t`Queue cancelled`,
-  [TransactionType.EXECUTE]: t`Execute cancelled`,
   [TransactionType.BORROW]: t`Borrow cancelled`,
   [TransactionType.REPAY]: t`Repay cancelled`,
   [TransactionType.DEPLOY]: t`Deploy cancelled`,
   [TransactionType.CANCEL]: t`Cancellation cancelled`,
-  [TransactionType.DELEGATE]: t`Delegate cancelled`,
   [TransactionType.DEPOSIT_LIQUIDITY_STAKING]: t`Deposit cancelled`,
   [TransactionType.WITHDRAW_LIQUIDITY_STAKING]: t`Withdrawal cancelled`,
   [TransactionType.ADD_LIQUIDITY_V2_POOL]: t`Add V2 liquidity cancelled`,
   [TransactionType.MIGRATE_LIQUIDITY_V3]: t`Migrate liquidity cancelled`,
-  [TransactionType.SUBMIT_PROPOSAL]: t`Submit proposal cancelled`,
 }
 
 const AlternateTransactionTitleTable: { [key in TransactionType]?: { [state in TransactionStatus]: string } } = {

@@ -334,9 +334,6 @@ const Spinner = styled.img`
   width: 16px;
   height: 16px;
 `
-export const SpinnerSVG = styled.svg`
-  ${SpinnerCss}
-`
 
 const BackArrowIcon = styled(ArrowLeft)`
   color: ${({ theme }) => theme.neutral1};
