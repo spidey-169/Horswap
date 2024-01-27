@@ -1,5 +1,6 @@
 import ErrorBoundary from 'components/ErrorBoundary'
 import Loader from 'components/Icons/LoadingSpinner'
+import { IPFSSubpathRedirect } from 'components/IPFSSubpathRedirect'
 import NavBar, { PageTabs } from 'components/NavBar'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
@@ -100,6 +101,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      <IPFSSubpathRedirect />
       <DarkModeQueryParamReader />
       <HeaderWrapper transparent={isHeaderTransparent} scrollY={scrollY}>
         <NavBar blur={isHeaderTransparent} />
