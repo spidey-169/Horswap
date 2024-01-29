@@ -10,7 +10,14 @@ export const IpfsSubpathRedirect = () => {
     const redirectUrl = generateIpfsSubdomainUrl(hashFromBase)
 
     // redirect to IPFS subdomain url
-    window.location.href = redirectUrl
+    try {
+      window.location.href = redirectUrl
+    } catch (e) {
+      console.error(e)
+      throw new Error(
+        'Failed to redirect to a safe page. IPFS hosted websites should always be browsed with the content hash in the subdomain, not in the path. This is to protect you, the user, from cache poising attacks.'
+      )
+    }
   }, [])
 
   return null
