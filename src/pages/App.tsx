@@ -101,7 +101,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <IPFSSubpathRedirect />
+      <IpfsSubpathRedirect />
       <DarkModeQueryParamReader />
       <HeaderWrapper transparent={isHeaderTransparent} scrollY={scrollY}>
         <NavBar blur={isHeaderTransparent} />
