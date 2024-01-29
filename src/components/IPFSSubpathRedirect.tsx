@@ -20,7 +20,7 @@ export const IPFSSubpathRedirect = () => {
   return null
 }
 
-function extractIPFSHashFromBasePath() {
+function extractIpfsHashFromBasePath() {
   const htmlBase = document.querySelector('base')
   if (!htmlBase) return
   const cidRegex =
