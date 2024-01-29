@@ -1,7 +1,7 @@
 import { CID } from 'multiformats'
 import { useEffect } from 'react'
 
-export const IPFSSubpathRedirect = () => {
+export const IpfsSubpathRedirect = () => {
   useEffect(() => {
     const hashFromBase = extractIPFSHashFromBasePath()
 
