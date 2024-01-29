@@ -66,7 +66,8 @@ export const getRoutingApiQuote = async (
         }
       }
     } catch (error: any) {
-      console.warn(`GetQuote failed on client: ${error}`)
+      console.error('GetQuote failed on client:')
+      console.error(error)
       return {
         isError: true,
         error: { status: 'CUSTOM_ERROR', error: error?.detail ?? error?.message ?? error },
