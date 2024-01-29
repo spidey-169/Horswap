@@ -26,5 +26,6 @@ function extractIpfsHashFromBasePath() {
 
 function generateIpfsSubdomainUrl(cidHash: string) {
   const cidV1String = CID.parse(cidHash).toV1().toString()
-  return `${location.protocol}//${cidV1String}.ipfs.${location.host}`
+  const host = window.location.hostname === '127.0.0.1' ? `localhost:${location.port}` : location.host
+  return `${location.protocol}//${cidV1String}.ipfs.${host}`
 }
