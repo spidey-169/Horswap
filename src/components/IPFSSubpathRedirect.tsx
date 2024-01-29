@@ -5,10 +5,7 @@ export const IpfsSubpathRedirect = () => {
   useEffect(() => {
     const hashFromBase = extractIpfsHashFromBasePath()
 
-    if (!hashFromBase) {
-      console.info('Base ref does not contain an IPFS hash')
-      return
-    }
+    if (!hashFromBase) return
 
     const redirectUrl = generateIpfsSubdomainUrl(hashFromBase)
     if (!redirectUrl) return
