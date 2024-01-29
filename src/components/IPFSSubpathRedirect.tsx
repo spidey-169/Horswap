@@ -8,7 +8,6 @@ export const IpfsSubpathRedirect = () => {
     if (!hashFromBase) return
 
     const redirectUrl = generateIpfsSubdomainUrl(hashFromBase)
-    if (!redirectUrl) return
 
     // redirect to IPFS subdomain url
     window.location.href = redirectUrl
