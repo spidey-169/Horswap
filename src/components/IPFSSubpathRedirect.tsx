@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 export const IpfsSubpathRedirect = () => {
   useEffect(() => {
-    const hashFromBase = extractIPFSHashFromBasePath()
+    const hashFromBase = extractIpfsHashFromBasePath()
 
     if (!hashFromBase) {
       console.info('Base ref does not contain an IPFS hash')
