@@ -104,6 +104,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
       setResult(res)
     }
     let active = true
+    setResult(TRADE_LOADING)
     updateResults(args)
     timerIdRef.current = setInterval(() => updateResults(args), AVERAGE_L1_BLOCK_TIME)
     return () => {
