@@ -2,7 +2,12 @@ import type { Web3Provider } from '@ethersproject/providers'
 import { BigintIsh, ChainId, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
 // This file is lazy-loaded, so the import of smart-order-router is intentional.
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import { AlphaRouter, AlphaRouterConfig } from '@uniswap/smart-order-router'
+import {
+  AlphaRouter,
+  AlphaRouterConfig,
+  OnChainQuoteProvider,
+  UniswapMulticallProvider,
+} from '@uniswap/smart-order-router'
 import { asSupportedChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { nativeOnChain } from 'constants/tokens'
@@ -26,9 +31,36 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
     cachedProviderRouter = undefined
   }
   if (providerChainId !== undefined && chainId === providerChainId && web3Provider !== undefined) {
+    const multicall2Provider = new UniswapMulticallProvider(chainId, web3Provider, 200000)
+    const onChainQuoteProvider = new OnChainQuoteProvider(
+      chainId,
+      web3Provider,
+      multicall2Provider,
+      {
+        retries: 2,
+        minTimeout: 100,
+        maxTimeout: 1000,
+      },
+      {
+        multicallChunk: 10,
+        gasLimitPerCall: 12000000,
+        quoteMinSuccessRate: 0.1,
+      },
+      {
+        gasLimitOverride: 20000000,
+        multicallChunk: 6,
+      },
+      {
+        gasLimitOverride: 20000000,
+        multicallChunk: 6,
+      }
+    )
     cachedProviderRouter = {
       chainId,
-      routerProvider: { router: new AlphaRouter({ chainId, provider: web3Provider }), provider: web3Provider },
+      routerProvider: {
+        router: new AlphaRouter({ chainId, provider: web3Provider, multicall2Provider, onChainQuoteProvider }),
+        provider: web3Provider,
+      },
     }
     return cachedProviderRouter?.routerProvider
   }

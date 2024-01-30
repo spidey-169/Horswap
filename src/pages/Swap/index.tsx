@@ -640,7 +640,11 @@ function Swap({
         <div>
           <OutputSwapSection>
             <SwapCurrencyInputPanel
-              value={formattedAmounts[Field.OUTPUT]}
+              value={
+                independentField === Field.INPUT && (routeIsSyncing || routeIsLoading)
+                  ? '...'
+                  : formattedAmounts[Field.OUTPUT]
+              }
               disabled={disableTokenInputs}
               onUserInput={handleTypeOutput}
               label={<Trans>You receive</Trans>}
@@ -652,7 +656,7 @@ function Swap({
               onCurrencySelect={handleOutputSelect}
               otherCurrency={currencies[Field.INPUT]}
               showCommonBases
-              loading={independentField === Field.INPUT && routeIsSyncing}
+              loading={independentField === Field.INPUT && (routeIsSyncing || routeIsLoading)}
               numericalInputSettings={{
                 // We disable numerical input here if the selected token has tax, since we cannot guarantee exact_outputs for FOT tokens
                 disabled: outputTokenHasTax,
