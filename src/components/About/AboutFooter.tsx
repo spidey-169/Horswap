@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { ExternalLink, StyledRouterLink } from 'theme/components'
-import { useIsDarkMode } from 'theme/components/ThemeToggle'
 
 import { DiscordIcon, GithubIcon, TwitterIcon } from './Icons'
-import darkHorsImgSrc from './images/horsEmbossDark.png'
-import lightHorsImgSrc from './images/horsEmbossLight.png'
 
 const Footer = styled.div`
   display: flex;
@@ -38,16 +35,6 @@ const LogoSectionBottom = styled(LogoSection)`
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     display: none;
-  }
-`
-
-const StyledLogo = styled.img`
-  width: 72px;
-  height: 72px;
-  display: none;
-
-  @media screen and (min-width: ${BREAKPOINTS.lg}px) {
-    display: block;
   }
 `
 
@@ -102,7 +89,6 @@ const TextLink = styled(StyledRouterLink)`
 `
 
 const LogoSectionContent = () => {
-  const isDarkMode = useIsDarkMode()
   return (
     <>
       <SocialLinks>
