@@ -51,7 +51,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
         : [otherCurrency, amountSpecified?.currency],
     [amountSpecified, otherCurrency, tradeType]
   )
-  const [result, setResult] = useState<RoutingAPITradeReturn>({ state: TradeState.LOADING })
+  const [result, setResult] = useState<RoutingAPITradeReturn>({ state: TradeState.INVALID })
   const timerIdRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const { provider } = useWeb3React()
   const queryArgs = useRoutingAPIArguments({
@@ -67,7 +67,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   useEffect(() => {
     const args = queryArgs
     if (skipFetch) return
-    if (args === skipToken) return setResult({ state: TradeState.INVALID })
+    if (args === skipToken) return
     async function updateResults(args: GetQuoteArgs) {
       if (document.hidden) return
       const walletProvider = provider
@@ -100,13 +100,17 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
         }
       }
       const res = await makePriceQuery()
-      if (!active || queryArgs === skipToken) return
+      if (!active) return
       setResult(res)
     }
     let active = true
     setResult(TRADE_LOADING)
     updateResults(args)
-    timerIdRef.current = setInterval(() => updateResults(args), AVERAGE_L1_BLOCK_TIME)
+    timerIdRef.current = setInterval(() => {
+      // trigger price update peridiocally but don't trigger one if the tab is not active
+      if ('visibilityState' in document && document.visibilityState === 'hidden') return
+      updateResults(args)
+    }, AVERAGE_L1_BLOCK_TIME)
     return () => {
       active = false
       if (timerIdRef.current) clearInterval(timerIdRef.current)
