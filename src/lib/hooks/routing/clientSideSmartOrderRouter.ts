@@ -20,7 +20,7 @@ type RouterAndProvider = { router: AlphaRouter; provider: AppStaticJsonRpcProvid
 let cachedProviderRouter: { chainId: number; routerProvider: RouterAndProvider } | undefined = undefined
 const routers = new Map<ChainId, RouterAndProvider>()
 export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefined): RouterAndProvider {
-  const providerChainId = web3Provider?.network.chainId
+  const providerChainId = web3Provider?.network?.chainId
   if (
     cachedProviderRouter !== undefined &&
     chainId === providerChainId &&
