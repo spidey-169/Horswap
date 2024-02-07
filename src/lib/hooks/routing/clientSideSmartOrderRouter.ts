@@ -1,15 +1,10 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import type { Web3Provider } from '@ethersproject/providers'
-import { JsonRpcProvider } from '@ethersproject/providers'
 import { BigintIsh, ChainId, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
 // This file is lazy-loaded, so the import of smart-order-router is intentional.
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import {
   AlphaRouter,
   AlphaRouterConfig,
-  EIP1559GasPriceProvider,
-  LegacyGasPriceProvider,
-  OnChainGasPriceProvider,
   OnChainQuoteProvider,
   UniswapMulticallProvider,
 } from '@uniswap/smart-order-router'
@@ -23,10 +18,6 @@ import { transformSwapRouteToGetQuoteResult } from 'utils/transformSwapRouteToGe
 
 const tokenValidatorProvider = {
   validateTokens: async () => ({ getValidationByToken: () => undefined }),
-}
-
-class fixedPriceProvider extends EIP1559GasPriceProvider {
-  getGasPrice = async () => ({ gasPriceWei: BigNumber.from(1000000000) })
 }
 
 type RouterAndProvider = { router: AlphaRouter; provider: AppStaticJsonRpcProvider | Web3Provider }
@@ -68,11 +59,6 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
         multicallChunk: 6,
       }
     )
-    const gasPriceProvider = new OnChainGasPriceProvider(
-      chainId,
-      new fixedPriceProvider(web3Provider as JsonRpcProvider, 0, 0),
-      new LegacyGasPriceProvider(web3Provider as JsonRpcProvider)
-    )
     cachedProviderRouter = {
       chainId,
       routerProvider: {
@@ -82,7 +68,6 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
           multicall2Provider,
           onChainQuoteProvider,
           tokenValidatorProvider,
-          gasPriceProvider,
         }),
         provider: web3Provider,
       },
@@ -95,13 +80,8 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
   const supportedChainId = asSupportedChain(chainId)
   if (supportedChainId) {
     const provider = RPC_PROVIDERS[supportedChainId]
-    const gasPriceProvider = new OnChainGasPriceProvider(
-      chainId,
-      new fixedPriceProvider(provider as JsonRpcProvider, 0, 0),
-      new LegacyGasPriceProvider(provider as JsonRpcProvider)
-    )
     const routerProvider = {
-      router: new AlphaRouter({ chainId, provider, tokenValidatorProvider, gasPriceProvider }),
+      router: new AlphaRouter({ chainId, provider, tokenValidatorProvider }),
       provider,
     }
     routers.set(chainId, routerProvider)
