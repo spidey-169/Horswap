@@ -313,18 +313,12 @@ function Swap({
 
   const showFiatValueInput = Boolean(parsedAmounts[Field.INPUT])
   const showFiatValueOutput = Boolean(parsedAmounts[Field.OUTPUT])
-  const getSingleUnitAmount = (currency?: Currency) => {
-    if (!currency) return
-    return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(10 ** currency.decimals))
-  }
 
   const fiatValueInput = useUSDPrice(
-    parsedAmounts[Field.INPUT] ?? getSingleUnitAmount(currencies[Field.INPUT]),
-    currencies[Field.INPUT]
+    parsedAmounts[Field.INPUT] && showFiatValueInput ? parsedAmounts[Field.INPUT] : undefined
   )
   const fiatValueOutput = useUSDPrice(
-    parsedAmounts[Field.OUTPUT] ?? getSingleUnitAmount(currencies[Field.OUTPUT]),
-    currencies[Field.OUTPUT]
+    parsedAmounts[Field.OUTPUT] && showFiatValueOutput ? parsedAmounts[Field.OUTPUT] : undefined
   )
 
   const [routeNotFound, routeIsLoading, routeIsSyncing] = useMemo(

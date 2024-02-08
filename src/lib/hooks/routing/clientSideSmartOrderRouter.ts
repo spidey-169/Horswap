@@ -16,6 +16,10 @@ import AppStaticJsonRpcProvider from 'rpc/StaticJsonRpcProvider'
 import { GetQuoteArgs, QuoteResult, QuoteState, SwapRouterNativeAssets } from 'state/routing/types'
 import { transformSwapRouteToGetQuoteResult } from 'utils/transformSwapRouteToGetQuoteResult'
 
+const tokenValidatorProvider = {
+  validateTokens: async () => ({ getValidationByToken: () => undefined }),
+}
+
 type RouterAndProvider = { router: AlphaRouter; provider: AppStaticJsonRpcProvider | Web3Provider }
 let cachedProviderRouter: { chainId: number; routerProvider: RouterAndProvider } | undefined = undefined
 const routers = new Map<ChainId, RouterAndProvider>()
@@ -58,7 +62,13 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
     cachedProviderRouter = {
       chainId,
       routerProvider: {
-        router: new AlphaRouter({ chainId, provider: web3Provider, multicall2Provider, onChainQuoteProvider }),
+        router: new AlphaRouter({
+          chainId,
+          provider: web3Provider,
+          multicall2Provider,
+          onChainQuoteProvider,
+          tokenValidatorProvider,
+        }),
         provider: web3Provider,
       },
     }
@@ -70,7 +80,10 @@ export function getRouter(chainId: ChainId, web3Provider: Web3Provider | undefin
   const supportedChainId = asSupportedChain(chainId)
   if (supportedChainId) {
     const provider = RPC_PROVIDERS[supportedChainId]
-    const routerProvider = { router: new AlphaRouter({ chainId, provider }), provider }
+    const routerProvider = {
+      router: new AlphaRouter({ chainId, provider, tokenValidatorProvider }),
+      provider,
+    }
     routers.set(chainId, routerProvider)
     return routerProvider
   }

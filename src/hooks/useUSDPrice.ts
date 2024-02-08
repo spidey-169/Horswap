@@ -3,17 +3,12 @@ import { useMemo } from 'react'
 
 import useStablecoinPrice from './useStablecoinPrice'
 
-export function useUSDPrice(
-  currencyAmount?: CurrencyAmount<Currency>,
-  prefetchCurrency?: Currency
-): {
+export function useUSDPrice(currencyAmount?: CurrencyAmount<Currency>): {
   data?: number
   isLoading: boolean
 } {
-  const currency = currencyAmount?.currency ?? prefetchCurrency
-
   // Use USDC-based pricing for chains.
-  const stablecoinPrice = useStablecoinPrice(currency)
+  const stablecoinPrice = useStablecoinPrice(currencyAmount?.currency)
 
   return useMemo(() => {
     if (currencyAmount && stablecoinPrice) {
