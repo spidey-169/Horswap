@@ -5,10 +5,6 @@ import { getClientSideQuote, getRouter } from 'lib/hooks/routing/clientSideSmart
 import { ClassicTrade, GetQuoteArgs, QuoteMethod, QuoteResult, QuoteState, TradeResult } from './types'
 import { transformRoutesToTrade } from './utils'
 
-const CLIENT_PARAMS = {
-  protocols: [Protocol.V2, Protocol.V3, Protocol.MIXED],
-}
-
 type RoutingAPITradeQuoteReturn = {
   isError: boolean
   data?: {
@@ -42,6 +38,29 @@ class QuoteCache {
 
 const quoteCache = new QuoteCache()
 
+const queryConfig = {
+  v2PoolSelection: {
+    topN: 2, // default 3
+    topNDirectSwaps: 1,
+    topNTokenInOut: 2, //default 5
+    topNSecondHop: 1, //default 2
+    tokensToAvoidOnSecondHops: [
+      '0xd46ba6d942050d489dbd938a2c909a5d5039a161', // AMPL on Mainnet
+    ],
+    topNWithEachBaseToken: 1, //default 2
+    topNWithBaseToken: 3, // default 6
+  },
+  v3PoolSelection: {
+    topN: 2,
+    topNDirectSwaps: 2,
+    topNTokenInOut: 2, // default 3
+    topNSecondHop: 1,
+    topNWithEachBaseToken: 2, //default 3
+    topNWithBaseToken: 3, // default 5
+  },
+  protocols: [Protocol.V2, Protocol.V3, Protocol.MIXED],
+}
+
 export const getRoutingApiQuote = async (
   args: GetQuoteArgs,
   web3Provider: Web3Provider | undefined,
@@ -50,7 +69,7 @@ export const getRoutingApiQuote = async (
   const getQuote = async (): Promise<RoutingAPITradeQuoteReturn> => {
     try {
       const router = getRouter(args.tokenInChainId, web3Provider)
-      const quoteResult = await getClientSideQuote(args, router.router, CLIENT_PARAMS)
+      const quoteResult = await getClientSideQuote(args, router.router, queryConfig)
       if (quoteResult.state === QuoteState.SUCCESS) {
         const trade = await transformRoutesToTrade(args, quoteResult.data, QuoteMethod.CLIENT_SIDE, router.provider)
         return {
