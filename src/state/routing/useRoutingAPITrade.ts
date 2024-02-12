@@ -67,7 +67,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   useEffect(() => {
     const args = queryArgs
     if (skipFetch) return
-    if (args === skipToken) return
+    if (args === skipToken) return setResult({ state: TradeState.INVALID, trade: undefined, currentTrade: undefined })
     async function updateResults(args: GetQuoteArgs) {
       if (document.hidden) return
       const walletProvider = provider
