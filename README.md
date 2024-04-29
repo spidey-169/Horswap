@@ -6,7 +6,7 @@ An open source interface for Uniswap -- a protocol for decentralized exchange of
 
 Check out Horswap via:
 - [https://1.horswap.eth.limo](https://2.horswap.eth.limo)
-- [ipns://1.horswap.eth](ipns://2.horswap.eth)
+- [ipns://2.horswap.eth](ipns://2.horswap.eth)
 - [ipfs://bafybeibtdjzmhx77pxlpmy7fqnwyb7dmrtwbk3n6fpyw3qdgmxaznzwm44](ipfs://bafybeibtdjzmhx77pxlpmy7fqnwyb7dmrtwbk3n6fpyw3qdgmxaznzwm44)
 
 # Horswap is an improved Uniswap Interface
