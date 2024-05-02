@@ -5,9 +5,9 @@ An open source interface for Uniswap -- a protocol for decentralized exchange of
 <img src="screenshot.png" style="width: 500px" />
 
 Check out Horswap via:
-- [https://1.horswap.eth.limo](https://1.horswap.eth.limo)
-- [ipns://1.horswap.eth](ipns://1.horswap.eth)
-- [ipfs://bafybeigzzsbggujzutk7yjoncylr56rbj4nepqapp6razmnxh4rn6sme4y](ipfs://bafybeigzzsbggujzutk7yjoncylr56rbj4nepqapp6razmnxh4rn6sme4y)
+- [https://2.horswap.eth.limo](https://2.horswap.eth.limo)
+- [ipns://2.horswap.eth](ipns://2.horswap.eth)
+- [ipfs://bafybeibtdjzmhx77pxlpmy7fqnwyb7dmrtwbk3n6fpyw3qdgmxaznzwm44](ipfs://bafybeibtdjzmhx77pxlpmy7fqnwyb7dmrtwbk3n6fpyw3qdgmxaznzwm44)
 
 # Horswap is an improved Uniswap Interface
 Horswap is a fork of [Uniswap Interface v4.266.2](https://github.com/Uniswap/interface/releases/tag/v4.266.2). The version v4.266.2 is the last version without added UI fees and that would still allow users to do local routing. Horswap has then significantly improved the interface's censorship resistance and privacy.
